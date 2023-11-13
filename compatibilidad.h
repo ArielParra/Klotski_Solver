@@ -68,28 +68,6 @@ extern "C" {
 #define BG_WHITE            "\x1b[47m"
 #define BG_DEFAULT          "\x1b[49m" 
 
-/*Colores AXITERM*/
-/*Foreground Light*/
-#define FG_BLACK_LIGHT      "\x1b[90m"
-#define FG_RED_LIGHT        "\x1b[91m"       
-#define FG_GREEN_LIGHT      "\x1b[92m"      
-#define FG_YELLOW_LIGHT     "\x1b[93m"   
-#define FG_BLUE_LIGHT       "\x1b[94m"       
-#define FG_MAGENTA_LIGHT    "\x1b[95m"    
-#define FG_CYAN_LIGHT       "\x1b[96m"
-#define FG_WHITE_LIGHT      "\x1b[97m"
-/*Background Light*/
-#define BG_BLACK_LIGHT      "\x1b[100m"
-#define BG_RED_LIGHT        "\x1b[101m"
-#define BG_GREEN_LIGHT      "\x1b[102m"
-#define BG_YELLOW_LIGHT     "\x1b[103m"
-#define BG_BLUE_LIGHT       "\x1b[104m"
-#define BG_MAGENTA_LIGHT    "\x1b[105m"
-#define BG_CYAN_LIGHT       "\x1b[106m"
-#define BG_WHITE_LIGHT      "\x1b[107m"
-
-
-
 #if defined(_WIN32) || defined(_CYGWIN_) 
 
     /*Teclas para getch()*/
@@ -168,7 +146,11 @@ extern "C" {
     #define COLS getmaxx(stdscr) 
 
 #else                //*NIX
-
+    /*Compatibilidad con Colores (Consola virtual de cmd)*/
+    //En sistemas basados en Unix el sistema suele ya soportar esto asi que es implicito
+    void setUTF8(void){};
+    void setANSI(void){};
+    
     #include <ncurses.h> //getch(),scanw(),
     #warning "ncurses.h needs -lncurses as a compiler argument"
 

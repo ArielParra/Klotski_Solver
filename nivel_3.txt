@@ -1,7 +1,14 @@
-abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz más de 54 caracteres pero sera leido hasta el 40
-5 4 4
-#####1
-#* a#1
-# . #1
-#####1
-1
+Nivel 1
+10 11 abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&&&&&&&&&
+&&&&&&&&&&
+&&######&&
+&&#a**h#&&
+&&#b**g#&&
+&&#cdef#&&
+&&#lkji#&&
+&&#mnop#&&
+&&##--##&&
+&&&&&&&&..
+&&&&&&&&..
+/*Esto prueba que solo toma 2 numeros, anchura y altura */
