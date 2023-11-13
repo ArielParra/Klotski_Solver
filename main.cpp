@@ -1,12 +1,18 @@
-/* 
-Equipo 1 conformado por:
-Miguel Ángel Batres Luna     ID: 350553 
-Alan Gael Gallardo Jiménez   ID: 351914
-Luis Ernesto López Cárdenas  ID: 350346 
-Ariel Emilio Parra Martínez  ID: 280862 
-*/
+#include "Nivel.cpp"
+#include "compatibilidad.h"
 
-int main(){
-    
-return 0;
+using std::cin;
+
+int main() {
+    setUTF8();
+
+    int N;
+    cout << "Ingrese el número N para el archivo nivel_N.txt: ";
+    cin >> N;
+
+    Nivel nivel(N);
+    nivel.cargarNivel();
+    nivel.mostrarTablero();
+
+    return 0;
 }
