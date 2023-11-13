@@ -14,6 +14,17 @@
 o clase debe tener comentarios acerca de lo que se realiza.
 - [ ]  Los nombres de las funciones o clases deben ser de acuerdo a la funcionalidad que implementa.
 - [ ] Graficos hasta 2 pts extra
+- [ ] La solución debe cargar nuevos tableros y resolverlo sin necesidad de recompilar el ejercicio.
+    - [ ] Al cargar el tablero el programa deberá dibujarlo en forma gráfica y generar la(s) solución(es) posible(s).
+- [ ] La pantalla del juego contendrá al menos:
+    - [ ] El tablero vacío.
+    - [ ] Método de carga del archivo (reto).
+    - [ ] Dibujar el tablero completo.
+    - [ ] Botón para general solución.
+    - [ ]Iniciar recorrido.
+ - [ ] Las piezas y los muros se representarán de modo que aparezcan conexos, inclusive si ocupan varios cuadrados del tablero.
+ - [ ] Cada pieza diferente que se mueve se considera un movimiento. Al mover una pieza que acaba de ser movida se considera que es una continuación del movimiento anterior, y no cuenta como movimiento.
+ - [ ] Al final deberá indicar cuantos movimientos realizo para solucionar el reto, así como el camino recorrido para la solución
 
 # Documento
 

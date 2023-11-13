@@ -1,0 +1,7 @@
+abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz más de 54 caracteres pero sera leido hasta el 40
+5 4 4
+#####1
+#* a#1
+# . #1
+#####1
+1
