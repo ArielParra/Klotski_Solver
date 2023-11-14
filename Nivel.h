@@ -10,6 +10,7 @@ class Nivel {
 private:
   unsigned int numNivel;
   string nombreArchivo;
+  string nombreNivel;
   Tabla tablero;
 
   void leerNombreNivel(ifstream &archivo);
@@ -20,10 +21,9 @@ public:
   Nivel();
   Nivel(unsigned int num);
   bool cargarNivel();
-
-  /*Metodos get*/
   unsigned int getNumNivel() const;
   string getNombreArchivo() const;
+  string getNombreNivel() const;
   Tabla getTablero() const;
 };
 

@@ -14,7 +14,6 @@ Nivel::Nivel(unsigned int num)
 
 /*Private*/
 void Nivel::leerNombreNivel(ifstream &archivo) { // primera linea
-  string nombreNivel;
   getline(archivo, nombreNivel);
   nombreNivel = nombreNivel.substr(0, 40);
 }
@@ -56,5 +55,6 @@ bool Nivel::cargarNivel() {
 /*Metodos get*/
 unsigned int Nivel::getNumNivel() const { return this->numNivel; }
 string Nivel::getNombreArchivo() const { return this->nombreArchivo; }
+string Nivel::getNombreNivel() const { return this->nombreNivel; }
 Tabla Nivel::getTablero() const { return this->tablero; }
 

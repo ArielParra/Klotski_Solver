@@ -19,14 +19,24 @@ unsigned int Tabla::getAncho() const { return this->ancho; }
 
 unsigned int Tabla::getAltura() const { return this->altura; }
 
-void Tabla::cargarFila(unsigned int fila, const string &datos) {
-  this->matriz[fila] = datos.substr(0, ancho);
-}
-
 void Tabla::mostrarTabla() {
-  cout << "Tabla:" << endl;
   for (unsigned int i = 0; i < Tabla::getAltura(); i++) {
     cout << matriz[i] << "| Fila " << i + 1 << endl;
   }
 }
 
+const vector<string>& Tabla::getMatriz() const {
+  return this->matriz;
+}
+
+/*Metodos set*/
+
+void Tabla::setMatriz(const vector<string>& matriz) {
+  this->matriz = matriz;
+  this->altura = matriz.size();
+  this->ancho =  matriz[0].size();
+}
+
+void Tabla::cargarFila(unsigned int fila, const string &datos) {
+  this->matriz[fila] = datos.substr(0, ancho);
+}
