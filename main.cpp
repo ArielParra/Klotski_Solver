@@ -2,6 +2,7 @@
 #include "compatibilidad.h"
 
 using std::cin;
+using std::cerr;
 
 int main() {
     setUTF8();
@@ -11,8 +12,11 @@ int main() {
     cin >> N;
 
     Nivel nivel(N);
-    nivel.cargarNivel();
-    nivel.mostrarTablero();
+    if(!nivel.cargarNivel()){
+        cerr << "Error: No se pudo abrir el archivo " << nivel.getNombreArchivo() << endl;
+    }else{
+        nivel.getTablero().mostrarTabla();
+    }
 
     return 0;
 }
