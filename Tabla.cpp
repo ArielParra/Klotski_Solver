@@ -1,17 +1,25 @@
 #include "Tabla.h"
 #include <iostream>
-#include <queue>
 
 using std::cout;
 using std::endl;
 
 /*Public*/
+
 Tabla::Tabla() : ancho(0), altura(0) {} // constructor vacio
 
 Tabla::Tabla(unsigned int ancho, unsigned int altura)
     : ancho(ancho), altura(altura) { // constructor
-  matriz.resize(altura,
-                string(ancho, ' ')); // Inicializa la matriz con strings vacíos
+  matriz.resize(altura, string(ancho, ' ')); // Inicializa la matriz con strings vacíos
+}
+
+Tabla::Tabla(const vector<string>& matriz) { // constructor con matriz
+    // Asigna la matriz proporcionada
+    this->matriz = matriz;
+
+    // Establece la altura y el ancho basándose en la matriz
+    this->altura = matriz.size();
+    this->ancho =  matriz[0].size();
 }
 
 /*Metodos get*/
@@ -30,13 +38,6 @@ const vector<string>& Tabla::getMatriz() const {
 }
 
 /*Metodos set*/
-
-void Tabla::setMatriz(const vector<string>& matriz) {
-  this->matriz = matriz;
-  this->altura = matriz.size();
-  this->ancho =  matriz[0].size();
-}
-
 void Tabla::cargarFila(unsigned int fila, const string &datos) {
   this->matriz[fila] = datos.substr(0, ancho);
 }

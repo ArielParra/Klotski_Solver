@@ -16,10 +16,10 @@ private:
 public:
   Tabla();
   Tabla(unsigned int ancho, unsigned int altura);
+  Tabla(const vector<string>& matriz);
   unsigned int getAncho() const;
   unsigned int getAltura() const;
   const vector<string>& getMatriz() const;
-  void setMatriz(const vector<string>& matriz); 
   void cargarFila(unsigned int fila, const string &datos);
   void mostrarTabla();
 };

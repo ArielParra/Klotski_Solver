@@ -33,8 +33,7 @@ int main() {
         "&&&&&&&&..",
         "&&&&&&&&.."
     };
-    Tabla tablero;
-    tablero.setMatriz(matriz);
+    Tabla tablero(matriz);
     
     cout << endl <<  "Tabla del tipo Tabla:" << endl;
     tablero.mostrarTabla();

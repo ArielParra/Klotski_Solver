@@ -12,6 +12,27 @@ Nivel 1
 &&&&&&&&..
 &&&&&&&&..
 
+vector<string> matriz = {
+    "&&&&&&&&&&",
+    "&&&&&&&&&&",
+    "&&######&&",
+    "&&#a**b#&&",
+    "&&#a**b#&&",
+    "&&#cdde#&&",
+    "&&#cfge#&&",
+    "&&#a&&b#&&",
+    "&&##--##&&",
+    "&&&&&&&&..",
+    "&&&&&&&&.."
+};
+Tabla tablero(matriz);
+donde '&' son espacios vacios 
+donde '#' son las paredes del tablero
+donde '-' son las puertas para salir del tablero
+donde '*' son la pieza singular 
+donde '.' es el objetivo donde debe llegar la pieza singular
+donde las letras de la 'a' a la 'z' son las otras piezas que no pueden salir de las paredes del tablero
+
 a**b
 a**b
 cdde
