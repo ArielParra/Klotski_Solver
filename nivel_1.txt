@@ -11,7 +11,7 @@ Nivel 1
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..
-
+/*archivo normal*/
 vector<string> matriz = {
     "&&&&&&&&&&",
     "&&&&&&&&&&",
@@ -20,7 +20,7 @@ vector<string> matriz = {
     "&&#a**b#&&",
     "&&#cdde#&&",
     "&&#cfge#&&",
-    "&&#a&&b#&&",
+    "&&#h&&i#&&",
     "&&##--##&&",
     "&&&&&&&&..",
     "&&&&&&&&.."
@@ -33,9 +33,3 @@ donde '*' son la pieza singular
 donde '.' es el objetivo donde debe llegar la pieza singular
 donde las letras de la 'a' a la 'z' son las otras piezas que no pueden salir de las paredes del tablero
 
-a**b
-a**b
-cdde
-cfge
-h&&i
-#--#

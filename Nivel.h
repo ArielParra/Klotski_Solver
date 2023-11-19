@@ -14,7 +14,7 @@ private:
   Tabla tablero;
 
   void leerNombreNivel(ifstream &archivo);
-  void leerDimensionesTablero(ifstream &archivo);
+  bool leerDimensionesTablero(ifstream &archivo);
   void leerTablero(ifstream &archivo);
 
 public:

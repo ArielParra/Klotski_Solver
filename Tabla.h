@@ -19,9 +19,11 @@ public:
   Tabla(const vector<string>& matriz);
   unsigned int getAncho() const;
   unsigned int getAltura() const;
+  vector<string>& getMatriz();
   const vector<string>& getMatriz() const;
   void cargarFila(unsigned int fila, const string &datos);
   void mostrarTabla();
+  void cambiarRepetidos();
 };
 
 #endif // Tabla_h

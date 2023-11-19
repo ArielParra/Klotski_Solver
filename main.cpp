@@ -34,6 +34,7 @@ int main() {
         "&&&&&&&&.."
     };
     Tabla tablero(matriz);
+    tablero.cambiarRepetidos();
     
     cout << endl <<  "Tabla del tipo Tabla:" << endl;
     tablero.mostrarTabla();

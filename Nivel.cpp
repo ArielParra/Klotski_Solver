@@ -18,14 +18,15 @@ void Nivel::leerNombreNivel(ifstream &archivo) { // primera linea
   nombreNivel = nombreNivel.substr(0, 40);
 }
 
-void Nivel::leerDimensionesTablero(ifstream &archivo) { // segunda linea
+bool Nivel::leerDimensionesTablero(ifstream &archivo) { // segunda linea
   unsigned int ancho, altura;
-  archivo >> ancho >> altura;
-  cout << "Ancho del tablero: " << ancho << endl;
+  if (!(archivo >> ancho >> altura)) {
+    return false;
+  }  cout << "Ancho del tablero: " << ancho << endl;
   cout << "Altura del tablero: " << altura << endl;
-  archivo.ignore(numeric_limits<streamsize>::max(),
-                 '\n'); // Ignora el resto de la línea
+  archivo.ignore(numeric_limits<streamsize>::max(),'\n'); // Ignora el resto de la línea
   tablero = Tabla(ancho, altura);
+  return true;
 }
 
 void Nivel::leerTablero(ifstream &archivo) { // tercera linea en adelante
@@ -45,7 +46,9 @@ bool Nivel::cargarNivel() {
   }
 
   leerNombreNivel(archivo);
-  leerDimensionesTablero(archivo);
+  if(!leerDimensionesTablero(archivo))
+    return false;
+
   leerTablero(archivo);
 
   archivo.close();
