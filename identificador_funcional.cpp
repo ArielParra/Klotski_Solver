@@ -2,25 +2,20 @@
 #include <unordered_map>
 #include <iostream>
 #include <queue>
+#include <cctype>
+
 
 using namespace std;
 
 // Enumeración para las direcciones de movimiento
-enum Direccion { ARRIBA, ABAJO, IZQUIERDA, DERECHA };
+enum DIRECCION { ARRIBA, ABAJO, IZQUIERDA, DERECHA };
 
-class Piezas {
-private:
-  std::unordered_map<char, std::pair<unsigned int, unsigned int>> piezas;
+//variable global 
+std::unordered_map<char, std::pair<unsigned int, unsigned int>> piezas;
 
-public:
-  Piezas();
-  void identificarPiezas(Tabla tablero);
-  void moverPieza(char pieza, Direccion direccion, Tabla& tablero);
-};
 
-Piezas::Piezas() {}
+void identificarPiezas(Tabla tablero) {
 
-void Piezas::identificarPiezas(Tabla tablero) {
   const vector<string>& matriz = tablero.getMatriz();
   
   // Matriz para rastrear las celdas visitadas durante el recorrido BFS
@@ -30,7 +25,7 @@ void Piezas::identificarPiezas(Tabla tablero) {
     for (unsigned int j = 0; j < tablero.getAncho(); j++) {
       char c = matriz[i][j];
 
-      if (c != '&' && !visitado[i][j]) {
+      if (isalpha(c) && !visitado[i][j]) {
         // Inicializar variables para la pieza actual
         unsigned int altura = 0;
         unsigned int ancho = 0;
@@ -41,7 +36,10 @@ void Piezas::identificarPiezas(Tabla tablero) {
 
         // Inicio del recorrido BFS
         while (!cola.empty()) {
-          auto actual = cola.front();
+          // Declare the 'actual' variable
+          pair<unsigned int, unsigned int> actual;
+
+          actual = cola.front();
           cola.pop();
 
           unsigned int x = actual.first;
@@ -56,8 +54,8 @@ void Piezas::identificarPiezas(Tabla tablero) {
           visitado[x][y] = true;
 
           // Actualizar altura y ancho de la pieza
-          altura = max(altura, x - i + 1);
-          ancho = max(ancho, y - j + 1);
+          altura = x - i + 1;
+          ancho =  y - j + 1;
 
           // Agregar celdas adyacentes a la cola para continuar el BFS
           cola.push({x + 1, y});
@@ -75,115 +73,70 @@ void Piezas::identificarPiezas(Tabla tablero) {
   }
 }
 
-void Piezas::moverPieza(char pieza, Direccion direccion, Tabla &tablero)
-{
-    // Verificar si la pieza existe en el mapa
-    if (piezas.find(pieza) == piezas.end())
-    {
-        cout << "Pieza '" << pieza << "' no encontrada." << endl;
+void moverPiezas(Tabla &tablero, char pieza, DIRECCION dir) {
+    if (piezas.find(pieza) == piezas.end()) {
         return;
     }
 
-    // Obtener la información de la pieza
-    auto infoPieza = piezas[pieza];
-    unsigned int altura = infoPieza.first;
-    unsigned int ancho = infoPieza.second;
+    unsigned int x = 0, y = 0;
 
-    // Encontrar la posición actual de la pieza en el tablero
-    unsigned int posX = 0, posY = 0;
-    bool encontrada = false;
-
-    for (unsigned int i = 0; i < tablero.getAltura(); i++)
-    {
-        for (unsigned int j = 0; j < tablero.getAncho(); j++)
-        {
-            if (tablero.getMatriz()[i][j] == pieza)
-            {
-                posX = i;
-                posY = j;
-                encontrada = true;
+    // Encontrar la posición inicial de la pieza
+    for (unsigned int i = 0; i < tablero.getAltura(); i++) {
+        for (unsigned int j = 0; j < tablero.getAncho(); j++) {
+            char letra = tablero.getMatriz()[i][j];
+            if (isalpha(letra) && letra == pieza) {
+                x = i;
+                y = j;
                 break;
             }
         }
     }
 
-    // Verificar si es posible mover la pieza en la dirección deseada
-    unsigned int nuevoPosX = posX, nuevoPosY = posY;
+    switch (dir) {
+        case ARRIBA:
+            break;
 
-    switch (direccion)
-    {
-    case ARRIBA:
-        nuevoPosX--;
-        break;
-    case ABAJO:
-        nuevoPosX++;
-        break;
-    case IZQUIERDA:
-        nuevoPosY--;
-        break;
-    case DERECHA:
-        nuevoPosY++;
-        break;
+        case ABAJO:
+            break;
+
+        case IZQUIERDA:
+            break;
+
+        case DERECHA:
+
+            break;
     }
 
-    // Verificar si la nueva posición es válida
-    if (nuevoPosX + altura <= tablero.getAltura() && nuevoPosY + ancho <= tablero.getAncho())
-    {
-        // Verificar si las celdas a ocupar están vacías
-        bool celdasVacias = true;
-
-        for (unsigned int i = nuevoPosX; i < nuevoPosX + altura; i++)
-        {
-            for (unsigned int j = nuevoPosY; j < nuevoPosY + ancho; j++)
-            {
-                if (tablero.getMatriz()[i][j] != '&')
-                {
-                    celdasVacias = false;
-                    break;
-                }
-            }
-            if (!celdasVacias)
-            {
-                break;
-            }
-        }
-
-        // Realizar el movimiento si las celdas están vacías
-        if (celdasVacias)
-        {
-            for (unsigned int i = 0; i < altura; i++)
-            {
-                for (unsigned int j = 0; j < ancho; j++)
-                {
-                    tablero.getMatriz()[posX][posY]='&';
-                    tablero.getMatriz()[nuevoPosX][nuevoPosY] = pieza;
-                }
-            }
-
-            cout << "Movimiento exitoso. Nuevo tablero:" << endl;
-            tablero.mostrarTabla();
-            return;
-        }
-    }
-
-    // Si no se puede realizar el movimiento, mostrar mensaje
-    cout << "No se puede realizar el movimiento." << endl;
+    // Mostrar el tablero actualizado
+    tablero.mostrarTabla();
 }
+
+
 
 int main() {
   vector<string> matriz = {
-      "&aa&&&&&&&",
-      "&aa&&&&&&&",
       "&&&&&&&&&&",
+      "&&&&&&&&&&",
+      "&&######&&",
+      "&&#a**b#&&",
+      "&&#a**b#&&",
+      "&&#cdde#&&",
+      "&&#cfge#&&",
+      "&&#h&&i#&&",
+      "&&##--##&&",
+      "&&&&&&&&..",
+      "&&&&&&&&..",
   };
   Tabla tablero(matriz);
 
-  Piezas piezas;
 
-  piezas.identificarPiezas(tablero);
-  piezas.moverPieza('a', DERECHA, tablero);
-  piezas.moverPieza('a', DERECHA, tablero);
-  piezas.moverPieza('a', ABAJO, tablero);
+  identificarPiezas(tablero);
+  tablero.mostrarTabla();
+  moverPiezas(tablero,'h',DERECHA);
+  moverPiezas(tablero,'h',DERECHA);
+  moverPiezas(tablero,'c',ABAJO);
+
+
 
   return 0;
 }

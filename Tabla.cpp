@@ -54,24 +54,19 @@ void Tabla::cargarFila(unsigned int fila, const string &datos)
     this->matriz[fila] = datos.substr(0, ancho);
 }
 
+
+
 void Tabla::cambiarRepetidos()
 {
     char maximaLetra = 'a';
-    for (unsigned int i = 0; i < Tabla::getAltura(); i++)
-    {
-        for (unsigned int j = 0; j < Tabla::getAncho(); j++)
-        {
-            char letra = matriz[i][j];
-            if (isalpha(letra))
-            {
-                if (letra > maximaLetra)
-                {
-                    maximaLetra = letra;
-                }
-            }
+    for (unsigned int i = 0; i < Tabla::getAltura(); i++) {
+    for (unsigned int j = 0; j < Tabla::getAncho(); j++) {
+        char letra = matriz[i][j];
+        if (isalpha(letra) && letra > maximaLetra) {
+            maximaLetra = letra;
         }
     }
-
+}
     vector<vector<bool>> casillas_revisadas(getAltura(), vector<bool>(Tabla::getAncho(), false));
     unordered_set<char> letrasUsadas;
 
