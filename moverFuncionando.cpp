@@ -3,6 +3,7 @@
 #include <iostream>
 #include <queue>
 #include <cctype>
+#include <algorithm>
 
 using namespace std;
 
@@ -33,18 +34,24 @@ public:
 class PiezasEnTablero {
 private:
     std::unordered_map<char, Pieza> piezasExistentes;
-
+    Tabla& tablero;
 public:
+    PiezasEnTablero(Tabla& tablero);
     // Método público para identificar piezas en el tablero
-    void identificarPiezas(Tabla tablero);
+    void identificarPiezas();
 
     // Método público para imprimir la información de las piezas en el tablero
     void imprimirPiezasEnTablero();
-    void mover(Tabla& tablero, char pieza, DIRECCION direccion);
+    void mover( char pieza, DIRECCION direccion);
+    bool tableroTerminado();
+    Pieza& getPieza(char c);
+    Tabla& getTablero();
 
 };
 
-void PiezasEnTablero::identificarPiezas(Tabla tablero) {
+PiezasEnTablero::PiezasEnTablero(Tabla& tablero) : tablero(tablero) {}
+
+void PiezasEnTablero::identificarPiezas() {
     const vector<string>& matriz = tablero.getMatriz();
 
     // Matriz para rastrear las celdas visitadas durante el recorrido BFS
@@ -54,7 +61,7 @@ void PiezasEnTablero::identificarPiezas(Tabla tablero) {
         for (unsigned int j = 0; j < tablero.getAncho(); j++) {
             char c = matriz[i][j];
 
-            if ((isalpha(c) || c == '*') && !visitado[i][j]) {
+            if ((isalpha(c) || c == '*' ||  c == '.') && !visitado[i][j]) {
                 // Inicializar variables para la pieza actual
                 unsigned int altura = 0;
                 unsigned int ancho = 0;
@@ -114,17 +121,13 @@ void PiezasEnTablero::imprimirPiezasEnTablero() {
     }
 }
 
-void PiezasEnTablero::mover(Tabla& tablero, char pieza, DIRECCION direccion) {
+void PiezasEnTablero::mover(char pieza, DIRECCION direccion) {
     if (piezasExistentes.find(pieza) == piezasExistentes.end()) {
         cout << "Pieza '" << pieza << "' no encontrada en el tablero." << endl;
         return;
     }
 
     Pieza& piezaAMover = piezasExistentes[pieza];
-
-    // Obtener las dimensiones de la pieza
-    unsigned int altura = piezaAMover.getAltura();
-    unsigned int ancho = piezaAMover.getAncho();
 
     // Determinar la nueva posición según la dirección
     unsigned int nuevaPosX = piezaAMover.getPosX();
@@ -135,38 +138,50 @@ void PiezasEnTablero::mover(Tabla& tablero, char pieza, DIRECCION direccion) {
             nuevaPosY = nuevaPosY - 1;
             break;
         case ABAJO:
-            nuevaPosY = min(tablero.getAltura() - altura, nuevaPosY + 1);
+            nuevaPosY = nuevaPosY + 1;
             break;
         case IZQUIERDA:
             nuevaPosX = nuevaPosX - 1;
             break;
         case DERECHA:
-            nuevaPosX = min(tablero.getAncho() - ancho, nuevaPosX + 1);
+            nuevaPosX =  nuevaPosX + 1;
             break;
         default:
-            cout << "Dirección no válida." << endl;
             return;
     }
 
     // Verificar si la nueva posición está disponible
     bool posicionValida = true;
-    for (unsigned int i = 0; i < altura; i++) {
-        for (unsigned int j = 0; j < ancho; j++) {
-            if (tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] != ' ' && tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] != '&' && tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] != pieza) {
+
+    for (unsigned int i = 0; i < piezaAMover.getAltura(); i++) {
+        for (unsigned int j = 0; j < piezaAMover.getAncho(); j++) {
+            if (tablero.getAltura() <= nuevaPosY + i || tablero.getAncho() <= nuevaPosX + j) {
+                // Se sale del tablero
                 posicionValida = false;
                 break;
             }
-        }
-        if (!posicionValida) {
-            break;
+            if (tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] != ' ' &&
+                tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] != '&' &&
+                tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] != pieza) {
+                if (pieza != '*') {
+                    // Piezas normales
+                    posicionValida = false;
+                    break;
+                } else if (tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] != '-' &&
+                           tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] != '.') {
+                    // Piezas singular
+                    posicionValida = false;
+                    break;
+                }
+            }
         }
     }
 
     // Actualizar la posición de la pieza si la nueva posición es válida
     if (posicionValida) {
         // Limpiar la antigua posición de la pieza en el tablero
-        for (unsigned int i = 0; i < altura; i++) {
-            for (unsigned int j = 0; j < ancho; j++) {
+        for (unsigned int i = 0; i < piezaAMover.getAltura(); i++) {
+            for (unsigned int j = 0; j < piezaAMover.getAncho(); j++) {
                 tablero.getMatriz()[piezaAMover.getPosY() + i][piezaAMover.getPosX() + j] = '&';
             }
         }
@@ -176,16 +191,29 @@ void PiezasEnTablero::mover(Tabla& tablero, char pieza, DIRECCION direccion) {
         piezaAMover.setPosY(nuevaPosY);
 
         // Colocar la pieza en la nueva posición en el tablero
-        for (unsigned int i = 0; i < altura; i++) {
-            for (unsigned int j = 0; j < ancho; j++) {
+        for (unsigned int i = 0; i < piezaAMover.getAltura(); i++) {
+            for (unsigned int j = 0; j < piezaAMover.getAncho(); j++) {
                 tablero.getMatriz()[nuevaPosY + i][nuevaPosX + j] = pieza;
             }
         }
-
-    } //else {
-      //  cout << "Movimiento no válido. La nueva posición está ocupada por otra pieza." << endl;
-    //}
+    }
 }
+
+bool PiezasEnTablero::tableroTerminado() {
+    if (piezasExistentes['*'].getPosX() == piezasExistentes['.'].getPosX() &&
+        piezasExistentes['*'].getPosY() == piezasExistentes['.'].getPosY()) {
+        return true;
+    }
+    return false;
+}
+
+Pieza& PiezasEnTablero::getPieza(char c) {
+    return this->piezasExistentes[c];
+}
+Tabla& PiezasEnTablero::getTablero(){
+    return  this->tablero; 
+}
+
 
 int main() {
     vector<string> matriz = {
@@ -195,7 +223,7 @@ int main() {
         "&&#a**b#&&",
         "&&#a**b#&&",
         "&&#cdde#&&",
-        "&&#cfge#&&",
+        "&&#c&&e#&&",
         "&&#h&&i#&&",
         "&&##--##&&",
         "&&&&&&&&..",
@@ -203,19 +231,11 @@ int main() {
     };
     Tabla tablero(matriz);
 
-    PiezasEnTablero piezasEnTablero;
-    piezasEnTablero.identificarPiezas(tablero);
-    tablero.mostrarTabla();
+    PiezasEnTablero piezasEnTablero(tablero);
+    piezasEnTablero.identificarPiezas();
     piezasEnTablero.imprimirPiezasEnTablero();
-    piezasEnTablero.mover(tablero,'h',DERECHA);
-    piezasEnTablero.mover(tablero,'h',DERECHA);
-    tablero.mostrarTabla();
-    piezasEnTablero.mover(tablero,'c',ABAJO);
-      piezasEnTablero.mover(tablero,'a',ABAJO);
-
-        tablero.mostrarTabla();
-
-
+    piezasEnTablero.mover('h',DERECHA);
+    piezasEnTablero.getTablero().mostrarTabla();
 
 
     return 0;
