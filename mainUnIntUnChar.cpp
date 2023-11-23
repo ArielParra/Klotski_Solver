@@ -2,8 +2,8 @@
 #include <vector>
 #include <unordered_map>
 #include <stack>//pilas std
-//#include <cassert>
-//#include <random>
+#include "compatibilidad.h"
+
 
 //para evitar using namespace std y controlar el uso de std
 using std::vector;
@@ -15,11 +15,6 @@ using std::stack;
 
 //#define COLORS
 #define PRINT
-
-//#define SLEEP 0
-//#ifdef COLORS
-//#include "rlutil.h" //revisar esta mamada/ arreglado
-//#endif
 
 enum TipoDeSolucion {
   SOLUCION_ENCONTRADA,
@@ -33,7 +28,7 @@ struct Posicion{
     return other.x == x && other.y == y;
   }
 /*
-     size_t hash() const {
+     unsigned int hash() const {
         std::hash<int> hasher;
         return hasher(x) ^ hasher(y);
     }
@@ -41,7 +36,7 @@ struct Posicion{
 };
 
 
-enum TipoDePieza : unsigned char{
+enum TipoDePieza : char{
   PIEZA_VACIA='&',
   PIEZA_PARED='#',
   PIEZA_SINGULAR='*',
@@ -49,7 +44,7 @@ enum TipoDePieza : unsigned char{
   PIEZA_OBJETIVO='.',
 };
 
-enum Direccion : unsigned char{
+enum Direccion{
   ARRIBA,
   ABAJO,
   IZQUIERDA,
@@ -80,7 +75,7 @@ string stringDireccion(Direccion dir){
 
 struct OrdenDeMovimiento{
   Direccion dir;
-  unsigned char id;
+  unsigned char id; //si no es unsigned char da segmentation faultOrdenDeMovimiento
 
   bool operator==(const OrdenDeMovimiento& orden) const {//sobrecarga de operador de igualdad
       return (dir == orden.dir) && (id == orden.id);
@@ -153,7 +148,7 @@ public:
     return this->y;
   }
 
-  bool puedeMoverse(unsigned char pieza){
+  bool puedeMoverse(char pieza){
     if(this->esPiezaSingular && pieza == PIEZA_PUERTA) return true;
     
     return pieza == PIEZA_VACIA || pieza == PIEZA_OBJETIVO;
@@ -181,14 +176,14 @@ public:
 
 namespace std {//implentacion de la libreria boost Hash para la matriz
     template <>
-    struct hash<vector<vector<unsigned char>>> {
-        size_t operator()(const vector<vector<unsigned char>>& vec, Bloque* bloques) const {
-            std::hash<unsigned char> charHasher;
-            size_t hash = 0;
+    struct hash<vector<vector<char>>> {
+        unsigned int operator()(const vector<vector<char>>& vec, Bloque* bloques) const {
+            std::hash<char> charHasher;
+            unsigned int hash = 0;
 
             for (const auto& fila : vec) {
-                for (const unsigned char& elemento : fila) {
-                    const unsigned char& corresponding = bloques[elemento].getID() == 0 ? elemento : bloques[elemento].getReduccion();
+                for (const char& elemento : fila) {
+                    const char& corresponding = bloques[elemento].getID() == 0 ? elemento : bloques[elemento].getReduccion();
                     hash ^= charHasher(corresponding) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
                 }
             }
@@ -199,7 +194,7 @@ namespace std {//implentacion de la libreria boost Hash para la matriz
 
     template <>
     struct hash<Posicion> {
-      size_t operator()(const Posicion& pos) const {
+      unsigned int operator()(const Posicion& pos) const {
         return hash<int>()(pos.x) ^ hash<int>()(pos.y);
       }
     };
@@ -212,8 +207,8 @@ class Tabla {
 
   private:
   Bloque bloques[255]={};
-  vector<vector<unsigned char>> tableroDeJuego;
-  vector<vector<unsigned char>> baseDeltablero;
+  vector<vector<char>> tableroDeJuego;
+  vector<vector<char>> baseDeltablero;
   friend class Klotski;
 
   public:
@@ -221,23 +216,60 @@ class Tabla {
   Bloque* getBloques(){
     return this->bloques;
   }
-
-
-  void printTabla() const {
-
-    for(unsigned int y = 0; y < tableroDeJuego.size(); y++){
-      for(unsigned int x = 0; x < tableroDeJuego[0].size(); x++){
-
-        cout << tableroDeJuego[y][x];
-      }
-      cout << "\n";
-    }
-    cout << endl;
+  unsigned int getAltoTablero() const{
+    return this->tableroDeJuego.size();
   }
 
+  unsigned int getAnchoTablero() const{
+    return this->tableroDeJuego[0].size();
+  }
+
+  void printTabla() const {
+    for(unsigned int y = 0; y < getAltoTablero(); y++){
+      for(unsigned int x = 0; x < getAnchoTablero(); x++){
+        switch (tableroDeJuego[y][x]){
+          case '&': cout <<                             " "; break;
+          case '*': cout << BG_RED                   << "♥"; break;
+          case '#': cout << FG_BLUE                  << "█"; break;
+          case '.': cout << FG_RED                   << "○"; break;
+          case '-': cout <<                             "║"; break;
+          case 'a': cout << BG_YELLOW                << "a"; break;
+          case 'b': cout << BG_MAGENTA               << "b"; break;
+          case 'c': cout << BG_CYAN                  << "c"; break;
+          case 'd': cout << BG_GREEN                 << "d"; break;
+          case 'e': cout << BG_BLACK                 << "e"; break;
+          case 'f': cout << BG_WHITE   << FG_BLACK   << "f"; break;
+          case 'g': cout << BG_YELLOW  << FG_MAGENTA << "g"; break;
+          case 'h': cout << BG_YELLOW  << FG_GREEN   << "h"; break;
+          case 'i': cout << BG_YELLOW  << FG_BLACK   << "i"; break;
+          case 'j': cout << BG_CYAN    << FG_MAGENTA << "j"; break;
+          case 'k': cout << BG_CYAN    << FG_GREEN   << "k"; break;
+          case 'l': cout << BG_CYAN    << FG_BLACK   << "l"; break;
+          case 'm': cout << BG_CYAN    << FG_YELLOW  << "m"; break;
+          case 'n': cout << BG_GREEN   << FG_MAGENTA << "n"; break;
+          case 'o': cout << BG_GREEN   << FG_CYAN    << "o"; break;
+          case 'p': cout << BG_GREEN   << FG_BLACK   << "p"; break;
+          case 'q': cout << BG_GREEN   << FG_YELLOW  << "q"; break;
+          case 'r': cout << BG_MAGENTA << FG_YELLOW  << "r"; break;
+          case 's': cout << BG_MAGENTA << FG_GREEN   << "s"; break;
+          case 't': cout << BG_MAGENTA << FG_CYAN    << "t"; break;
+          case 'u': cout << BG_MAGENTA << FG_BLACK   << "u"; break;
+          case 'v': cout << BG_BLACK   << FG_MAGENTA << "v"; break;
+          case 'w': cout << BG_BLACK   << FG_CYAN    << "w"; break;
+          case 'x': cout << BG_BLACK   << FG_MAGENTA << "x"; break;
+          case 'y': cout << BG_BLACK   << FG_GREEN   << "y"; break;
+          case 'z': cout << BG_BLACK   << FG_YELLOW  << "z"; break;
+          default:  cout << tableroDeJuego[y][x];            break; 
+        }//switch
+        cout<<RESET_COLOR;
+      }//x
+      cout << endl;
+    }//y
+  }//printTabla
+
   Tabla(vector<string>& lineas) : 
-    tableroDeJuego(lineas.size(), vector<unsigned char>(lineas[0].size(),' ')),
-    baseDeltablero(lineas.size(), vector<unsigned char>(lineas[0].size(),' ')){
+    tableroDeJuego(lineas.size(), vector<char>(lineas[0].size(),' ')),
+    baseDeltablero(lineas.size(), vector<char>(lineas[0].size(),' ')){
     bool encontrados[255] = {0};
 
     unordered_map<int, unordered_map<int, unsigned int>> reducciones;
@@ -247,13 +279,13 @@ class Tabla {
       for(unsigned int x = 0; x < lineas[0].size(); x++){
         bool esPiezaSingular = false;
 
-        tableroDeJuego[y][x] = (unsigned char)lineas[y][x];
+        tableroDeJuego[y][x] = (char)lineas[y][x];
         switch(lineas[y][x]){
           case PIEZA_PARED:
           case PIEZA_PUERTA:
           case PIEZA_OBJETIVO:
           case PIEZA_VACIA:
-            baseDeltablero[y][x] = lineas[y][x];
+            baseDeltablero[y][x] = (char)lineas[y][x];
           case 0:
           break;
           case PIEZA_SINGULAR:
@@ -288,9 +320,8 @@ class Tabla {
     }
   }
 
-  bool bloquePuedeMorverse(Direccion dir, unsigned char blockID){
+  bool bloquePuedeMorverse(Direccion dir, char blockID){
     Bloque& bloqueObjetivo = bloques[blockID];
-   // assert(bloqueObjetivo.getID());
 
     switch(dir){
       case ARRIBA:
@@ -338,8 +369,9 @@ class Tabla {
     return false;
   }
 
-  void moveBlock(Direccion dir, unsigned char blockID){
+  void moverBloque(Direccion dir, char blockID){
     Bloque& bloqueObjetivo = bloques[blockID];
+
     switch(dir){
       case ARRIBA:
         for(unsigned int x = bloqueObjetivo.getX(); x < bloqueObjetivo.getX() + bloqueObjetivo.getAncho(); x++){
@@ -387,14 +419,14 @@ class Tabla {
 struct Solucion{
   TipoDeSolucion estado;
   unsigned int profundidad;
-  size_t ultimoHash;
+  unsigned int ultimoHash;
   OrdenDeMovimiento movimiento;
 };
 
 class Klotski{
 
 private:
-  unordered_map<size_t, Solucion> memoria;
+  unordered_map<unsigned int, Solucion> memoria;
   unsigned int profundidad = 0;
   Tabla tablaSolucion;
   const Tabla tablaOriginal;
@@ -405,7 +437,7 @@ public:
   Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor
 
 
-  void printEstado(size_t estadoDelHash){
+  void printEstado(unsigned int estadoDelHash){
     unsigned int profundidadDestino = this->memoria.at(estadoDelHash).profundidad;
     
     cout << "imprimiendo estado de la profundidad " << profundidadDestino << endl;
@@ -430,10 +462,12 @@ public:
     cout << "\n";
 
     while(movimientos.size()){
-      OrdenDeMovimiento* execute = movimientos.top();
+      OrdenDeMovimiento* realizar = movimientos.top();
       movimientos.pop();
-      cout << "MOVIDO " << (char)execute->id << " ";
-      switch(execute->dir){
+
+      cout << "MOVIDO " << (char)realizar->id << " ";
+
+      switch(realizar->dir){
         case ARRIBA:
         cout << "ARRIBA";
         break;
@@ -451,150 +485,44 @@ public:
 
     }
   }
+  
+//#define prueba
 
-  unordered_map<unsigned char, unsigned char> getMapping(Tabla desde, Tabla hasta){
-    unordered_map<unsigned char, unsigned char> mapping;
-    unordered_map<Posicion, unsigned char> desdePosIDs;
-    unordered_map<Posicion, unsigned char> hastaPosIDs;
-
-    for( unsigned int i = 0; i < 255; i++){
-      if(desde.bloques[i].getID() != 0){
-//unordered_map<Posicion, unsigned char> desdePosIDs;
-       desdePosIDs[{desde.bloques[i].getX(), desde.bloques[i].getY()}] = i;  
-      }
-
-      if(hasta.bloques[i].getID() != 0){
-//unordered_map<Posicion, unsigned char> hastaPosIDs;
-       hastaPosIDs[{hasta.bloques[i].getX(), hasta.bloques[i].getY()}] = i;
-       
-      }
-    }
-
-    //assert(desdePosIDs.size() == hastaPosIDs.size());
-
-
-    for(auto& [pos, desdeID] : desdePosIDs){
-      mapping[desdeID] = hastaPosIDs.at(pos);
-    }
-
-    return mapping;
-  }
-
-size_t solucionador() {
-    // Se obtiene el estado inicial y se agrega a la memoria
-    auto estadoInicial = std::hash<vector<vector<unsigned char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
-    this->memoria[estadoInicial] = Solucion{EN_PROGRESO, 0, 0, {ARRIBA, 0}};
-
-    size_t ultimoHash = 0; // Variable para mantener el último estado en el que nos encontramos
-    OrdenDeMovimiento ultimoOrden; // Variable para mantener el último movimiento realizado
-
-    while (true) {
-        profundidad++; // Incrementa la profundidad en cada iteración del bucle
-
-        bool movimientoEncontrado = false; // Flag para indicar si se encontró un movimiento válido
-
-        // Bucle para iterar sobre todos los bloques en el tablero
-        for (unsigned char i = PIEZA_SINGULAR; i != PIEZA_SINGULAR - 1; i = (i + 1) % 255) {
-            if (this->tablaSolucion.bloques[i].getID() == 0) continue; // Ignora bloques vacíos
-
-            unsigned int direccionInicial = rand() % 4; // Selecciona una dirección inicial de manera aleatoria
-
-            // Bucle para probar movimientos en las cuatro direcciones posibles
-            for (unsigned int j = 0; j < 4; j++) {
-                unsigned int idir = (direccionInicial + j) % 4;
-                Direccion dir = static_cast<Direccion>(idir);
-
-                // Verifica si el movimiento es válido y no es el opuesto al último movimiento realizado
-                if (ultimoOrden != OrdenDeMovimiento{direccionOpuesta(dir), i} && this->tablaSolucion.bloquePuedeMorverse(dir, i)) {
-                    ultimoOrden = {dir, i};
-                    this->tablaSolucion.moveBlock(dir, i);
-
-                    // Calcula el hash del nuevo estado resultante
-                    size_t hashMovido = std::hash<vector<vector<unsigned char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
-
-                    #ifdef PRINT
-                    cout << profundidad << ": " << (char)i << " moviendo " << (int)dir << " -> " << hashMovido << "\n";
-                    this->tablaSolucion.printTabla();
-                    #endif
-
-                    // Verifica si se ha llegado a la solución
-                    if (i == PIEZA_SINGULAR && this->tablaSolucion.juegoGanado()) {
-                        this->memoria[hashMovido] = Solucion{SOLUCION_ENCONTRADA, profundidad, ultimoHash, {dir, i}};
-                        return hashMovido;
-                    }
-
-                    // Verifica si el estado resultante ya está en la memoria
-                    if (this->memoria.find(hashMovido) == this->memoria.end()) {
-                        this->memoria[hashMovido] = {EN_PROGRESO, profundidad, ultimoHash, ultimoOrden};
-                        ultimoHash = hashMovido;
-                        movimientoEncontrado = true;
-                        break;
-                    }
-
-                    // Retrocede un nivel en la profundidad (backtracking)
-                    profundidad--;
-                    this->tablaSolucion.moveBlock(direccionOpuesta(dir), i);
-
-                    #ifdef PRINT
-                    cout << "Atorado, revirtiendo 1 de profundidad\n";
-                    cout << profundidad << ": " << (char)ultimoOrden.id << " moviendo " << (int)ultimoOrden.dir << "\n";
-                    this->tablaSolucion.printTabla();
-                    #endif
-
-                    ultimoHash = this->memoria.at(ultimoHash).ultimoHash;
-                }
-            }
-
-            if (movimientoEncontrado) {
-                break; // Si se encontró un movimiento válido, sal del bucle de bloques
-            }
-        }
-
-        if (profundidad == 0) {
-            break; // Si la profundidad es cero, sal del bucle principal
-        }
-    }
-
-    return -1; // No debería llegar aquí, pero por si acaso
-}
-
-
-/*
-//funcion original, con GOTO y search:
-  size_t solucionador(){
+#ifdef prueba
+    //funcion original, con GOTO y search:
+    unsigned int solucionador(){
     {
-      size_t estadoInicial = std::hash<vector<vector<unsigned char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
-      //auto estadoInicial = std::hash<vector<vector<unsigned char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
+      //unsigned int estadoInicial = std::hash<vector<vector< char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
+      auto estadoInicial = std::hash<vector<vector< char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
       this->memoria[estadoInicial] = Solucion{EN_PROGRESO, 0, 0, {ARRIBA, 0}};
     }
-    size_t ultimoHash = 0;
+    unsigned int ultimoHash = 0;
     OrdenDeMovimiento ultimoOrden;
 
     while(true){
       search:
       profundidad++;
+
       for(unsigned char i = PIEZA_SINGULAR; i != PIEZA_SINGULAR - 1; i = (i + 1)%255){
+        
         if(this->tablaSolucion.bloques[i].getID() == 0) continue;
+
         unsigned int direccionInicial = rand() % 4;
 
 
         for(unsigned int j = 0; j < 4; j++){
 
+          Direccion dir = (Direccion)((direccionInicial + j) % 4);
 
-          unsigned idir = (direccionInicial + j) % 4;
-
-
-          Direccion dir = (Direccion)(idir);
           if(ultimoOrden != OrdenDeMovimiento{direccionOpuesta(dir), i} && this->tablaSolucion.bloquePuedeMorverse(dir, i)){
             ultimoOrden = {dir, i};
-            this->tablaSolucion.moveBlock(dir, i);
+            this->tablaSolucion.moverBloque(dir, i);
 
-            //auto hashMovido = std::hash<vector<vector<unsigned char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
-            size_t hashMovido = std::hash<vector<vector<unsigned char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
+            unsigned int hashMovido = std::hash<vector<vector< char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
 
             #ifdef PRINT
-              cout << profundidad << ": " << (char)i << " moviendo " << (int)dir << " -> " << hashMovido << "\n";
-              this->tablaSolucion.printTabla();
+            cout << "Profundidad: (" << profundidad << "), " << " moviendo '"  <<  (char)i << "' " << stringDireccion(dir) << ", hashMovido -> " << hashMovido << "\n";
+            this->tablaSolucion.printTabla();
             #endif
 
             if(i == PIEZA_SINGULAR){
@@ -606,7 +534,7 @@ size_t solucionador() {
 
             if (this->memoria.find(hashMovido) != this->memoria.end()) {
               profundidad--;         
-              this->tablaSolucion.moveBlock(direccionOpuesta(dir), i);
+              this->tablaSolucion.moverBloque(direccionOpuesta(dir), i);
               continue;
             }else{
               this->memoria[hashMovido] = {EN_PROGRESO, profundidad, ultimoHash, ultimoOrden};
@@ -623,23 +551,95 @@ size_t solucionador() {
       Solucion& revertirUltimaAccion = this->memoria.at(this->memoria.at(ultimoHash).ultimoHash);
       profundidad = revertirUltimaAccion.profundidad;
 
-      this->tablaSolucion.moveBlock(direccionOpuesta(revertirEstado.movimiento.dir), revertirEstado.movimiento.id);
+      this->tablaSolucion.moverBloque(direccionOpuesta(revertirEstado.movimiento.dir), revertirEstado.movimiento.id);
 
 
       #ifdef PRINT
-      cout << "Atorado, revirtiendo 1 de profundidad\n";
-      cout << profundidad << ": " << (char)revertirUltimaAccion.movimiento.id << " moving " << (int)revertirUltimaAccion.movimiento.dir << "\n";
+      cout << "ATORADO: revirtiendo 1 de profundidad\n";
+      cout << "ATORADO: Profundidad: (" << profundidad << "), " << " moviendo '"  <<   (char)revertirUltimaAccion.movimiento.id  << "' " << stringDireccion(revertirUltimaAccion.movimiento.dir) << "\n";
       this->tablaSolucion.printTabla();
       #endif
 
       ultimoHash = revertirEstado.ultimoHash;
-    }
   }
+}
+
+#else
+unsigned int solucionador() {
+    unsigned int estadoInicial = std::hash<vector<vector<char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
+    this->memoria[estadoInicial] = Solucion{EN_PROGRESO, 0, 0, {ARRIBA, 0}};
+
+    unsigned int ultimoHash = 0;
+    OrdenDeMovimiento ultimoOrden;
+
+    return buscarSolucion(ultimoHash, ultimoOrden);
+}
+
+unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden) {
+    profundidad++;
+
+    for (unsigned char i = PIEZA_SINGULAR; i != PIEZA_SINGULAR - 1; i = (i + 1) % 255) {
+        if (this->tablaSolucion.bloques[i].getID() == 0) continue;
+
+        unsigned int direccionInicial = rand() % 4;
+
+        for (unsigned int j = 0; j < 4; j++) {
+            Direccion dir = static_cast<Direccion>((direccionInicial + j) % 4);
+
+            if (ultimoOrden != OrdenDeMovimiento{direccionOpuesta(dir), i} && this->tablaSolucion.bloquePuedeMorverse(dir, i)) {
+                ultimoOrden = {dir, i};
+                this->tablaSolucion.moverBloque(dir, i);
+
+                unsigned int hashMovido = std::hash<vector<vector<char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
+
+                #ifdef PRINT
+                cout << "Profundidad: (" << profundidad << "), " << " moviendo '" << (char)i << "' " << stringDireccion(dir) << ", hashMovido -> " << hashMovido << "\n";
+                this->tablaSolucion.printTabla();
+                #endif
+
+                if (i == PIEZA_SINGULAR && this->tablaSolucion.juegoGanado()) {
+                    this->memoria[hashMovido] = Solucion{SOLUCION_ENCONTRADA, profundidad, ultimoHash, {dir, i}};
+                    return hashMovido;
+                }
+
+                auto it = this->memoria.find(hashMovido);
+                if (it != this->memoria.end()) {
+                    profundidad--;
+                    this->tablaSolucion.moverBloque(direccionOpuesta(dir), i);
+                    continue;
+                } else {
+                    this->memoria[hashMovido] = {EN_PROGRESO, profundidad, ultimoHash, ultimoOrden};
+                }
+
+                ultimoHash = hashMovido;
+
+                return buscarSolucion(ultimoHash, ultimoOrden);
+            }
+        }
+    }
+
+    Solucion& revertirEstado = this->memoria.at(ultimoHash);
+    Solucion& revertirUltimaAccion = this->memoria.at(this->memoria.at(ultimoHash).ultimoHash);
+    profundidad = revertirUltimaAccion.profundidad;
+
+    this->tablaSolucion.moverBloque(direccionOpuesta(revertirEstado.movimiento.dir), revertirEstado.movimiento.id);
+
+    #ifdef PRINT
+    cout << "ATORADO: revirtiendo 1 de profundidad\n";
+    cout << "ATORADO: Profundidad: (" << profundidad << "), " << " moviendo '" << (char)revertirUltimaAccion.movimiento.id << "' " << stringDireccion(revertirUltimaAccion.movimiento.dir) << "\n";
+    this->tablaSolucion.printTabla();
+    #endif
+
+    ultimoHash = revertirEstado.ultimoHash;
+
+    // Llamada recursiva en lugar de goto
+    return buscarSolucion(ultimoHash, ultimoOrden);
+}
 
 
+#endif
 
-*/
-};
+};//klotski
 
 int main(){
   vector<string> matriz = {
@@ -686,7 +686,7 @@ int main(){
 
   tablaSolucion.printTabla();
   Klotski klotski = (tablaSolucion);
-  size_t solucion = klotski.solucionador();
+  unsigned int solucion = klotski.solucionador();
 
   cout << "Solucion Encontrada\n";
   

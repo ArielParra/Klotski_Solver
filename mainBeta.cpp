@@ -586,7 +586,7 @@ public:
 int main(){
   std::vector<std::string> matriz = {
     "&&&&&&&&&&",
-    "&&&&&&&z&&",
+    "&&&&&&&&&&",
     "&&######&&",
     "&&#a**b#&&",
     "&&#a**b#&&",
@@ -614,7 +614,7 @@ int main(){
 };
     
 
-  Board b = Board(matriz2);
+  Board b = Board(matriz);
 
   for(int i = 0; i < 255; i++){
     if (b.blocks[i].id != 0){
@@ -627,7 +627,7 @@ int main(){
   size_t solution = s.solve();
 
   std::cout << "Solution found\n";
-  s.printState(solution);
+  //s.printState(solution);
 
   return 0;
 }
