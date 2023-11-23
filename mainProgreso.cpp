@@ -2,6 +2,8 @@
 #include <vector>
 #include <unordered_map>
 #include <stack>//pilas std
+//#include <cassert>
+//#include <random>
 
 //para evitar using namespace std y controlar el uso de std
 using std::vector;
@@ -11,13 +13,13 @@ using std::string;
 using std::unordered_map;
 using std::stack;
 
-#define COLORS
+//#define COLORS
 #define PRINT
 
 //#define SLEEP 0
-#ifdef COLORS
-#include "rlutil.h" //revisar esta mamada
-#endif
+//#ifdef COLORS
+//#include "rlutil.h" //revisar esta mamada/ arreglado
+//#endif
 
 enum TipoDeSolucion {
   SOLUCION_ENCONTRADA,
@@ -30,12 +32,12 @@ struct Posicion{
   bool operator==(const Posicion& other) const {
     return other.x == x && other.y == y;
   }
-/**/
+/*
      size_t hash() const {
         std::hash<int> hasher;
         return hasher(x) ^ hasher(y);
     }
-/**/
+*/
 };
 
 
@@ -47,7 +49,7 @@ enum TipoDePieza : unsigned char{
   PIEZA_OBJETIVO='.',
 };
 
-enum Direccion  {
+enum Direccion : unsigned char{
   ARRIBA,
   ABAJO,
   IZQUIERDA,
@@ -288,6 +290,7 @@ class Tabla {
 
   bool bloquePuedeMorverse(Direccion dir, unsigned char blockID){
     Bloque& bloqueObjetivo = bloques[blockID];
+   // assert(bloqueObjetivo.getID());
 
     switch(dir){
       case ARRIBA:
@@ -399,7 +402,7 @@ private:
 public:
 
 
-  Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaOriginal) {}//constructor
+  Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor
 
 
   void printEstado(size_t estadoDelHash){
@@ -456,15 +459,19 @@ public:
 
     for( unsigned int i = 0; i < 255; i++){
       if(desde.bloques[i].getID() != 0){
-unordered_map<Posicion, unsigned char> desdePosIDs;
-/*        desdePosIDs[{from.blocks[i].getX(), from.blocks[i].getY()}] = i;  */
+//unordered_map<Posicion, unsigned char> desdePosIDs;
+       desdePosIDs[{desde.bloques[i].getX(), desde.bloques[i].getY()}] = i;  
       }
 
       if(hasta.bloques[i].getID() != 0){
-unordered_map<Posicion, unsigned char> hastaPosIDs;
-/*        hastaPosIDs[{to.blocks[i].getX(), to.blocks[i].getY()}] = i;*/
+//unordered_map<Posicion, unsigned char> hastaPosIDs;
+       hastaPosIDs[{hasta.bloques[i].getX(), hasta.bloques[i].getY()}] = i;
+       
       }
     }
+
+    //assert(desdePosIDs.size() == hastaPosIDs.size());
+
 
     for(auto& [pos, desdeID] : desdePosIDs){
       mapping[desdeID] = hastaPosIDs.at(pos);
@@ -616,22 +623,22 @@ size_t solucionador() {
       Solucion& revertirUltimaAccion = this->memoria.at(this->memoria.at(ultimoHash).ultimoHash);
       profundidad = revertirUltimaAccion.profundidad;
 
-      this->tablaSolucion.moveBlock(direccionOpuesta(revertirEstado.orden.dir), revertirEstado.orden.id);
+      this->tablaSolucion.moveBlock(direccionOpuesta(revertirEstado.movimiento.dir), revertirEstado.movimiento.id);
 
 
       #ifdef PRINT
       cout << "Atorado, revirtiendo 1 de profundidad\n";
-      cout << profundidad << ": " << (char)revertirUltimaAccion.orden.id << " moving " << (int)revertirUltimaAccion.orden.dir << "\n";
+      cout << profundidad << ": " << (char)revertirUltimaAccion.movimiento.id << " moving " << (int)revertirUltimaAccion.movimiento.dir << "\n";
       this->tablaSolucion.printTabla();
       #endif
 
       ultimoHash = revertirEstado.ultimoHash;
     }
   }
+
+
+
 */
-
-
-
 };
 
 int main(){
