@@ -1,0 +1,15 @@
+Nivel 9
+10 11
+&&&&&&&&&&
+&&&&&&&&&ñ
+&&######&&
+&&#a**b#&&
+&&#a**b#&&
+&&#cdde#&&
+&&#CfgE#&&
+&&#A&&B#&&
+&&##--##&&
+&&&&&&&&..
+&&&&&&&&..
+/*Esto prueba caracteres Invalidos*/
+/*ERROR: no se puede abrir el archivo*/

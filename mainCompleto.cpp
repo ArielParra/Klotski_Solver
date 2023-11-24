@@ -622,25 +622,29 @@ int main(){
     "&&&&&&&&..&&#",
     "&&&&&&&&..&&#"
 };
-    /*
+    
     int N;
     cout << "Ingrese el número N para el archivo nivel_N.txt: ";
     cin >> N;
-
-    Nivel nivel(N);
-    if(!nivel.cargarNivel()){
-        cout << "Error: No se pudo abrir el archivo " << nivel.getNombreArchivo() << endl;
+    if(N<0){
+        cout<<"El numero debe ser positivo"<<endl;
+        return 0;
     }else{
+      Nivel nivel(N);
+      if(!nivel.cargarNivel()){
+        cout << "Error: No se pudo abrir el archivo " << nivel.getNombreArchivo() << endl;
+      }else{
         cout<< "Nombre del Nivel: "<< nivel.getNombreNivel() <<endl;
         cout << "Tabla del archivo" << nivel.getNombreArchivo() << endl;
         cout << "getAnchoNivel " << nivel.getAnchoNivel() << endl;
         cout << "getAltoNivel " << nivel.getAltoNivel() << endl;
-        
+        vector<string> matriz3 = nivel.getTableroNivel();
+        Tabla tablaSolucion = Tabla(matriz3);
+        tablaSolucion.printTabla();
+      }
     }
-    */
+    
 
-Tabla tablaSolucion = Tabla(matriz);
-tablaSolucion.printTabla();
 /*
   for(unsigned int i = 0; i < 255; i++){//imprimir bloques de tabla solucion
     if (tablaSolucion.getBloques()[i].getID() != 0){

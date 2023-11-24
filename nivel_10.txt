@@ -1,0 +1,15 @@
+Nivel 10 abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+10 11abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+
+&
+  ######  abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+  #a**b#  abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+  #a**b#  abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+  #cdde#  abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+  #cfge#  abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+  #a&&b# &abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+  ##--##  abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+        ..abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+        ..abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+/*Esto prueba muchas cosas*/

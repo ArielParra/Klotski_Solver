@@ -1,4 +1,4 @@
-Nivel 1
+Nivel 3
 10 11 abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 &&&&&&&&&&
 &&&&&&&&&&
@@ -7,7 +7,7 @@ Nivel 1
 &&#b**g#&&
 &&#cdef#&&
 &&#lkji#&&
-&&#mnop#&&
+&&#m&&n#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..

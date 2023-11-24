@@ -7,7 +7,7 @@ abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz más de 54 caracteres pero 
 &&#a**b#&&
 &&#cdde#&&
 &&#cfge#&&
-&&#a&&b#&&
+&&#h&&i#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..

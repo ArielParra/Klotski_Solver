@@ -1,5 +1,5 @@
-Nivel 5
-10 11solo carga numeros;
+Nivel 6
+10 11
 &&&&&&&&&&
 &&&&&&&&&&
 &&######&&
@@ -7,8 +7,8 @@ Nivel 5
 &&#a**b#&&
 &&#cdde#&&
 &&#cfge#&&
-&&#h&&i#&&
+&&#a&&b#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..
-/*Esto prueba la altura y anchura del nivel*/
+/*Esto prueba caracteres repetidos*/

@@ -1,5 +1,5 @@
-#ifndef conioCompat_h
-#define conioCompat_h
+#ifndef compatibilidad_h
+#define compatibilidad_h
 
 #include <iostream>
 void pausa() {
@@ -7,8 +7,6 @@ void pausa() {
   std::cin.ignore();
   std::cin.get();
 }
-
-extern "C" {
 
 #include <stdlib.h> //scanf(),printf()
 #include <unistd.h> //usleep()
@@ -145,9 +143,73 @@ extern "C" {
     #define COLS getmaxX()
 
 #else                //*NIX
-  
+    /*Compatibilidad con Colores (Consola virtual de cmd)*/
+    //En sistemas basados en Unix el sistema suele ya soportar esto asi que es implicito
+    void setUTF8(void){};
+    void setANSI(void){};
+    /*
+    #include <ncurses.h> //getch(),scanw(),
+    #warning "ncurses.h needs -lncurses as a compiler argument"
+
+    //Compatibilidad con conio.h
+    void clrscr() { system("clear"); }
+
+    void gotoxy(int x, int y) {
+    printf("%c[%d;%df", 0x1B, y, x);
+    fflush(stdout);
+    }
+
+    int kbhit() {
+    int ch = 0, r = 0;
+    nodelay(stdscr, TRUE);
+    ch = getch();
+    if (ch == ERR) { // no input
+        r = FALSE;
+    } else { // input
+        r = TRUE;
+        ungetch(ch);
+    }
+    nodelay(stdscr, FALSE);
+    return (r);
+    }
+    #define _kbhit() kbhit()
+
+    #include <string.h> //strcat()
+    int nocbreak_getch() {
+    raw(); // nocbreak para getch
+    int ch = getch();
+    cbreak();
+    return ch;
+    }
+    #undef getch
+    #define getch() nocbreak_getch()
+
+    int getche() {
+    echo();
+    int ch = getch();
+    noecho();
+    return ch;
+    }
+    #define _getche getche
+
+    void startCompat() {    
+    initscr();            // Iniciar el modo curses
+    keypad(stdscr, TRUE); // Habilita el uso de teclas como las flechas, etc.
+    noecho();             // sin echo() de  getch() como en conio.h
+    cbreak();             // Se para con ctrl +C como en Windows
+    refresh();            // actualiza la pantalla
+    }
+    void endCompat() {
+    refresh();
+    echo();
+    fflush(stdout);
+    endwin();
+    }
+
+    //Compatibilidad con ncurses.h
+    #undef  KEY_ENTER      // en ncurses es ctrl + m 
+    #define KEY_ENTER '\n' // funciona como en Windows 
+*/
 #endif 
 
-} //extern C
-
-#endif // conioCompat_h
+#endif //compatibilidad_h

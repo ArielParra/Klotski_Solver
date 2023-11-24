@@ -1,0 +1,14 @@
+Nivel 7
+10 11
+
+
+  ######
+  #a**b#
+  #a**b#
+  #cdde#
+  #cfge#
+  #a&&b#
+  ##--##
+        ..
+        ..
+/*Esto prueba caracteres espacios vacios*/

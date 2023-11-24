@@ -1,4 +1,4 @@
-Nivel 1
+Nivel 8
 10 11
 &&&&&&&&&&
 &&&&&&&&&&
@@ -6,9 +6,9 @@ Nivel 1
 &&#a**b#&&
 &&#a**b#&&
 &&#cdde#&&
-&&#cfge#&&
-&&#h&&i#&&
+&&#CfgE#&&
+&&#A&&B#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..
-/*archivo normal*/
+/*Esto prueba caracteres Mayuscula*/

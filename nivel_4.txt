@@ -7,9 +7,10 @@ Nivel 4
 &&#a**b#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 &&#cdde#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 &&#cfge#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
-&&#a&&b#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&#h&&i#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 &&##--##&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 &&&&&&&&..abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 &&&&&&&&..abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 /*Esto prueba que solo captura al anchura y altura predefinida*/
