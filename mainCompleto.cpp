@@ -262,6 +262,17 @@ class Tabla {
     }
   }
 
+void imprimirBloques()  {
+    for (unsigned int i = 0; i < 255; i++) {
+      if (bloques[i].getID() != 0) {
+        cout << "Bloque " << (char)bloques[i].getID() << "(" << bloques[i].getX() << " "
+             << bloques[i].getY() << " " << bloques[i].getAncho() << " " << bloques[i].getAlto()
+             << ") " << bloques[i].puedeMoverse(PIEZA_PUERTA) << endl;
+      }
+    }
+  }
+
+
 Bloque* getBloques(){
     return this->bloques;
   }
@@ -409,7 +420,7 @@ Bloque* getBloques(){
 
 
 
-};
+};//Tabla
 
 
 struct Solucion{
@@ -431,32 +442,6 @@ public:
 
 
   Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor
-
-void printTablerosSolucion(unsigned int estadoDelHash)  {
-    unsigned int profundidadDestino = this->memoria.at(estadoDelHash).profundidad;
-
-    cout << "Imprimiendo estados de la solución:\n";
-    Tabla tablaParaPrint(this->tablaOriginal);
-    Solucion* solucionActual = &this->memoria.at(estadoDelHash);
-
-    for (unsigned int contadorDeProfundidad = 0; solucionActual->ultimoHash != 0; contadorDeProfundidad++) {
-        cout << "\rProfundidad: (" << contadorDeProfundidad << "/" << profundidadDestino << ")" << endl;
-        cout << "Tabla en la profundidad " << contadorDeProfundidad << ":\n";
-        this->tablaOriginal.printTabla();
-        cout << "---------------------\n";
-
-        tablaParaPrint.moverBloque(solucionActual->movimiento.dir, solucionActual->movimiento.id);
-
-        solucionActual = &this->memoria.at(solucionActual->ultimoHash);
-    }
-
-    // Imprimir la tabla final después de la solución
-    cout << "\rProfundidad: (" << profundidadDestino << "/" << profundidadDestino << ")" << endl;
-    cout << "Tabla Final:\n";
-    this->tablaSolucion.printTabla();
-}
-
-
 
   void printMovimientosSolucion(unsigned int estadoDelHash){
     
@@ -592,6 +577,32 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
 
 };//klotski
 
+
+unsigned int validarEntradaInt(){
+bool esValido = true;
+string entrada;
+  do {
+      esValido = true;
+      entrada.clear();
+        getline(cin,entrada);
+        if(entrada.length()<1){
+            esValido=false;
+            cout<<"Error: Ingrese un número"<<endl;
+        }
+        for (char c : entrada) {
+            if (!isdigit(c)) {
+                esValido = false;
+                cout << "Error: Ingresa solo números" << endl;
+                break; // Si se encuentra un carácter no numérico, salir del bucle
+            }
+        }
+        if (!esValido) {
+        }
+
+    }while (!esValido);
+return std::stoi(entrada);
+}
+
 int main(){
  //setUTF8();
   vector<string> matriz = {
@@ -622,15 +633,9 @@ int main(){
     "&&&&&&&&..&&#",
     "&&&&&&&&..&&#"
 };
-    
-    int N;
     cout << "Ingrese el número N para el archivo nivel_N.txt: ";
-    cin >> N;
-    if(N<0){
-        cout<<"El numero debe ser positivo"<<endl;
-        return 0;
-    }else{
-      Nivel nivel(N);
+    unsigned int N=validarEntradaInt();
+    Nivel nivel(N);
       if(!nivel.cargarNivel()){
         cout << "Error: No se pudo abrir el archivo " << nivel.getNombreArchivo() << endl;
       }else{
@@ -640,31 +645,24 @@ int main(){
         cout << "getAltoNivel " << nivel.getAltoNivel() << endl;
         vector<string> matriz3 = nivel.getTableroNivel();
         Tabla tablaSolucion = Tabla(matriz3);
+        
         tablaSolucion.printTabla();
-      }
-    }
+
+
+
+        tablaSolucion.imprimirBloques();
+        
+        
+
+        tablaSolucion.printTabla();
+        Klotski klotski = (tablaSolucion);
+        unsigned int solucion = klotski.solucionador();
+
+        cout << "Solucion Encontrada\n";
+        
+        klotski.printMovimientosSolucion(solucion);//pasos para la solucion
+  
+        }//nivel cargado
     
-
-/*
-  for(unsigned int i = 0; i < 255; i++){//imprimir bloques de tabla solucion
-    if (tablaSolucion.getBloques()[i].getID() != 0){
-      cout << "Bloque " << (char)tablaSolucion.getBloques()[i].getID() << "(" << tablaSolucion.getBloques()[i].getX() << " " <<
-       tablaSolucion.getBloques()[i].getY() << " " << tablaSolucion.getBloques()[i].getAncho() << " " << tablaSolucion.getBloques()[i].getAlto() << 
-       ") " << tablaSolucion.getBloques()[i].puedeMoverse(PIEZA_PUERTA) << endl;
-    }
-  }
-  
-  */
-/*
-  tablaSolucion.printTabla();
-  Klotski klotski = (tablaSolucion);
-  unsigned int solucion = klotski.solucionador();
-
-  cout << "Solucion Encontrada\n";
-  
-  klotski.printMovimientosSolucion(solucion);//pasos para la solucion
-  //klotski.printTablerosSolucion(solucion); // Llama a la nueva función
-  */
-  
   return 0;
 }
