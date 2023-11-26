@@ -30,7 +30,7 @@ class Nivel {
         unsigned int anchoNivel;
         unsigned int altoNivel;
 
-        vector<string> tableroNivel;
+        vector<string> tableroNivel;//se usa string por sus funciones de redimensionamiento (substrings)
         void leerNombreNivel(ifstream& archivo);
         bool leerDimensionesTablero(ifstream& archivo);
         void leerTablero(ifstream& archivo);

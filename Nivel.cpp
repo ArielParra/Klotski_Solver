@@ -3,32 +3,43 @@
 //private
    
     void Nivel::leerNombreNivel(ifstream& archivo) {
+        // lee la primera linea del archivo
         getline(archivo, this->nombreNivel);
-        this->nombreNivel = this->nombreNivel.substr(0, 40);  // Limitar a 40 caracteres
+        // Limitar a 40 caracteres
+        this->nombreNivel = this->nombreNivel.substr(0, 40);  
     }
 
     bool Nivel::leerDimensionesTablero(ifstream& archivo) {
+        // lee la segunda linea del archivo`
         int anchura, altura;
+        //si no se puede leer (que no sean numeros)
         if (!(archivo >> anchura >> altura)) {
             return false;
-        }  
-        if(anchura<0 || altura<0){
+        } 
+        //si no son numeros enteros positivos 
+        if(anchura<=0 || altura<=0){
             return false;
         }
+        // se actualizan las dimensiones del tablero
         this->anchoNivel = anchura;
         this->altoNivel = altura; 
-        archivo.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignora el resto de la línea
-        this->tableroNivel.resize(altura);// cambia el tamaño del vector a la altura dada
+        // Ignora el resto de la línea
+        archivo.ignore(numeric_limits<streamsize>::max(), '\n'); 
+        // cambia el tamaño de la matriz a la altura dada
+        this->tableroNivel.resize(altura);
         return true;
     }
 
     void Nivel::leerTablero(ifstream& archivo) {
+        // lee de la tercer linea en adelante
         for (unsigned int i = 0; i < this->altoNivel; i++) {
             getline(archivo, this->tableroNivel[i]);
-            if(this->tableroNivel[i].size() != this->anchoNivel){//si en lugar de espacios hay vacios
+            //si en lugar de espacios hay vacios
+            if(this->tableroNivel[i].size() != this->anchoNivel){
                 this->tableroNivel[i].resize(this->anchoNivel, '&');
             }
-            this->tableroNivel[i] = this->tableroNivel[i].substr(0, this->anchoNivel);// solo toma el ancho dado lo demas se ignora
+            // solo toma el ancho dado lo demas se ignora
+            this->tableroNivel[i] = this->tableroNivel[i].substr(0, this->anchoNivel);
         }
     }
 
@@ -41,14 +52,14 @@
         ifstream archivo(nombreArchivo);
 
         if (!archivo.is_open()) {
-            //cout << "Error: No se pudo abrir el archivo " << nombreArchivo << endl;
+            //cout << "Error: No se pudo abrir el archivo " << nombreArchivo << endl; //debug
             return false;
         }
 
         leerNombreNivel(archivo);
         
         if (!leerDimensionesTablero(archivo)){
-            //cout << "Error: Dimensiones del tablero incorrectas" << endl;
+            //cout << "Error: Dimensiones del tablero incorrectas" << endl; //debug
             return false;
         }
         leerTablero(archivo);
@@ -62,20 +73,25 @@
         archivo.close();
         return true;
     }
-bool Nivel::revisarCaracteres(){//no revisar ñ ya que no se encuentra dentro de los ASCII de la 'a' a la 'z'
+bool Nivel::revisarCaracteres(){
+    //no revisara 'ñ' ya que no se encuentra dentro de los ASCII de la 'a' a la 'z'
     for (unsigned int i = 0; i < this->altoNivel; i++) {
         for (unsigned int j = 0; j < this->anchoNivel; j++) {
             if(isalpha(this->tableroNivel[i][j])){
-                this->tableroNivel[i][j]=tolower(this->tableroNivel[i][j]);//a minuscula de pasada las letras
+                //aprovecho a pasarlos a minusculas
+                this->tableroNivel[i][j]=tolower(this->tableroNivel[i][j]);
             }else{
+                //si no son letras, revisa los demas
                 switch (this->tableroNivel[i][j]){
                     case '#':
                     case '&':
                     case '-':
                     case '.':
                     case '*':
+                    //true
                     break;
-                    default://cualquier otro simbolo
+                    default:
+                    //cualquier otro simbolo
                     return false;
                 }
             }
@@ -87,6 +103,7 @@ bool Nivel::revisarCaracteres(){//no revisar ñ ya que no se encuentra dentro de
 void Nivel::cambiarVacioPorAmpersand(){
     for (unsigned int i = 0; i < this->altoNivel; i++) {
         for (unsigned int j = 0; j < this->anchoNivel; j++) {
+            //si es un espacio lo cambia por un ampersand
             if(this->tableroNivel[i][j]==' '){
                 this->tableroNivel[i][j]='&';
             }
@@ -150,7 +167,7 @@ bool Nivel::tieneRepetidasNoContiguas() {
     // Si no se encontraron letras repetidas no contiguas
     return true;
 }
-
+    /*getters*/
     string Nivel::getNombreNivel() const {return this->nombreNivel;}
     string Nivel::getNombreArchivo() const {return this->nombreArchivo;}
     unsigned int Nivel::getAnchoNivel() const {return this->anchoNivel;}
