@@ -7,7 +7,7 @@ nivel 2 abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
 &&#a**b#&&
 &&#cdde#&&
 &&#cfge#&&
-&&#a&&b#&&
+&&#h&&i#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..

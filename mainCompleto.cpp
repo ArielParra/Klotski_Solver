@@ -18,30 +18,31 @@ using std::stack;
 
 #define PRINT
 
-
 enum TipoDeSolucion {
-  //para saber en que estado de la solucion esta 
+  //Tipo de dato para saber en que estado de la solucion esta 
   SOLUCION_ENCONTRADA,
   EN_PROGRESO,
 };
 
-struct Posicion{
-  //tipo de dato de posicion con valor x e y
-  unsigned int x, y;
-  bool operator==(const Posicion& pos) const {//sobrecarga de asignacion de posicion
-    return pos.x == x && pos.y == y;
-  }
+class Posicion{
+  //Tipo de dato para saber en que posicion esta respecto al tablero de la solucion esta 
+  public:
+    unsigned int x, y;
+    bool operator==(const Posicion& pos) const {//sobrecarga de asignacion de posicion
+      return pos.x == this->x && pos.y == this->y;
+    }
 };
 
-enum TipoDePieza : char{ //los tipos de pieza del tablero del tipo char sin contar letras ASCII
-  PIEZA_VACIA='&',
-  PIEZA_PARED='#',
-  PIEZA_SINGULAR='*',
-  PIEZA_PUERTA='-',
-  PIEZA_OBJETIVO='.',
+enum TipoDePieza : char{
+  //los tipos de pieza del tablero del tipo char sin contar letras ASCII
+  PIEZA_VACIA    = '&',
+  PIEZA_PARED    = '#',
+  PIEZA_SINGULAR = '*',
+  PIEZA_PUERTA   = '-',
+  PIEZA_OBJETIVO = '.',
 };
 
-enum Direccion{ 
+enum Direccion{
   //las cuatro direcciones a mover las piezas
   ARRIBA,
   ABAJO,
@@ -50,8 +51,7 @@ enum Direccion{
 };
 
 string stringDireccion(Direccion dir){
-  //retorna en texto la direccion dada 
-  switch(dir){
+ switch(dir){
     case ARRIBA:    return "ARRIBA";    break;
     case ABAJO:     return "ABAJO";     break;
     case IZQUIERDA: return "IZQUIERDA"; break;
@@ -63,7 +63,7 @@ string stringDireccion(Direccion dir){
 
 struct OrdenDeMovimiento{
   Direccion dir;
-  unsigned char id; //si no es "unsigned char" da segmentation fault 
+  unsigned long long id; //da segmentation fault si no es un tipo de dato grande
 
   bool operator==(const OrdenDeMovimiento& orden) const {//sobrecarga de operador de igualdad booleana
       return (dir == orden.dir) && (id == orden.id);
@@ -75,108 +75,100 @@ struct OrdenDeMovimiento{
 
 };
 
-Direccion direccionOpuesta(Direccion dir){ 
+Direccion direccionOpuesta(Direccion dir){
   //para evitar movimientos innecesarios o redundantes al explorar posibles movimientos
   switch(dir){
-    case ARRIBA:
-      return ABAJO;
-    break;
-    case ABAJO:
-      return ARRIBA;
-    break;
-    case IZQUIERDA:
-      return DERECHA;
-    break;
-    case DERECHA:
-      return IZQUIERDA;
-    break;
-    default:
-      return dir; // para evitar el warning: control reaches end of non-void function [-Wreturn-type]
-    break;
+    case ARRIBA:    return ABAJO;   break;
+    case ABAJO:     return ARRIBA;  break;
+    case IZQUIERDA: return DERECHA; break;
+    case DERECHA:   return IZQUIERDA; break;
+    default: return dir; break; // para evitar el warning: control reaches end of non-void function [-Wreturn-type]
   }
 }
 
 /*clases*/
 
-class Bloque {
+class Bloque{
 
-  private:
+private:
+  unsigned int x, y;
+  unsigned int ancho, alto;
+  bool esPiezaSingular;
+  unsigned int id;
+  unsigned int reduccion;// asigna un valor unico a cada combinación de ancho y alto de un bloque específico
+  
+public:
+  Bloque(){this->id=0;} //constructor vacio
+  
+  Bloque(unsigned int id, unsigned int x, unsigned int y, unsigned int ancho, unsigned int alto, bool esPiezaSingular, unsigned int reduccion) : 
+    id(id), x(x), y(y), ancho(ancho), alto(alto), esPiezaSingular(esPiezaSingular), reduccion(reduccion){
+  }//constructor
 
-    unsigned int x, y;
-    unsigned int ancho, alto;
-    bool esPiezaSingular;
-    unsigned int id;
-    unsigned int reduccion;// asigna un valor unico a cada combinación de ancho y alto de un bloque específico
+/*funciones get*/
+  unsigned int getAncho() const{
+    return this->ancho;
+  }
+
+  unsigned int getAlto() const{
+    return this->alto;
+  }
+
+  unsigned int getID() const{
+    return this->id;
+  }
+
+  unsigned int getReduccion() const {
+    return this->reduccion;
+  }
+
+  unsigned int getX() const{
+    return this->x;
+  }
+
+  unsigned int getY() const{
+    return this->y;
+  }
+
+  bool puedeMoverse(char pieza){
+    if(this->esPiezaSingular && pieza == PIEZA_PUERTA) {return true; }
     
-  public:
+    return pieza == PIEZA_VACIA || pieza == PIEZA_OBJETIVO;//default true si si es igual
+  }
 
-    Bloque(){this->id=0;} //constructor vacio
-    
-    Bloque(unsigned int id, unsigned int x, unsigned int y, unsigned int ancho, unsigned int alto, bool esPiezaSingular, unsigned int reduccion) : 
-      id(id), x(x), y(y), ancho(ancho), alto(alto), esPiezaSingular(esPiezaSingular), reduccion(reduccion){
-    }//constructor
-
-  /*funciones get*/
-    unsigned int getAncho() const{
-      return this->ancho;
-    }
-
-    unsigned int getAlto() const{
-      return this->alto;
-    }
-
-    unsigned int getID() const{
-      return this->id;
-    }
-
-    unsigned int getReduccion() const {
-      return this->reduccion;
-    }
-
-    unsigned int getX() const{
-      return this->x;
-    }
-
-    unsigned int getY() const{
-      return this->y;
-    }
-
-    bool puedeMoverse(char pieza){
-      if(this->esPiezaSingular && pieza == PIEZA_PUERTA) return true;
-      return pieza == PIEZA_VACIA || pieza == PIEZA_OBJETIVO;
-    }
-
-  void mover(Direccion dir){
+   void mover(Direccion dir){
     switch(dir){
       case ARRIBA:    this->y--; break;  
       case ABAJO:     this->y++; break;
       case IZQUIERDA: this->x--; break;
       case DERECHA:   this->x++; break;
     }
-  }
+   }
 };//clase Bloque
 
 namespace std {//implentacion de la libreria boost Hash para la matriz
-  template <>
-  struct hash<vector<vector<char>>> {
-    unsigned int operator()(const vector<vector<char>>& vec, Bloque* bloques) const {
-      std::hash<char> valorHash;
-      unsigned int hash=0;
-      for (const auto& fila : vec) {
-        for (const char& elemento : fila) {
-          const char& corresponding = bloques[elemento].getID() == 0 ? elemento : bloques[elemento].getReduccion();
-          hash ^= valorHash(corresponding) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-        }//fila
-      }//vector
-      return hash; 
-    }
-  };
-  template <>
-  struct hash<Posicion> {
-    unsigned int operator()(const Posicion& pos) const {
-      return hash<int>()(pos.x) ^ hash<int>()(pos.y);
-    }
-  };
+    template <>
+    struct hash<vector<vector<char>>> {
+        unsigned int operator()(const vector<vector<char>>& vec, Bloque* bloques) const {
+            std::hash<char> charHasher;
+            unsigned int hash = 0;
+
+            for (const auto& fila : vec) {
+                for (const char& elemento : fila) {
+                    const char& corresponding = bloques[elemento].getID() == 0 ? elemento : bloques[elemento].getReduccion();
+                    hash ^= charHasher(corresponding) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+                }
+            }
+
+            return hash; 
+        }
+    };
+
+    template <>
+    struct hash<Posicion> {
+      unsigned int operator()(const Posicion& pos) const {
+        return hash<int>()(pos.x) ^ hash<int>()(pos.y);
+      }
+    };
 }
 
 
@@ -185,15 +177,13 @@ class Klotski; //para friend
 class Tabla {
 
   private:
-
   Bloque bloques[255]={};//si sobra tiempo sera new y delete
   vector<vector<char>> tableroDeJuego;
   vector<vector<char>> baseDeltablero;
   friend class Klotski;
 
   public:
-
-  Tabla(){}//constructor vacio
+  Tabla(){}///constructor vacio
   
   Tabla(vector<string>& matriz) : 
     tableroDeJuego(matriz.size(), vector<char>(matriz[0].size(),' ')),
@@ -209,21 +199,17 @@ class Tabla {
 
         tableroDeJuego[y][x] = (char)matriz[y][x];
         switch(matriz[y][x]){
-          case 0:
           case PIEZA_PARED:
           case PIEZA_PUERTA:
           case PIEZA_OBJETIVO:
           case PIEZA_VACIA:
             baseDeltablero[y][x] = (char)matriz[y][x];
+          //case 0://segun yo no hacia nada pero mejor no le movere por si las moscas
           break;
-
-          case PIEZA_SINGULAR: 
-            esPiezaSingular = true; 
-          break;
-
+          case PIEZA_SINGULAR:
+            esPiezaSingular = true;
           default:
             baseDeltablero[y][x] = PIEZA_VACIA;
-
             if(!encontrados[matriz[y][x]]){
               // encontrar altura y ancho del bloque
               unsigned int busquedaY = y;
@@ -262,10 +248,9 @@ void imprimirBloques() {
     }
   }
 
-  Bloque* getBloquesTablero() {
+  Bloque* getBloques(){
     return this->bloques;
   }
-
   unsigned int getAltoTablero() const{
     return this->tableroDeJuego.size();
   }
@@ -279,10 +264,10 @@ void imprimirBloques() {
       for(unsigned int x = 0; x < getAnchoTablero(); x++){
         switch (tableroDeJuego[y][x]){
           case '&': cout <<                             "░"; break;
+          case '-': cout <<                             "║"; break;
           case '*': cout << BG_RED                   << "⋆"; break;
           case '#': cout << FG_BLUE                  << "█"; break;
           case '.': cout << FG_RED                   << "▓"; break;
-          case '-': cout <<                             "║"; break;
           case 'a': cout << BG_YELLOW  << FG_BLACK   << "a"; break;
           case 'b': cout << BG_MAGENTA << FG_BLACK   << "b"; break;
           case 'c': cout << BG_CYAN    << FG_BLACK   << "c"; break;
@@ -322,7 +307,6 @@ void imprimirBloques() {
     Bloque& bloqueObjetivo = bloques[IDdelBloque];
 
     switch(dir){
-
       case ARRIBA:
         if (bloqueObjetivo.getY() == 0) return false;
         for(unsigned int x = bloqueObjetivo.getX(); x < bloqueObjetivo.getX() + bloqueObjetivo.getAncho(); x++){
@@ -332,7 +316,6 @@ void imprimirBloques() {
           }
         }
         return true;
-      break;
 
       case ABAJO:
         if (bloqueObjetivo.getY()+bloqueObjetivo.getAlto() > tableroDeJuego.size()-1) return false;
@@ -344,7 +327,6 @@ void imprimirBloques() {
           }
         }
         return true;
-      break;
 
       case IZQUIERDA:
         if (bloqueObjetivo.getX() == 0) return false;
@@ -366,9 +348,7 @@ void imprimirBloques() {
             }
         }
         return true;
-      break;
     }
-
     return false;//por defecto
   }
 
@@ -413,7 +393,7 @@ void imprimirBloques() {
     return true;
   }
 
-};//Tabla
+};//Clase Tabla
 
 struct Solucion{
   TipoDeSolucion estado;
@@ -422,11 +402,9 @@ struct Solucion{
   OrdenDeMovimiento movimiento;
 };
 
-
 class Klotski{
 
 private:
-
   unordered_map<unsigned int, Solucion> memoria;
   unsigned int profundidad = 0;
   Tabla tablaSolucion;
@@ -434,16 +412,21 @@ private:
 
 public:
 
-  Klotski(){}//constructor vacio
+
   Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor
 
   void printMovimientosSolucion(unsigned int estadoDelHash){
     
     unsigned int profundidadDestino = this->memoria.at(estadoDelHash).profundidad;
+
     stack<OrdenDeMovimiento*> movimientos;//ocupa estructura LIFO y se usa para imprimir los pasos de la solucion
+
     unsigned int contadorDeProfundidad = 0;
+
     Solucion* solucionActual = &this->memoria.at(estadoDelHash);
+
     while(solucionActual->ultimoHash != 0){
+
       cout << "\r" << contadorDeProfundidad << "/" << profundidadDestino;
 
       movimientos.push(&solucionActual->movimiento);
@@ -452,7 +435,7 @@ public:
     }
     movimientos.push(&solucionActual->movimiento);
 
-    cout << endl;
+    cout << "\n";
 
     while(movimientos.size()){
       OrdenDeMovimiento* realizar = movimientos.top();
@@ -460,20 +443,20 @@ public:
 
       cout << "MOVIDO " << (char)realizar->id << " ";
 
-      stringDireccion(realizar->dir);
-      cout << endl;
+      cout << stringDireccion((Direccion)realizar->dir) << endl;
+
     }
+    
   }
  
+
 unsigned int solucionador() {
     // Se obtiene el hash inicial del estado del tablero de la solución
     unsigned int estadoInicial = std::hash<vector<vector<char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
     
     // Se inicializa la memoria con el estado inicial y se marca como en progreso
     this->memoria[estadoInicial] = Solucion{EN_PROGRESO, 0, 0, {ARRIBA, 0}};
-
     unsigned int ultimoHash = 0;
-
     OrdenDeMovimiento ultimoOrden;
     
     // Llama a la función recursiva para buscar la solución
@@ -504,7 +487,7 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
 
                 #ifdef PRINT
                 cout << "Profundidad: (" << profundidad << "), " << " movido '" << (char)i << "' " << stringDireccion(dir) << ", hashMovido -> " << hashMovido << "\n";
-                this->tablaSolucion.printTabla();
+                //this->tablaSolucion.printTabla();
                 cout << "-----------------------------------------------------------------------\n";
                 #endif
 
@@ -531,9 +514,14 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
             }
         }
     }
+
     /*backtracking*/
+
     // Si no se encuentra una solución desde este estado, se retrocede
-    Solucion& revertirEstado = this->memoria.at(ultimoHash);
+
+    if (this->memoria.find(ultimoHash) != this->memoria.end()) {
+   Solucion& revertirEstado = this->memoria.at(ultimoHash);
+
     Solucion& revertirUltimaAccion = this->memoria.at(this->memoria.at(ultimoHash).ultimoHash);
     profundidad = revertirUltimaAccion.profundidad;
 
@@ -546,8 +534,10 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
 
     ultimoHash = revertirEstado.ultimoHash;
 
-    // llama recursivamente para explorar desde el estado anterior
+    // Llama recursivamente para explorar desde el estado anterior
     return buscarSolucion(ultimoHash, ultimoOrden);
+    }
+  return 0;//no hay solucion
 }
 
 };//klotski
@@ -633,9 +623,14 @@ int main(){
         Klotski klotski = (tablaSolucion);
         unsigned int solucion = klotski.solucionador();
 
-        cout << "Solucion Encontrada\n";
+          if(solucion==0){
+           cout<<"no hay solucion";
+          }else{
+            cout << "Solucion Encontrada\n";
+            klotski.printMovimientosSolucion(solucion);//pasos para la solucion
+          }
+
         
-        klotski.printMovimientosSolucion(solucion);//pasos para la solucion
   
         }//nivel cargado
     

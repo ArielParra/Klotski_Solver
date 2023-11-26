@@ -1,4 +1,4 @@
-Nivel 10
+Nivel 11
 10 11
 &&&&&&&&&&
 &&&&&&&&&ñ
@@ -7,9 +7,9 @@ Nivel 10
 &&#a**b#&&
 &&#cdde#&&
 &&#CfgE#&&
-&&#^&&%#&&
+&&#a&&B#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..
-/*Esto prueba caracteres Invalidos*/
+/*Esto prueba letras repetidas*/
 /*ERROR: no se puede abrir el archivo*/

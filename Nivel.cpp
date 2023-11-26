@@ -56,7 +56,9 @@
         if(!revisarCaracteres()){
             return false;
         }
-        cambiarLetrasRepetidas();
+        if(tieneRepetidasNoContiguas()){
+            return false;
+        }
         archivo.close();
         return true;
     }
@@ -91,116 +93,64 @@ void Nivel::cambiarVacioPorAmpersand(){
         }
     }
 }
+bool Nivel::buscarRepetidasNoContiguas(int i, int j, char objetivo, vector<vector<bool>>& visitado) {
+    // Verifica si las coordenadas están fuera de los límites del tablero o si ya se visitó la posición actual
+    // Si la letra en la posición actual no coincide con el objetivo, se detiene la búsqueda.
+    if (i < 0 || i >= getAltoNivel() || j < 0 || j >= getAnchoNivel() || visitado[i][j] || this->tableroNivel[i][j] != objetivo) {
+        return false;
+    }
 
-void Nivel::cambiarLetrasRepetidas()
-{
-    char maximaLetra = 'a';
-    for (unsigned int i = 0; i < this->altoNivel; i++) {
-        for (unsigned int j = 0; j < this->anchoNivel; j++) {
-        char letra = this->tableroNivel[i][j];
-            if (isalpha(letra) && letra > maximaLetra) {
-                maximaLetra = letra;
+    // Marca la posición actual como visitada
+    visitado[i][j] = true;
+
+    // Define los movimientos posibles (arriba, abajo, izquierda, derecha)
+    int movimientos[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    // Explora los vecinos de la posición actual
+    for (unsigned int k = 0; k < 4; k++) {
+        int ni = i + movimientos[k][0];
+        int nj = j + movimientos[k][1];
+
+        // Verifica si el vecino está dentro de los límites del tablero y tiene la misma letra que el objetivo
+        if (ni >= 0 && ni < getAltoNivel() && nj >= 0 && nj < getAnchoNivel() && this->tableroNivel[ni][nj] == objetivo) {
+            // Si el vecino no ha sido visitado, realiza una llamada recursiva a la función DFS
+            if (!visitado[ni][nj]) {
+                if (buscarRepetidasNoContiguas(ni, nj, objetivo, visitado)) {
+                    return true;  // Si se encuentra una letra repetida no contigua, se detiene la búsqueda
+                }
+            } else {
+                // Si el vecino ya ha sido visitado, significa que la letra repetida no es contigua
+                return true;
             }
         }
     }
-    vector<vector<bool>> casillas_revisadas(this->altoNivel, vector<bool>( this->anchoNivel, false));
-    unordered_set<char> letrasUsadas;
 
-    for (unsigned int i = 0; i < this->altoNivel; i++)
-    {
-        for (unsigned int j = 0; j < this->anchoNivel; j++)
-        {
-            char letra = this->tableroNivel[i][j];
-            if (letrasUsadas.find(letra) == letrasUsadas.end() && isalpha(letra) && !casillas_revisadas[i][j])
-            {
-                cout << "first " << this->tableroNivel[i][j] << endl;
-                letrasUsadas.insert(letra);
-                casillas_revisadas[i][j] = true;
-
-                if (i + 1 < this->altoNivel && this->tableroNivel[i + 1][j] == letra && !casillas_revisadas[i + 1][j])
-                { // abajo
-                    casillas_revisadas[i + 1][j] = true;
-                }
-                if (i + 1 <this->altoNivel && j + 1 < this->anchoNivel && this->tableroNivel[i + 1][j + 1] == letra && !casillas_revisadas[i + 1][j + 1])
-                { // abajo derecha
-                    casillas_revisadas[i + 1][j + 1] = true;
-                }
-                if (i + 1 < this->altoNivel && j - 1 < 0 && this->tableroNivel[i + 1][j - 1] == letra && !casillas_revisadas[i + 1][j - 1])
-                { // abajo izquierda
-                    casillas_revisadas[i + 1][j - 1] = true;
-                }
-                if (i - 1 >= 0 && this->tableroNivel[i - 1][j] == letra && !casillas_revisadas[i - 1][j])
-                { // arriba
-                    casillas_revisadas[i - 1][j] = true;
-                }
-                if (i - 1 >= 0 && j + 1 < this->anchoNivel && this->tableroNivel[i - 1][j + 1] == letra && !casillas_revisadas[i - 1][j + 1])
-                { // arriba derecha
-                    casillas_revisadas[i - 1][j + 1] = true;
-                }
-                if (i - 1 >= 0 && j - 1 < 0 && this->tableroNivel[i - 1][j - 1] == letra && !casillas_revisadas[i - 1][j - 1])
-                { // arriba izquierda
-                    casillas_revisadas[i - 1][j - 1] = true;
-                }
-                if (j - 1 >= 0 && this->tableroNivel[i][j - 1] == letra && !casillas_revisadas[i][j - 1])
-                { // izquierda
-                    casillas_revisadas[i][j - 1] = true;
-                }
-                if (j + 1 < this->anchoNivel && this->tableroNivel[i][j + 1] == letra && !casillas_revisadas[i][j + 1])
-                { // derecha
-                    casillas_revisadas[i][j + 1] = true;
-                }
-            }
-            else if (letrasUsadas.find(letra) != letrasUsadas.end() && isalpha(letra) && !casillas_revisadas[i][j])
-            {
-                cout << "first " << this->tableroNivel[i][j] << endl;
-                casillas_revisadas[i][j] = true;
-                maximaLetra++;
-                this->tableroNivel[i][j] = maximaLetra;
-                letrasUsadas.insert(this->tableroNivel[i][j]);
-                if (i + 1 < this->altoNivel && this->tableroNivel[i + 1][j] == letra && !casillas_revisadas[i + 1][j])
-                { // abajo
-                    casillas_revisadas[i + 1][j] = true;
-                    this->tableroNivel[i + 1][j] = maximaLetra;
-                }
-                if (i + 1 < this->altoNivel && j + 1 < this->anchoNivel && this->tableroNivel[i + 1][j + 1] == letra && !casillas_revisadas[i + 1][j + 1])
-                { // abajo derecha
-                    casillas_revisadas[i + 1][j + 1] = true;
-                    this->tableroNivel[i + 1][j + 1] = maximaLetra;
-                }
-                if (i + 1 < this->altoNivel && j - 1 < 0 && this->tableroNivel[i + 1][j - 1] == letra && !casillas_revisadas[i + 1][j - 1])
-                { // abajo izquierda
-                    casillas_revisadas[i + 1][j - 1] = true;
-                    this->tableroNivel[i + 1][j - 1] = maximaLetra;
-                }
-                if (i - 1 >= 0 && this->tableroNivel[i - 1][j] == letra && !casillas_revisadas[i - 1][j])
-                { // arriba
-                    casillas_revisadas[i - 1][j] = true;
-                    this->tableroNivel[i - 1][j] = maximaLetra;
-                }
-                if (i - 1 >= 0 && j + 1 < this->anchoNivel && this->tableroNivel[i - 1][j + 1] == letra && !casillas_revisadas[i - 1][j + 1])
-                { // arriba derecha
-                    casillas_revisadas[i - 1][j + 1] = true;
-                    this->tableroNivel[i - 1][j + 1] = maximaLetra;
-                }
-                if (i - 1 >= 0 && j - 1 < 0 && this->tableroNivel[i - 1][j - 1] == letra && !casillas_revisadas[i - 1][j - 1])
-                { // arriba izquierda
-                    casillas_revisadas[i - 1][j - 1] = true;
-                    this->tableroNivel[i - 1][j - 1] = maximaLetra;
-                }
-                if (j - 1 >= 0 && this->tableroNivel[i][j - 1] == letra && !casillas_revisadas[i][j - 1])
-                { // izquierda
-                    casillas_revisadas[i][j - 1] = true;
-                    this->tableroNivel[i][j - 1] = maximaLetra;
-                }
-                if (j + 1 < this->anchoNivel && this->tableroNivel[i][j + 1] == letra && !casillas_revisadas[i][j + 1])
-                { // derecha
-                    casillas_revisadas[i][j + 1] = true;
-                    this->tableroNivel[i][j + 1] = maximaLetra;
-                }
-            }
-        }
-    }
+    // Si se han explorado todos los vecinos sin encontrar una letra repetida no contigua, retorna false
+    return false;
 }
+
+// Función principal para verificar si hay letras repetidas no contiguas en el tablero
+bool Nivel::tieneRepetidasNoContiguas() {
+    // Inicializa una matriz para rastrear las posiciones visitadas
+    vector<vector<bool>> visitado(getAltoNivel(), vector<bool>(getAnchoNivel(), false));
+    // Recorre todas las celdas del tablero con DFS
+    for (int i = 0; i < getAltoNivel(); i++) {
+        for (int j = 0; j < getAnchoNivel(); j++) {
+            // Ignora caracteres especiales
+            if (this->tableroNivel[i][j] != '#' && this->tableroNivel[i][j] != '&' 
+             && this->tableroNivel[i][j] != '*' && this->tableroNivel[i][j] != '-') {
+                // Llama a la función DFS para buscar letras repetidas no contiguas
+                char objetivo = this->tableroNivel[i][j];
+                if (buscarRepetidasNoContiguas(i, j, objetivo, visitado)) {
+                    return false;  // Si se encuentra una letra repetida no contiguas
+                }
+            }
+        }
+    }
+    // Si no se encontraron letras repetidas no contiguas
+    return true;
+}
+
     string Nivel::getNombreNivel() const {return this->nombreNivel;}
     string Nivel::getNombreArchivo() const {return this->nombreArchivo;}
     unsigned int Nivel::getAnchoNivel() const {return this->anchoNivel;}

@@ -40,9 +40,12 @@ class Nivel {
         Nivel(int num); 
 
         bool cargarNivel();
+        
         bool revisarCaracteres();
         void cambiarVacioPorAmpersand();
-        void cambiarLetrasRepetidas();
+
+        bool buscarRepetidasNoContiguas(int i, int j, char objetivo, vector<vector<bool>>& visitado);
+        bool tieneRepetidasNoContiguas();
 
         string getNombreNivel() const;
         string getNombreArchivo() const ;

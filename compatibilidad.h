@@ -142,7 +142,7 @@ void pausa() {
     #define LINES getmaxY() 
     #define COLS getmaxX()
 
-#else                //*NIX
+#else  //*NIX
     /*Compatibilidad con Colores (Consola virtual de cmd)*/
     //En sistemas basados en Unix el sistema suele ya soportar esto asi que es implicito
     void setUTF8(void){};

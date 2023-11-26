@@ -1,14 +1,14 @@
 Nivel 3
-10 11 abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
-&&&&&&&&&&
-&&&&&&&&&&
-&&######&&
-&&#a**h#&&
-&&#b**g#&&
-&&#cdef#&&
-&&#lkji#&&
-&&#m&&n#&&
-&&##--##&&
-&&&&&&&&..
-&&&&&&&&..
+11 11 abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&&&&&&#&&&
+&&&&&&&#&&&
+&&######&&&
+&&#a**h#&&&
+&&#b**g#&&&
+&&#cdef#&&&
+&&#lkji#&&&
+&&#m&&n#&&&
+&&##--##&&&
+&&&&&&&&..&
+&&&&&&&&..&
 /*Esto prueba que solo toma 2 numeros, anchura y altura */
