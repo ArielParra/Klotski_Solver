@@ -10,7 +10,8 @@ enum TipoDeSolucion {
   EN_PROGRESO,
 };
 
-struct Posicion{
+class Posicion{
+  public:
   //Tipo de dato para saber en que posicion esta respecto al tablero de la solucion esta 
     unsigned int x, y;
     bool operator==(const Posicion& pos) const {//sobrecarga de asignacion de posicion
@@ -36,11 +37,13 @@ enum Direccion{
 };
 
 
-struct OrdenDeMovimiento{ 
+class OrdenDeMovimiento{
+  public: 
+  
   //usado para guardar una direccion e id de un bloque, usada principalmente para solucion() y printMovimientosSolucion()
-
   Direccion dir;
-  unsigned long long id; //da segmentation fault si no es un tipo de dato grande
+  //originalmente id era char, pero se cambio a unsigned long long para evitar segmentation fault
+  unsigned long long id;
 
   bool operator==(const OrdenDeMovimiento& orden) const {//sobrecarga de operador de igualdad booleana
     return (dir == orden.dir) && (id == orden.id);
@@ -63,7 +66,8 @@ Direccion direccionOpuesta(Direccion dir){
   }
 }
 
-struct Solucion{ //para klotski
+class Solucion{ //para klotski
+  public:
   TipoDeSolucion estado;
   unsigned int profundidad;
   unsigned int ultimoHash;

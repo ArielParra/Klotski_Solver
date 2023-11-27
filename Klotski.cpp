@@ -2,14 +2,7 @@
 
 //public:
 
-  Klotski::Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor
-  
-    void Klotski::setTablaSolucion(Tabla tablaSolucion){
-      this->tablaSolucion=tablaSolucion;
-      this->tablaOriginal=tablaSolucion;
-    }
-
-  
+  Klotski::Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor  
 
   void Klotski::printMovimientosSolucion(unsigned int estadoDelHash){
     
@@ -61,7 +54,7 @@
       cout << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
       cout <<", paso numero: " <<contadorDePasos++ <<endl;
       cout<<"-----------------------------------------------------------------------" <<endl;
-      //}//bloque si se puede mover pq es la solucion, implicito
+      //}//bloque si se puede mover porque es la solucion, implicito
     }
   }
 
@@ -142,7 +135,10 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
     // Si no se encuentra una solución desde este estado, se retrocede
 
     // Verifica si existe el estado
-    if (this->memoria.find(ultimoHash) != this->memoria.end()) {
+    if (this->memoria.find(ultimoHash) != this->memoria.end()) { 
+      /*esto evita el error: terminate called after throwing an instance of 'std::out_of_range'
+        what():  unordered_map::at
+        Aborted (core dumped)*/
 
     // Si no es el estado inicial, se retrocede al estado anterior
     Solucion& revertirEstado = this->memoria.at(ultimoHash);

@@ -56,11 +56,12 @@ string stringDireccion(Direccion dir){
 }
 
 
-struct OrdenDeMovimiento{ 
+class OrdenDeMovimiento{ 
+public:
   //usado para guardar una direccion e id de un bloque, usada principalmente para solucion() y printMovimientosSolucion()
-
   Direccion dir;
-  unsigned long long id; //da segmentation fault si no es un tipo de dato grande
+  //originalmente id era char, pero se cambio a unsigned long long para evitar segmentation fault
+  unsigned long long id;
 
   bool operator==(const OrdenDeMovimiento& orden) const {//sobrecarga de operador de igualdad booleana
     return (dir == orden.dir) && (id == orden.id);
@@ -527,7 +528,8 @@ bool bloquePuedeMorverse(Direccion dir, char IDdelBloque) {
 
 };// Clase Tabla
 
-struct Solucion{
+class Solucion{
+  public:
   TipoDeSolucion estado;
   unsigned int profundidad;
   unsigned int ultimoHash;
@@ -551,6 +553,7 @@ public:
 
   Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor
 
+ 
   void printMovimientosSolucion(unsigned int estadoDelHash){
     
     // se obtiene la profundidad de la solucion
@@ -558,7 +561,7 @@ public:
 
     // para imprimir las tablas de la solucion 
     Tabla tablaSolucionFinal = this->tablaOriginal;
-    
+
     // se crea una pila (stack) para almacenar los movimientos de la solucion
     stack<OrdenDeMovimiento*> movimientosSolucion;//ocupa estructura LIFO 
 
@@ -569,15 +572,14 @@ public:
 
     // se recorre la memoria desde el ultimo hash hasta el hash inicial
     while(solucionActual->ultimoHash != 0){
+      contadorDeProfundidad++;
 
-      // cout << "\r" << contadorDeProfundidad << "/" << profundidadDestino;//para debuguear
+      //cout << "\r" << contadorDeProfundidad << "/" << profundidadDestino;//para debuguear
 
       // se agrega el movimiento actual a la pila (stack)
       movimientosSolucion.push(&solucionActual->movimiento);
       // se obtiene el hash anterior
       solucionActual = &this->memoria.at(solucionActual->ultimoHash);
-      // se aumenta el contador de profundidad
-      contadorDeProfundidad++;
     }
 
     // se agrega el ultimo movimiento a la pila (stack)
@@ -590,17 +592,22 @@ public:
       OrdenDeMovimiento* movimientoArealizar = movimientosSolucion.top();
       // se elimina el movimiento de la pila (stack)
       movimientosSolucion.pop();
+
+      //if(tablaSolucionFinal.bloquePuedeMorverse((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id)){
       
       // se imprime la tabla con respecto al movimiento del stack 
       tablaSolucionFinal.moverBloque((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id);
       tablaSolucionFinal.printTabla();/*podria tener polimorfismo*/
-
+      
       // se imprime el movimiento
       cout << "MOVIDO " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
       cout << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
       cout <<", paso numero: " <<contadorDePasos++ <<endl;
+      cout<<"-----------------------------------------------------------------------" <<endl;
+      //}//bloque si se puede mover porque es la solucion, implicito
     }
   }
+
 
 unsigned int solucionador() { //funcion principal para encontrar la solucion
 
@@ -680,6 +687,9 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
 
     // Verifica si existe el estado
     if (this->memoria.find(ultimoHash) != this->memoria.end()) {
+      /*esto evita el error: terminate called after throwing an instance of 'std::out_of_range'
+        what():  unordered_map::at
+        Aborted (core dumped)*/
 
     // Si no es el estado inicial, se retrocede al estado anterior
     Solucion& revertirEstado = this->memoria.at(ultimoHash);
