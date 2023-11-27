@@ -7,7 +7,6 @@
 #include "TiposDeDatos.h"
 #include "FuncionesAuxiliares.h"
 
-
 #include <stack>//pilas std
 using std::stack;
 
@@ -51,24 +50,21 @@ si dos configuraciones son iguales o diferentes.
 class Klotski{
   // clase principal para la solucion del tablero, amigo de clase Tabla
 
-private:
+  private:
 
-  // memoria es una tabla de hash para almacenar información relacionada con cada estado del juego.
-  // evitar la exploración repetida de los mismos estados durante la búsqueda de la solución
-  unordered_map<unsigned int, Solucion> memoria;
-  unsigned int profundidad = 0; // profundidad de la solucion
-  Tabla tablaSolucion; // tabla del juego modificada en la ejecucion del programa
-  const Tabla tablaOriginal; // tabla original del juego (copia de seguridad)
+    // memoria es una tabla de hash para almacenar información relacionada con cada estado del juego.
+    // evitar la exploración repetida de los mismos estados durante la búsqueda de la solución
+    unordered_map<unsigned int, Solucion> memoria;
+    unsigned int profundidad = 0; // profundidad de la solucion
+    Tabla tablaSolucion; // tabla del juego modificada en la ejecucion del programa
+    const Tabla tablaOriginal; // tabla original del juego (copia de seguridad)
 
-public:
+  public:
 
-
-  Klotski(Tabla tablaSolucion);//constructor
-
-  void printMovimientosSolucion(unsigned int estadoDelHash);
-unsigned int solucionador() ;
-
-unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden);
+    Klotski(Tabla tablaSolucion);//constructor
+    void printMovimientosSolucion(unsigned int estadoDelHash);
+    unsigned int solucionador() ;
+    unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden);
 
 };//klotski
 

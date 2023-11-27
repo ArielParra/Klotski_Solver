@@ -23,10 +23,12 @@ bool validarSalida(const std::vector<std::string>& tablero) {
             }
         }
     }
-
-    // Verificar si está tapado izquierda
+    bool arr;
+    bool aba;
+    bool izq
+    // Verificar si está tapado arriba
     for (unsigned int i = iX1; i <= fX1; i++) {
-          
+          if( i-1 >= 0 && tablero)
     }
 
     return true;

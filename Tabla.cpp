@@ -145,6 +145,7 @@ void Tabla::imprimirBloques() {
           default:  cout << this->tableroDeJuego[i][j];      break; 
         }//switch
         cout<<RESET_COLOR;
+        //fflush(stdout);//quiza optimize la impresion quiza no
       }//x
       cout << endl;
     }//y

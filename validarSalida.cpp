@@ -46,10 +46,11 @@ bool validarSalida(const std::vector<std::string>& tablero) {
     }
     for(unsigned int i = iX1; i <= fX1; i++) {
         for(unsigned int j = iY1; j <= fY1; j++) {
-            /*quiero verificar que si esta tapado por ambos lados sea falso:
-                ##
-              ##..
-              ##..             
+            /*quiero verificar que si esta tapado por alguna salida:
+               ##
+              #..#
+              #..#
+               ##         
             */
         }
     }

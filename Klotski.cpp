@@ -1,6 +1,5 @@
 #include "Klotski.h"
 
-
 //public:
 
   Klotski::Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor
@@ -9,6 +8,9 @@
     
     // se obtiene la profundidad de la solucion
     unsigned int profundidadDestino = this->memoria.at(estadoDelHash).profundidad;
+
+    // para imprimir las tablas de la solucion 
+    Tabla tablaSolucionFinal = this->tablaOriginal;
 
     // se crea una pila (stack) para almacenar los movimientos de la solucion
     stack<OrdenDeMovimiento*> movimientosSolucion;//ocupa estructura LIFO 
@@ -21,7 +23,7 @@
     // se recorre la memoria desde el ultimo hash hasta el hash inicial
     while(solucionActual->ultimoHash != 0){
 
-      // cout << "\r" << contadorDeProfundidad << "/" << profundidadDestino;//para debuguear
+      //cout << "\r" << contadorDeProfundidad << "/" << profundidadDestino;//para debuguear
 
       // se agrega el movimiento actual a la pila (stack)
       movimientosSolucion.push(&solucionActual->movimiento);
@@ -41,6 +43,11 @@
       OrdenDeMovimiento* movimientoArealizar = movimientosSolucion.top();
       // se elimina el movimiento de la pila (stack)
       movimientosSolucion.pop();
+
+      // se imprime la tabla con respecto al movimiento del stack 
+      tablaSolucionFinal.moverBloque((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id);
+      tablaSolucionFinal.printTabla();/*podria tener polimorfismo*/
+      
       // se imprime el movimiento
       cout << "MOVIDO " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
       cout << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
@@ -91,7 +98,7 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
                 // Calcula el hash del nuevo estado del tablero
                 unsigned int hashMovido = std::hash<vector<vector<char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
 
-                #ifdef PRINT
+                #ifdef PRINT_DEBUG_LINUX
                 cout << "Profundidad: (" << this->profundidad << "), " << " movido '" << (char)i << "' " << stringDireccion(dir) << ", hashMovido -> " << hashMovido << "\n";
                 this->tablaSolucion.printTabla();
                 cout << "-----------------------------------------------------------------------\n";
@@ -125,7 +132,7 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
     // Si no se encuentra una solución desde este estado, se retrocede
 
     // Verifica si existe el estado
-    if (this->memoria.find(ultimoHash) != this->memoria.end()) {
+    //if (this->memoria.find(ultimoHash) != this->memoria.end()) {
 
     // Si no es el estado inicial, se retrocede al estado anterior
     Solucion& revertirEstado = this->memoria.at(ultimoHash);
@@ -138,7 +145,7 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
     this->tablaSolucion.moverBloque(direccionOpuesta(revertirEstado.movimiento.dir), revertirEstado.movimiento.id);
 
     // Se imprime el Backtracking
-    #ifdef PRINT
+    #ifdef PRINT_DEBUG_LINUX
     cout << "BACKTRACKING: Profundidad: (" << this->profundidad << "), " << " moviendo '" << (char)revertirUltimaAccion.movimiento.id << "' " << stringDireccion(revertirUltimaAccion.movimiento.dir) << "\n";
     this->tablaSolucion.printTabla();
     #endif
@@ -147,7 +154,7 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
 
     // Llama recursivamente para explorar desde el estado anterior
     return buscarSolucion(ultimoHash, ultimoOrden);
-    }
+    //}
   //si no se encuentra el estado no hay solucion
   return 0;
 }

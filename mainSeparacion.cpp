@@ -4,7 +4,8 @@ using std::cin;
 using std::endl;
 
 #include "Nivel.cpp"
-#define PRINT //debug para imprimir en Klotski solucionador
+//#define PRINT_DEBUG_LINUX //debug para imprimir en Klotski solucionador
+
 #include "Klotski.cpp"
 
 /* 
@@ -34,7 +35,7 @@ void elegirNivel(){
     
     tablaSolucion.printTabla();
 
-    tablaSolucion.imprimirBloques();
+    //tablaSolucion.imprimirBloques(); //debug
       
     tablaSolucion.printTabla();
 
@@ -46,14 +47,13 @@ void elegirNivel(){
         cout<<"no hay solucion";
       }else{
         cout << "Solucion Encontrada\n";
-        #ifdef PRINT
         klotski.printMovimientosSolucion(solucion);//pasos para la solucion
-        #endif
       }//if solucion
   }//nivel cargado
 }
 
 int main(){
+  setANSI(); //para mostrar colores ANSI en windows  
   setUTF8();//para mostrar caracteres UTF8 en Windows
   elegirNivel();
   return 0;

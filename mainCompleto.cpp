@@ -17,7 +17,7 @@ using std::stack;
 
 #define LIMITE_DE_UNSIGNED_CHAR 255 // 8 bits sin signo
 
-#define PRINT //debug para imprimir
+//#define PRINT_DEBUG_LINUX //debug para imprimir en Klotski solucionador
 
 enum TipoDeSolucion {
   //Tipo de dato para saber en que estado de la solucion esta 
@@ -553,6 +553,9 @@ public:
     // se obtiene la profundidad de la solucion
     unsigned int profundidadDestino = this->memoria.at(estadoDelHash).profundidad;
 
+    // para imprimir las tablas de la solucion 
+    Tabla tablaSolucionFinal = this->tablaOriginal;
+    
     // se crea una pila (stack) para almacenar los movimientos de la solucion
     stack<OrdenDeMovimiento*> movimientosSolucion;//ocupa estructura LIFO 
 
@@ -584,6 +587,11 @@ public:
       OrdenDeMovimiento* movimientoArealizar = movimientosSolucion.top();
       // se elimina el movimiento de la pila (stack)
       movimientosSolucion.pop();
+      
+      // se imprime la tabla con respecto al movimiento del stack 
+      tablaSolucionFinal.moverBloque((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id);
+      tablaSolucionFinal.printTabla();/*podria tener polimorfismo*/
+
       // se imprime el movimiento
       cout << "MOVIDO " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
       cout << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
@@ -634,7 +642,7 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
                 // Calcula el hash del nuevo estado del tablero
                 unsigned int hashMovido = std::hash<vector<vector<char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
 
-                #ifdef PRINT
+                #ifdef PRINT_DEBUG_LINUX
                 cout << "Profundidad: (" << this->profundidad << "), " << " movido '" << (char)i << "' " << stringDireccion(dir) << ", hashMovido -> " << hashMovido << "\n";
                 this->tablaSolucion.printTabla();
                 cout << "-----------------------------------------------------------------------\n";
@@ -681,7 +689,7 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
     this->tablaSolucion.moverBloque(direccionOpuesta(revertirEstado.movimiento.dir), revertirEstado.movimiento.id);
 
     // Se imprime el Backtracking
-    #ifdef PRINT
+    #ifdef PRINT_DEBUG_LINUX
     cout << "BACKTRACKING: Profundidad: (" << this->profundidad << "), " << " moviendo '" << (char)revertirUltimaAccion.movimiento.id << "' " << stringDireccion(revertirUltimaAccion.movimiento.dir) << "\n";
     this->tablaSolucion.printTabla();
     #endif
@@ -782,9 +790,7 @@ int main(){
            cout<<"no hay solucion";
           }else{
             cout << "Solucion Encontrada\n";
-            #ifdef PRINT
             klotski.printMovimientosSolucion(solucion);//pasos para la solucion
-            #endif
           }
 
         
