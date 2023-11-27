@@ -46,7 +46,7 @@
 //public
 
     Nivel::Nivel() : numNivel(0), nombreArchivo(""), anchoNivel(0), altoNivel(0), tableroNivel() {} //constructor vacio
-    Nivel::Nivel(int num) : numNivel(num), nombreArchivo("nivel_" + to_string(num) + ".txt"), anchoNivel(0), altoNivel(0), tableroNivel() {} //constructor 
+    Nivel::Nivel(unsigned int numNivel) : numNivel(numNivel), nombreArchivo("nivel_" + to_string(numNivel) + ".txt"), anchoNivel(0), altoNivel(0), tableroNivel() {} //constructor 
 
     bool Nivel::cargarNivel() {
         ifstream archivo(nombreArchivo);

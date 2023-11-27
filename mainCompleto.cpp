@@ -1,24 +1,23 @@
 #include <iostream>
+using std::cout;
+using std::cin;
+using std::endl;
+
 #include <vector>
-#include <unordered_map>
+using std::vector; 
+
+#include <unordered_map> //hash map std
+using std::unordered_map; 
+
 #include <stack>//pilas std
+using std::stack;
+
 #include "Nivel.cpp"
 #include "compatibilidad.h"
 
 #define LIMITE_DE_UNSIGNED_CHAR 255 // 8 bits sin signo
 
-
-//para evitar using namespace std y controlar el uso de std
-using std::vector;
-using std::cout;
-using std::cin;
-using std::endl;
-using std::string;
-using std::unordered_map;
-using std::stack;
-
-
-#define PRINT
+#define PRINT //debug para imprimir
 
 enum TipoDeSolucion {
   //Tipo de dato para saber en que estado de la solucion esta 
@@ -26,14 +25,7 @@ enum TipoDeSolucion {
   EN_PROGRESO,
 };
 
-class Posicion{
-  //Tipo de dato para saber en que posicion esta respecto al tablero de la solucion esta 
-  public:
-    unsigned int x, y;
-    bool operator==(const Posicion& pos) const {//sobrecarga de asignacion de posicion
-      return pos.x == this->x && pos.y == this->y;
-    }
-};
+
 
 enum TipoDePieza : char{
   //los tipos de pieza del tablero del tipo char sin contar letras ASCII aun
@@ -93,6 +85,14 @@ Direccion direccionOpuesta(Direccion dir){
 
 /*clases*/
 
+class Posicion {
+  //Tipo de dato para saber en que posicion esta respecto al tablero de la solucion esta 
+  public:
+    unsigned int x, y;
+    bool operator==(const Posicion& pos) const {//sobrecarga de asignacion de posicion
+      return pos.x == this->x && pos.y == this->y;
+    }
+};
 class Bloque{
 
 private:
@@ -154,12 +154,12 @@ public:
 
   void mover(Direccion dir){
   //mueve el bloque en la direccion especificada modificando sus posiciones privadas x e y
-  switch(dir){
-    case ARRIBA:    this->y--; break;  
-    case ABAJO:     this->y++; break;
-    case IZQUIERDA: this->x--; break;
-    case DERECHA:   this->x++; break;
-  }
+    switch(dir){
+      case ARRIBA:    this->y--; break;  
+      case ABAJO:     this->y++; break;
+      case IZQUIERDA: this->x--; break;
+      case DERECHA:   this->x++; break;
+    }
   }
   
 };//clase Bloque
@@ -172,18 +172,18 @@ si dos configuraciones son iguales o diferentes.
 */
     template <>
     struct hash<vector<vector<char>>> { //vector<vector<char>> es lo mismo que vector<string> pero sin las funciones de string
-        unsigned int operator()(const vector<vector<char>>& vec, Bloque* bloques) const {
+        unsigned int operator()(const vector<vector<char>>& matriz, Bloque* bloques) const {
           std::hash<char> charHasher;
           unsigned int hash = 0;
 
-          for (const auto& fila : vec) {
+          for (const auto& fila : matriz) {
               for (const char& elemento : fila) {
                 //Para cada elemento en la matriz, se verifica si el bloque asociado a ese elemento tiene un id igual a cero. 
                 //Si es cero, se utiliza el propio elemento; de lo contrario, se utiliza el resultado de llamar a getReduccion() en ese bloque. 
                 //Esto permite manejar diferentes tipos de elementos en el tablero de juego.
-                  const char& corresponding = bloques[elemento].getID() == 0 ? elemento : bloques[elemento].getReduccion();
+                  const char& valor = bloques[elemento].getID() == 0 ? elemento : bloques[elemento].getReduccion();
                   //se realiza un hash de cada elemento de la matriz y se agrega al hash general
-                  hash ^= charHasher(corresponding) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+                  hash ^= charHasher(valor) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
               }
           }
           return hash; 
@@ -192,7 +192,9 @@ si dos configuraciones son iguales o diferentes.
 
     template <>
     struct hash<Posicion> {
+      //sobrecarga de operacion de hash para la posicion
       unsigned int operator()(const Posicion& pos) const {
+        //se realiza un hash de cada elemento de la posicion y se agrega al hash general
         return hash<int>()(pos.x) ^ hash<int>()(pos.y);
       }
     };
@@ -722,7 +724,7 @@ return std::stoi(entrada);//se convierte a int
 }
 
 int main(){
- setUTF8();
+ setUTF8();//para mostrar caracteres UTF8 en Windows
   vector<string> matriz = {
     "&&&&&&&&&&",
     "&&&&&&&&&&",

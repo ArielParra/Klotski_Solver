@@ -1,3 +1,4 @@
+#pragma once //para que no de problemas de compilacion por inclusion multiple
 #ifndef compatibilidad_h
 #define compatibilidad_h
 

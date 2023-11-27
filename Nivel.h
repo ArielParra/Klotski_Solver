@@ -1,26 +1,28 @@
+# pragma once //para que no de problemas de compilacion por inclusion multiple
 #ifndef Nivel_h
 #define Nivel_h
 
 #include <iostream>
-#include <fstream>
-#include <string>
+using std::cin; 
+using std::cout; 
+using std::endl; 
+using std::streamsize; 
+
 #include <vector>
-#include <limits>
+using std::vector; 
+
 #include <unordered_set>
+using std::unordered_set; 
 
+#include <string>
+using std::string; 
+using std::to_string; 
 
-//#include "compatibilidad.h"
+#include <fstream>
+using std::ifstream; 
 
-using std::vector;
-using std::unordered_set;
-using std::string;
-using std::cin;
-using std::cout;
-using std::endl;
-using std::ifstream;
-using std::to_string;
+#include <limits>
 using std::numeric_limits;
-using std::streamsize;
 
 class Nivel {
     private:
@@ -37,7 +39,7 @@ class Nivel {
 
     public:
         Nivel();
-        Nivel(int num); 
+        Nivel(unsigned int numNivel); 
 
         bool cargarNivel();
         
@@ -49,8 +51,8 @@ class Nivel {
 
         string getNombreNivel() const;
         string getNombreArchivo() const ;
-        unsigned int getAnchoNivel() const;
-        unsigned int getAltoNivel() const;
+        unsigned int getAnchoNivel() const; //para herencia 
+        unsigned int getAltoNivel() const; //para herencia
         vector<string> getTableroNivel() const;
 
    

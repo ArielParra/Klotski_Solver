@@ -22,7 +22,7 @@ o clase debe tener comentarios acerca de lo que se realiza.
     - [ ] Dibujar el tablero completo.
     - [ ] Botón para general solución.
     - [ ] Iniciar recorrido.
- - [ ] Las piezas y los muros se representarán de modo que aparezcan conexos, inclusive si ocupan varios cuadrados del tablero.
+ - [x] Las piezas y los muros se representarán de modo que aparezcan conexos, inclusive si ocupan varios cuadrados del tablero.
  - [ ] Cada pieza diferente que se mueve se considera un movimiento. Al mover una pieza que acaba de ser movida se considera que es una continuación del movimiento anterior, y no cuenta como movimiento.
  - [ ] Al final deberá indicar cuantos movimientos realizo para solucionar el reto, así como el camino recorrido para la solución
 
