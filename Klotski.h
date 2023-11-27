@@ -57,12 +57,14 @@ class Klotski{
     unordered_map<unsigned int, Solucion> memoria;
     unsigned int profundidad = 0; // profundidad de la solucion
     Tabla tablaSolucion; // tabla del juego modificada en la ejecucion del programa
-    const Tabla tablaOriginal; // tabla original del juego (copia de seguridad)
+    //const Tabla tablaSolucion; // debido al set, ya no es const
+    Tabla tablaOriginal; // tabla original del juego (copia de seguridad)
 
   public:
 
     Klotski(Tabla tablaSolucion);//constructor
     void printMovimientosSolucion(unsigned int estadoDelHash);
+    void setTablaSolucion(Tabla tablaSolucion);
     unsigned int solucionador() ;
     unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden);
 

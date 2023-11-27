@@ -33,12 +33,10 @@ void elegirNivel(){
     vector<string> matriz3 = nivel.getTableroNivel();
     Tabla tablaSolucion = Tabla(matriz3);
     
-    tablaSolucion.printTabla();
+    //tablaSolucion.printTabla(); // debug
 
-    //tablaSolucion.imprimirBloques(); //debug
+    //tablaSolucion.imprimirBloques(); // debug
       
-    tablaSolucion.printTabla();
-
     Klotski klotski = (tablaSolucion);
 
     unsigned int solucion = klotski.solucionador();

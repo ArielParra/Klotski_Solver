@@ -39,6 +39,8 @@
     //si se puede mover sobre la pieza objetivo
     if(pieza == PIEZA_OBJETIVO){return true;}
 
+    //if(pieza == PIEZA_PARED){return false;}//impicito en el return pieza == PIEZA_VACIA
+
     //por defecto solo puede moverse a una pieza vacia
     return pieza == PIEZA_VACIA;
   }

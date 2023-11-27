@@ -3,6 +3,13 @@
 //public:
 
   Klotski::Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor
+  
+    void Klotski::setTablaSolucion(Tabla tablaSolucion){
+      this->tablaSolucion=tablaSolucion;
+      this->tablaOriginal=tablaSolucion;
+    }
+
+  
 
   void Klotski::printMovimientosSolucion(unsigned int estadoDelHash){
     
@@ -22,6 +29,7 @@
 
     // se recorre la memoria desde el ultimo hash hasta el hash inicial
     while(solucionActual->ultimoHash != 0){
+      contadorDeProfundidad++;
 
       //cout << "\r" << contadorDeProfundidad << "/" << profundidadDestino;//para debuguear
 
@@ -29,8 +37,6 @@
       movimientosSolucion.push(&solucionActual->movimiento);
       // se obtiene el hash anterior
       solucionActual = &this->memoria.at(solucionActual->ultimoHash);
-      // se aumenta el contador de profundidad
-      contadorDeProfundidad++;
     }
 
     // se agrega el ultimo movimiento a la pila (stack)
@@ -44,6 +50,8 @@
       // se elimina el movimiento de la pila (stack)
       movimientosSolucion.pop();
 
+      //if(tablaSolucionFinal.bloquePuedeMorverse((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id)){
+      
       // se imprime la tabla con respecto al movimiento del stack 
       tablaSolucionFinal.moverBloque((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id);
       tablaSolucionFinal.printTabla();/*podria tener polimorfismo*/
@@ -52,6 +60,8 @@
       cout << "MOVIDO " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
       cout << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
       cout <<", paso numero: " <<contadorDePasos++ <<endl;
+      cout<<"-----------------------------------------------------------------------" <<endl;
+      //}//bloque si se puede mover pq es la solucion, implicito
     }
   }
 
@@ -132,7 +142,7 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
     // Si no se encuentra una solución desde este estado, se retrocede
 
     // Verifica si existe el estado
-    //if (this->memoria.find(ultimoHash) != this->memoria.end()) {
+    if (this->memoria.find(ultimoHash) != this->memoria.end()) {
 
     // Si no es el estado inicial, se retrocede al estado anterior
     Solucion& revertirEstado = this->memoria.at(ultimoHash);
@@ -154,7 +164,8 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
 
     // Llama recursivamente para explorar desde el estado anterior
     return buscarSolucion(ultimoHash, ultimoOrden);
-    //}
+    }//verifica si existe el estado
+
   //si no se encuentra el estado no hay solucion
   return 0;
 }
