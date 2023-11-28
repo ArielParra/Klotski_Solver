@@ -16,8 +16,9 @@ using std::stack;
 #include "compatibilidad.h"
 
 #define LIMITE_DE_UNSIGNED_CHAR 255 // 8 bits sin signo
+#define LIMITE_DE_PROFUNDIDAD 100000 // limite de profundidad para evitar segmentation fault
 
-//#define PRINT_DEBUG_LINUX //debug para imprimir en Klotski solucionador
+#define PRINT_DEBUG_LINUX //debug para imprimir en Klotski solucionador
 
 enum TipoDeSolucion {
   //Tipo de dato para saber en que estado de la solucion esta 
@@ -27,7 +28,7 @@ enum TipoDeSolucion {
 
 
 
-enum TipoDePieza : char{
+enum TipoDePieza : unsigned char{
   //los tipos de pieza del tablero del tipo char sin contar letras ASCII aun
   PIEZA_VACIA    = '&',
   PIEZA_PARED    = '#',
@@ -60,8 +61,8 @@ class OrdenDeMovimiento{
 public:
   //usado para guardar una direccion e id de un bloque, usada principalmente para solucion() y printMovimientosSolucion()
   Direccion dir;
-  //originalmente id era char, pero se cambio a unsigned long long para evitar segmentation fault
-  unsigned long long id;
+  //originalmente id era char, pero se cambio a unsigned char para evitar segmentation fault
+  unsigned char id;
 
   bool operator==(const OrdenDeMovimiento& orden) const {//sobrecarga de operador de igualdad booleana
     return (dir == orden.dir) && (id == orden.id);
@@ -628,7 +629,10 @@ unsigned int solucionador() { //funcion principal para encontrar la solucion
 }
 
 unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden) {//funcion recursiva usando DFS y Backtracking para encontrar la solucion
-   
+   recursion: //directiva de recursion para evitar segmentation fault
+   if(this->profundidad>=LIMITE_DE_PROFUNDIDAD){
+    return 0;// no hay solucion
+   }
     this->profundidad++; // Aumenta la profundidad por cada llamada recursiva (inicia en 1)
 
     // Recorre todas las piezas en el tablero
@@ -677,7 +681,8 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
                 ultimoHash = hashMovido;
 
                 // Actualiza el último hash con el nuevo estado
-                return buscarSolucion(ultimoHash, ultimoOrden);
+                //return buscarSolucion(ultimoHash, ultimoOrden);
+                goto recursion;
             }
         }
     }
@@ -710,7 +715,8 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
     ultimoHash = revertirEstado.ultimoHash;
 
     // Llama recursivamente para explorar desde el estado anterior
-    return buscarSolucion(ultimoHash, ultimoOrden);
+    //return buscarSolucion(ultimoHash, ultimoOrden);
+    goto recursion;
     }
   //si no se encuentra el estado no hay solucion
   return 0;

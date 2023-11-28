@@ -77,7 +77,10 @@ unsigned int Klotski::solucionador() { //funcion principal para encontrar la sol
 }
 
 unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden) {//funcion recursiva usando DFS y Backtracking para encontrar la solucion
-   
+  recursion://directiva de recursion para evitar segmentation fault
+   if(this->profundidad>=LIMITE_DE_PROFUNDIDAD){
+    return 0;// no hay solucion
+   }
     this->profundidad++; // Aumenta la profundidad por cada llamada recursiva (inicia en 1)
 
     // Recorre todas las piezas en el tablero
@@ -126,7 +129,8 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
                 ultimoHash = hashMovido;
 
                 // Actualiza el último hash con el nuevo estado
-                return buscarSolucion(ultimoHash, ultimoOrden);
+                //return buscarSolucion(ultimoHash, ultimoOrden);//crea segmentation fault si no hay solucion
+                goto recursion;
             }
         }
     }
@@ -159,7 +163,8 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
     ultimoHash = revertirEstado.ultimoHash;
 
     // Llama recursivamente para explorar desde el estado anterior
-    return buscarSolucion(ultimoHash, ultimoOrden);
+    //return buscarSolucion(ultimoHash, ultimoOrden);//crea segmentation fault si no hay solucion
+    goto recursion;
     }//verifica si existe el estado
 
   //si no se encuentra el estado no hay solucion

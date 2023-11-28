@@ -19,7 +19,7 @@ class Posicion{
     }
 };
 
-enum TipoDePieza : char{
+enum TipoDePieza : unsigned char{
   //los tipos de pieza del tablero del tipo char sin contar letras ASCII aun
   PIEZA_VACIA    = '&',
   PIEZA_PARED    = '#',
@@ -42,8 +42,8 @@ class OrdenDeMovimiento{
   
   //usado para guardar una direccion e id de un bloque, usada principalmente para solucion() y printMovimientosSolucion()
   Direccion dir;
-  //originalmente id era char, pero se cambio a unsigned long long para evitar segmentation fault
-  unsigned long long id;
+  //originalmente id era char, pero se cambio a unsigned char para evitar segmentation fault
+  unsigned char id;
 
   bool operator==(const OrdenDeMovimiento& orden) const {//sobrecarga de operador de igualdad booleana
     return (dir == orden.dir) && (id == orden.id);
