@@ -4,6 +4,7 @@
 
   Klotski::Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor  
 
+    
   void Klotski::printMovimientosSolucion(unsigned int estadoDelHash){
     
     // se obtiene la profundidad de la solucion
@@ -47,16 +48,25 @@
       
       // se imprime la tabla con respecto al movimiento del stack 
       tablaSolucionFinal.moverBloque((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id);
+      
       tablaSolucionFinal.printTabla();/*podria tener polimorfismo*/
       
+      //para gotoxy
+      unsigned int y=1;
       // se imprime el movimiento
-      cout << "MOVIDO " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
-      cout << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
-      cout <<", paso numero: " <<contadorDePasos++ <<endl;
-      cout<<"-----------------------------------------------------------------------" <<endl;
+
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Movida la pieza: " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Hacia la direccion:" << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Paso numero: " <<contadorDePasos++;
+      gotoxy(0,0);
+      delay(contadorDePasos/100);//gradualmente desaselera
       //}//bloque si se puede mover porque es la solucion, implicito
     }
   }
+
 
 unsigned int Klotski::solucionador() { //funcion principal para encontrar la solucion
 

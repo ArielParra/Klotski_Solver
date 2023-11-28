@@ -108,8 +108,11 @@ void Tabla::imprimirBloques() {
   }
 
   void Tabla::printTabla() const {
+    clrscr();
     for(unsigned int i = 0; i < getAltoTablero(); i++){
       for(unsigned int j = 0; j < getAnchoTablero(); j++){
+        gotoxy(getmaxX()/2 - getAnchoTablero()/2 + j, getmaxY()/2 -  getAltoTablero()/2 + i);
+
         switch (this->tableroDeJuego[i][j]){
           case '&': cout <<                             "░"; break;//vacio
           case '-': cout <<                             "║"; break;//puerta
@@ -145,9 +148,9 @@ void Tabla::imprimirBloques() {
           default:  cout << this->tableroDeJuego[i][j];      break; 
         }//switch
         cout<<RESET_COLOR;
-        //fflush(stdout);//quiza optimize la impresion quiza no
+        fflush(stdout);
       }//x
-      cout << endl;
+      //cout << endl;
     }//y
   }//printTabla
 

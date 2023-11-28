@@ -21,9 +21,9 @@ endif
 
 CFLAGS := -O2 -s -w
 
-Nombre := ProyectoFinal-$(UNAME)
+Nombre := Klotski-$(UNAME)
 
-$(Nombre): main.cpp compatibilidad.h
+$(Nombre): mainSeparacion.cpp Klotski.cpp Tabla.cpp Bloque.cpp Nivel.cpp TiposDeDatos.h FuncionesAuxiliares.h
 	$(CC) -o $(call FixPath,$(Nombre)) $< $(FLAGS) $(CFLAGS)
 
 clean:

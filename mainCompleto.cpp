@@ -763,6 +763,7 @@ string entrada; //entrada del usuario
         }
       }
     }while (!esValido);//mientras no sea valido se pide por mas numeros
+
 return std::stoi(entrada);//se convierte a int
 }
 
@@ -789,34 +790,6 @@ cout<<RESET_COLOR;fflush(stdout);
 }
 int main(){
  startCompat();//para mostrar caracteres UTF8 en Windows
-  vector<string> matriz = {
-    "&&&&&&&&&&",
-    "&&&&&&&&&&",
-    "&&######&&",
-    "&&#a**b#&&",
-    "&&#a**b#&&",
-    "&&#cdde#&&",
-    "&&#cfge#&&",
-    "&&#h&&i#&&",
-    "&&##--##&&",
-    "&&&&&&&&..",
-    "&&&&&&&&.."
-  }; 
-
-
-  vector<string> matriz2 = {
-    "&&&&&&&&&&&&#",
-    "&z&&&&&&&&&&#",
-    "&&######&&&&#",
-    "&&#a**h#&&&&#",
-    "&&#b**g#&&&&#",
-    "&&#cdef#&&&&#",
-    "&&#ijkl#&&&&#",
-    "&&#m&&n#&r&&#",
-    "&&##--##&&&&#",
-    "&&&&&&&&..&&#",
-    "&&&&&&&&..&&#"
-};
     cout << "Ingrese el número N para el archivo nivel_N.txt: ";
     unsigned int N=validarEntradaInt();
     Nivel nivel(N);
