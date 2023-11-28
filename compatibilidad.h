@@ -41,8 +41,8 @@ void pausa() {
 
 /*Modificadores de terminal*/
 #define RESET_COLOR         "\x1b[0m"
-#define CURSOR_OFF          "\033[?25h"
-#define CURSOR_ON           "\033[?25l"
+#define CURSOR_ON          "\033[?25h"
+#define CURSOR_OFF           "\033[?25l"
 #define CLEAR_SCREEN        "\e[1;1H\e[2J"
 
 /*Colores ANSI */
@@ -123,9 +123,9 @@ void pausa() {
     coordinate.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
     }
-
-    void startCompat() { setANSI();setUTF8(); }
-    void endCompat() {}
+    #include <stdlib.h>
+    void startCompat() { setANSI();setUTF8();std::cout<<CURSOR_OFF;  }
+    void endCompat() { std::cout<<CURSOR_ON; }
 
     /*Compatibilidad con ncurses.h*/
     void reset_shell_mode(void){}
@@ -148,12 +148,11 @@ void pausa() {
     //En sistemas basados en Unix el sistema suele ya soportar esto asi que es implicito
     void setUTF8(void){};
     void setANSI(void){};
-    /*
     #include <ncurses.h> //getch(),scanw(),
     #warning "ncurses.h needs -lncurses as a compiler argument"
 
     //Compatibilidad con conio.h
-    void clrscr() { system("clear"); }
+    void clrscr() { printf(CLEAR_SCREEN); }
 
     void gotoxy(int x, int y) {
     printf("%c[%d;%df", 0x1B, y, x);
@@ -193,24 +192,29 @@ void pausa() {
     }
     #define _getche getche
 
-    void startCompat() {    
+    void startCompat() {   
+    std::cout<<CURSOR_OFF; 
     initscr();            // Iniciar el modo curses
     keypad(stdscr, TRUE); // Habilita el uso de teclas como las flechas, etc.
     noecho();             // sin echo() de  getch() como en conio.h
     cbreak();             // Se para con ctrl +C como en Windows
     refresh();            // actualiza la pantalla
     }
+
     void endCompat() {
     refresh();
     echo();
     fflush(stdout);
     endwin();
+    std::cout<<CURSOR_ON;
     }
 
     //Compatibilidad con ncurses.h
     #undef  KEY_ENTER      // en ncurses es ctrl + m 
-    #define KEY_ENTER '\n' // funciona como en Windows 
-*/
+    #define KEY_ENTER '\n' // funciona como en Windows
+    int getmaxX() { return getmaxx(stdscr); }
+    int getmaxY() { return getmaxy(stdscr); } 
+
 #endif 
 
 #endif //compatibilidad_h

@@ -48,10 +48,10 @@ enum Direccion{
 string stringDireccion(Direccion dir){
   //convierte la direccion a string para imprimir en pantalla
  switch(dir){
-    case ARRIBA:    return "ARRIBA";    break;
-    case ABAJO:     return "ABAJO";     break;
-    case IZQUIERDA: return "IZQUIERDA"; break;
-    case DERECHA:   return "DERECHA";   break;
+    case ARRIBA:    return "↑ ARRIBA";    break;
+    case ABAJO:     return "↓ ABAJO";     break;
+    case IZQUIERDA: return "← IZQUIERDA"; break;
+    case DERECHA:   return "→ DERECHA";   break;
     default:        return "";          break; //para evitar el warning: control reaches end of non-void function [-Wreturn-type]
   }
 }
@@ -334,8 +334,11 @@ void imprimirBloques() {
   }
 
   void printTabla() const {
+    clrscr();
     for(unsigned int i = 0; i < getAltoTablero(); i++){
       for(unsigned int j = 0; j < getAnchoTablero(); j++){
+        gotoxy(getmaxX()/2 - getAnchoTablero()/2 + j, getmaxY()/2 -  getAltoTablero()/2 + i);
+
         switch (this->tableroDeJuego[i][j]){
           case '&': cout <<                             "░"; break;//vacio
           case '-': cout <<                             "║"; break;//puerta
@@ -371,8 +374,9 @@ void imprimirBloques() {
           default:  cout << this->tableroDeJuego[i][j];      break; 
         }//switch
         cout<<RESET_COLOR;
+        fflush(stdout);
       }//x
-      cout << endl;
+      //cout << endl;
     }//y
   }//printTabla
 
@@ -598,13 +602,21 @@ public:
       
       // se imprime la tabla con respecto al movimiento del stack 
       tablaSolucionFinal.moverBloque((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id);
+      
       tablaSolucionFinal.printTabla();/*podria tener polimorfismo*/
       
+      //para gotoxy
+      unsigned int y=1;
       // se imprime el movimiento
-      cout << "MOVIDO " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
-      cout << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
-      cout <<", paso numero: " <<contadorDePasos++ <<endl;
-      cout<<"-----------------------------------------------------------------------" <<endl;
+
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Movida la pieza: " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Hacia la direccion:" << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Paso numero: " <<contadorDePasos++;
+      gotoxy(0,0);
+      delay(contadorDePasos/100);//gradualmente desaselera
       //}//bloque si se puede mover porque es la solucion, implicito
     }
   }
@@ -735,7 +747,9 @@ string entrada; //entrada del usuario
     esValido = true;
     entrada.clear(); //se limpia la entrada
       //para capturar incluso espacios
+      reset_shell_mode();cout<<CURSOR_ON;
       getline(cin,entrada);
+      reset_prog_mode();cout<<CURSOR_OFF; 
       //solo se dio enter = error
       if(entrada.length()<1){
         esValido=false;
@@ -752,8 +766,29 @@ string entrada; //entrada del usuario
 return std::stoi(entrada);//se convierte a int
 }
 
+void recuadro(){
+#if defined(_WIN32)
+gotoxy(0,0);cout<<"█";
+#endif
+unsigned int x=getmaxX(),j=0;
+unsigned int y=getmaxY(),i=0;
+
+  while(i<=getmaxY()){
+    gotoxy(x,y);cout<<"█";
+    gotoxy(0,y--);cout<<"█";
+    i++;
+  }
+  y=getmaxY();
+  while(j<=getmaxX()){
+    gotoxy(x,y);cout<<"█";
+    gotoxy(x--,0);cout<<"█";
+    j++;
+  }
+
+cout<<RESET_COLOR;fflush(stdout);
+}
 int main(){
- setUTF8();//para mostrar caracteres UTF8 en Windows
+ startCompat();//para mostrar caracteres UTF8 en Windows
   vector<string> matriz = {
     "&&&&&&&&&&",
     "&&&&&&&&&&",
@@ -788,27 +823,28 @@ int main(){
       if(!nivel.cargarNivel()){
         cout << "Error: No se pudo abrir el archivo " << nivel.getNombreArchivo() << endl;
       }else{
-        cout<< "Nombre del Nivel: "<< nivel.getNombreNivel() <<endl;
+        
+        /*cout<< "Nombre del Nivel: "<< nivel.getNombreNivel() <<endl;
         cout << "Tabla del archivo" << nivel.getNombreArchivo() << endl;
         cout << "getAnchoNivel " << nivel.getAnchoNivel() << endl;
-        cout << "getAltoNivel " << nivel.getAltoNivel() << endl;
+        cout << "getAltoNivel " << nivel.getAltoNivel() << endl;*/
         vector<string> matriz3 = nivel.getTableroNivel();
         Tabla tablaSolucion = Tabla(matriz3);
         
         tablaSolucion.printTabla();
 
-
-
-        tablaSolucion.imprimirBloques();
-        
-        
+        //tablaSolucion.imprimirBloques();
 
         tablaSolucion.printTabla();
         Klotski klotski = (tablaSolucion);
         unsigned int solucion = klotski.solucionador();
 
           if(solucion==0){
+           clrscr();
+           gotoxy(getmaxX()/2 - 15/2 ,getmaxY()/2 );
            cout<<"no hay solucion";
+           cout <<FG_RED;recuadro();
+           cin.get();
           }else{
             cout << "Solucion Encontrada\n";
             klotski.printMovimientosSolucion(solucion);//pasos para la solucion
@@ -817,6 +853,6 @@ int main(){
         
   
         }//nivel cargado
-    
+    endCompat();
   return 0;
 }
