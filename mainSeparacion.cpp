@@ -4,7 +4,7 @@ using std::cin;
 using std::endl;
 
 #include "Nivel.cpp"
-//#define PRINT_DEBUG_LINUX //debug para imprimir en Klotski solucionador
+//#define DEBUG_LINUX //debug para imprimir en Klotski solucionador
 
 #include "Klotski.cpp"
 

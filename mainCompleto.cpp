@@ -18,7 +18,7 @@ using std::stack;
 #define LIMITE_DE_UNSIGNED_CHAR 255 // 8 bits sin signo
 #define LIMITE_DE_PROFUNDIDAD 100000 // limite de profundidad para evitar segmentation fault
 
-#define PRINT_DEBUG_LINUX //debug para imprimir en Klotski solucionador
+//#define DEBUG_LINUX //debug para imprimir en Klotski solucionador
 
 enum TipoDeSolucion {
   //Tipo de dato para saber en que estado de la solucion esta 
@@ -656,7 +656,7 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
                 // Calcula el hash del nuevo estado del tablero
                 unsigned int hashMovido = std::hash<vector<vector<char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
 
-                #ifdef PRINT_DEBUG_LINUX
+                #ifdef DEBUG_LINUX
                 cout << "Profundidad: (" << this->profundidad << "), " << " movido '" << (char)i << "' " << stringDireccion(dir) << ", hashMovido -> " << hashMovido << "\n";
                 this->tablaSolucion.printTabla();
                 cout << "-----------------------------------------------------------------------\n";
@@ -700,14 +700,16 @@ unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoO
     Solucion& revertirEstado = this->memoria.at(ultimoHash);
 
     // Se actualiza la profundidad
-    Solucion& revertirUltimaAccion = this->memoria.at(this->memoria.at(ultimoHash).ultimoHash);
+    //Solucion& revertirUltimaAccion = this->memoria.at(this->memoria.at(ultimoHash).ultimoHash);
+    Solucion& revertirUltimaAccion = this->memoria.at(ultimoHash);
+    
     this->profundidad = revertirUltimaAccion.profundidad;
 
     // Se revierte el último movimiento
     this->tablaSolucion.moverBloque(direccionOpuesta(revertirEstado.movimiento.dir), revertirEstado.movimiento.id);
 
     // Se imprime el Backtracking
-    #ifdef PRINT_DEBUG_LINUX
+    #ifdef DEBUG_LINUX
     cout << "BACKTRACKING: Profundidad: (" << this->profundidad << "), " << " moviendo '" << (char)revertirUltimaAccion.movimiento.id << "' " << stringDireccion(revertirUltimaAccion.movimiento.dir) << "\n";
     this->tablaSolucion.printTabla();
     #endif
