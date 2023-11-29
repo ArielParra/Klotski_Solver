@@ -108,7 +108,6 @@ void Tabla::imprimirBloques() {
   }
 
   void Tabla::printTabla() const {
-    clrscr();
     for(unsigned int i = 0; i < getAltoTablero(); i++){
       for(unsigned int j = 0; j < getAnchoTablero(); j++){
         gotoxy(getmaxX()/2 - getAnchoTablero()/2 + j, getmaxY()/2 -  getAltoTablero()/2 + i);

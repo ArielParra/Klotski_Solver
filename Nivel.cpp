@@ -70,6 +70,9 @@
         if(tieneRepetidasNoContiguas()){
             return false;
         }
+        if(!tieneSalidaYsingular()){
+            return false;
+        }
         archivo.close();
         return true;
     }
@@ -166,6 +169,26 @@ bool Nivel::tieneRepetidasNoContiguas() {
     }
     // Si no se encontraron letras repetidas no contiguas
     return true;
+}
+
+bool Nivel::tieneSalidaYsingular(){
+    bool piezaSingular=false;
+    bool objetivo=false;
+  for (int i = 0; i < getAltoNivel(); i++) {
+        for (int j = 0; j < getAnchoNivel(); j++) {
+            if (this->tableroNivel[i][j] == '*'){
+                piezaSingular=true;
+                break;
+            }
+            if (this->tableroNivel[i][j] == '.'){
+                objetivo=true;
+                break;
+            }
+        }
+    }
+
+return piezaSingular && objetivo;
+     
 }
     /*getters*/
     string Nivel::getNombreNivel() const {return this->nombreNivel;}

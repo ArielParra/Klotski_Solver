@@ -7,6 +7,8 @@
 #include "TiposDeDatos.h"
 #include "FuncionesAuxiliares.h"
 
+#include <iomanip>
+using std::setw;
 #include <stack>//pilas std
 using std::stack;
 
@@ -64,7 +66,7 @@ class Klotski{
   public:
 
     Klotski(Tabla tablaSolucion);//constructor
-    void printMovimientosSolucion(unsigned int estadoDelHash);
+    void printMovimientosSolucion(unsigned int estadoDelHash, string nombreNivel);
     void setTablaSolucion(Tabla tablaSolucion);
     unsigned int solucionador() ;
     unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden);

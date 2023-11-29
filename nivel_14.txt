@@ -1,0 +1,15 @@
+Nivel 14
+10 11
+##########
+##########
+##########
+###a**b###
+###a**b###
+###cdde###
+###cfge###
+###h&&i###
+####--####
+####&&&&&&
+####&&&&&& //aqui deberia estar la salida
+/*Esto prueba salida y pieza*/
+/*ERROR: no se puede abrir el archivo*/

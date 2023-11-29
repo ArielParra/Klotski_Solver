@@ -148,8 +148,8 @@ void pausa() {
     //En sistemas basados en Unix el sistema suele ya soportar esto asi que es implicito
     void setUTF8(void){};
     void setANSI(void){};
-    #include <ncurses.h> //getch(),scanw(),
-    #warning "ncurses.h needs -lncurses as a compiler argument"
+    #include <ncurses.h> //getch()
+    #warning "ncurses.h necesita -lncurses como argumento de compilación"
 
     //Compatibilidad con conio.h
     void clrscr() { printf(CLEAR_SCREEN); }

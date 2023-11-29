@@ -16,43 +16,14 @@ using std::cin;
 using std::endl;
 
 string stringDireccion(Direccion dir){
-  // funcion auxiliar que convierte la direccion a string para imprimir en pantalla
+  //convierte la direccion a string para imprimir en pantalla
  switch(dir){
-    case ARRIBA:    return "ARRIBA";    break;
-    case ABAJO:     return "ABAJO";     break;
-    case IZQUIERDA: return "IZQUIERDA"; break;
-    case DERECHA:   return "DERECHA";   break;
-    default:        return "";          break; //para evitar el warning: control reaches end of non-void function [-Wreturn-type]
+    case ARRIBA:    return "↑ ARRIBA   "; break;
+    case ABAJO:     return "↓ ABAJO    "; break;
+    case IZQUIERDA: return "← IZQUIERDA"; break;
+    case DERECHA:   return "→ DERECHA  "; break;
+    default:        return "";            break; //para evitar el warning: control reaches end of non-void function [-Wreturn-type]
   }
-}
-
-
-unsigned int validarEntradaInt(){
-//funcion auxiliar para validar entrada de numeros
-bool esValido = true; //bandera para validar entrada en el do while
-string entrada; //entrada del usuario
-  do {
-    esValido = true;
-    entrada.clear(); //se limpia la entrada
-      //para capturar incluso espacios
-      reset_shell_mode();cout<<CURSOR_ON;
-      getline(cin,entrada);
-      reset_prog_mode();cout<<CURSOR_OFF; 
-      //solo se dio enter = error
-      if(entrada.length()<1){
-        esValido=false;
-        cout<<"Error: Ingrese un número"<<endl;
-      }
-      for (char c : entrada) {
-        if (!isdigit(c)) {//si no es un numero
-          esValido = false;
-          cout << "Error: Ingresa solo números" << endl;
-          break; // Si se encuentra un carácter no numérico, salir del bucle
-        }
-      }
-    }while (!esValido);//mientras no sea valido se pide por mas numeros
-    
-return std::stoi(entrada);//se convierte a int
 }
 
 void recuadro(){
@@ -78,5 +49,60 @@ unsigned int y=getmaxY(),i=0;
 
 cout<<RESET_COLOR;fflush(stdout);
 }
+
+unsigned int validarEntradaInt(){
+//funcion auxiliar para validar entrada de numeros
+bool esValido = true; //bandera para validar entrada en el do while
+string entrada; //entrada del usuario
+  do {
+    const string mensaje = "Ingrese el número N para el archivo nivel_N.txt: ";
+    const string linea = "----------";
+    gotoxy(getmaxX()/2 - mensaje.size()/2, getmaxY()/2 - 1);
+    cout<<mensaje;
+    gotoxy(getmaxX()/2 + mensaje.size()/2 , getmaxY()/2);
+    cout<<linea;
+    esValido = true;
+    entrada.clear(); //se limpia la entrada
+      //para capturar incluso espacios
+      gotoxy(getmaxX()/2 + mensaje.size()/2 , getmaxY()/2 - 1);
+      reset_shell_mode();//salirse de ncurses para usar getline
+      cout<<CURSOR_ON;
+      getline(cin,entrada);
+      cout<<CURSOR_OFF;//regresar a ncurses
+      //para desaparecer cursor cuando se da enter
+      gotoxy(getmaxX()/2 + mensaje.size()/2 + entrada.size(), getmaxY()/2 - 1);
+      reset_prog_mode();
+      string error; 
+      //solo se dio enter = error
+      if(entrada.length()<1){
+        esValido=false;
+        cout<<FG_RED;recuadro();
+        error="Error: Ingrese algún número";
+      }
+      for (char c : entrada) {
+        if (!isdigit(c)) {//si no es un numero
+          esValido = false;
+          cout<<FG_RED;recuadro();
+          error="Error: Ingrese unicamente números";
+          break; // Si se encuentra un carácter no numérico, salir del bucle
+        }
+      }
+      if (esValido && entrada.size()>linea.size()) {//si no es un numero
+          esValido = false;
+          cout<<FG_RED;recuadro();
+          error="Error: Ingrese maximo "+ to_string(linea.size()) +" digitos";
+      }
+      if(error.size()>0){
+      gotoxy(getmaxX()/2 - error.size()/2, getmaxY()/2 + 1);
+      cout<<FG_RED<<error<<RESET_COLOR;fflush(stdout);
+      delay(2000);
+      clrscr();
+      }
+      
+    }while (!esValido);//mientras no sea valido se pide por mas numeros
+    
+return std::stoi(entrada);//se convierte a int
+}
+
 
 #endif //FuncionesAuxiliares_h

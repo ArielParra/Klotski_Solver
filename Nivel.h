@@ -48,6 +48,7 @@ class Nivel {
 
         bool buscarRepetidasNoContiguas(int i, int j, char objetivo, vector<vector<bool>>& visitado);
         bool tieneRepetidasNoContiguas();
+        bool tieneSalidaYsingular();
 
         string getNombreNivel() const;
         string getNombreArchivo() const ;

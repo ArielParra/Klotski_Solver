@@ -5,7 +5,7 @@
   Klotski::Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor  
 
     
-  void Klotski::printMovimientosSolucion(unsigned int estadoDelHash){
+  void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombreNivel){
     
     // se obtiene la profundidad de la solucion
     unsigned int profundidadDestino = this->memoria.at(estadoDelHash).profundidad;
@@ -49,20 +49,35 @@
       // se imprime la tabla con respecto al movimiento del stack 
       tablaSolucionFinal.moverBloque((Direccion)movimientoArealizar->dir,(char)movimientoArealizar->id);
       
+      gotoxy(getmaxX()/2 - nombreNivel.size()/2, getmaxY()/2 - tablaSolucionFinal.getAltoTablero()/2 - 2);
+      cout<<nombreNivel;
+      gotoxy(0,0);
+
       tablaSolucionFinal.printTabla();/*podria tener polimorfismo*/
       
       //para gotoxy
-      unsigned int y=1;
+      unsigned int y=2;
+      unsigned int milisegundos=5;
       // se imprime el movimiento
 
-      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
-      cout << "Movida la pieza: " << (char)movimientoArealizar->id << " ";//se castea a char para imprimir el caracter
-      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
-      cout << "Hacia la direccion:" << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
-      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero()/2 , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
-      cout << "Paso numero: " <<contadorDePasos++;
-      gotoxy(0,0);
-      delay(contadorDePasos/100);//gradualmente desaselera
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero() , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Movida la pieza: '" << (char)movimientoArealizar->id << "'";//se castea a char para imprimir el caracter
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero() , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Hacia la direccion: " << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero() , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Paso numero: " << setw(4) << contadorDePasos++  << " / " <<  contadorDeProfundidad;
+   
+      if(contadorDePasos>=contadorDeProfundidad * 0.7){
+        milisegundos=50;
+      }
+      /*
+      //para ver que funcione la regla de pausas
+      gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero() , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
+      cout << "Pausas de: "<< milisegundos << " ms";
+      */
+      fflush(stdout);
+      delay(milisegundos);//para poder imprimir
+
       //}//bloque si se puede mover porque es la solucion, implicito
     }
   }

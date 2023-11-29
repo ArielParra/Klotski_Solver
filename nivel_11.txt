@@ -1,15 +1,15 @@
 Nivel 11
 10 11
 &&&&&&&&&&
-&&&&&&&&&ñ
+&&&&&&&&&&
 &&######&&
 &&#a**b#&&
 &&#a**b#&&
 &&#cdde#&&
-&&#CfgE#&&
-&&#a&&B#&&
+&&#cfge#&&
+&&#hjki#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..
-/*Esto prueba letras repetidas*/
-/*ERROR: no se puede abrir el archivo*/
+/*no se pueden mover las piezas
+, no tiene solucion*/

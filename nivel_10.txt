@@ -1,15 +1,15 @@
 Nivel 10
 10 11
 &&&&&&&&&&
-&&&&&&&&&ñ
+&&&&&&&&&&
 &&######&&
 &&#a**b#&&
 &&#a**b#&&
 &&#cdde#&&
-&&#CfgE#&&
-&&#^&&%#&&
-&&##--##&&
-&&&&&&&&..
-&&&&&&&&..
-/*Esto prueba caracteres Invalidos*/
-/*ERROR: no se puede abrir el archivo*/
+&&#cfge#&&
+&&#h&&i#&&
+&&##--####
+&&&&&&&#..
+&&&&&&&#..
+/*no se puede llegar al objetivo
+, no tiene solucion*/

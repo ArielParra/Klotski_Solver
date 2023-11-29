@@ -19,13 +19,20 @@ using std::endl;
 */
 
 void elegirNivel(){
-cout << "Ingrese el número N para el archivo nivel_N.txt: ";
-unsigned int N=validarEntradaInt();
-Nivel nivel(N);
+
+
+bool nivelCargado=false;
+  do{
+  unsigned int N=validarEntradaInt();
+  Nivel nivel(N);
   if(!nivel.cargarNivel()){
-    cout << "Error: No se pudo abrir el archivo " << nivel.getNombreArchivo() << endl;
+    const string errorArchivo="Error: No se pudo abrir : '" + nivel.getNombreArchivo() +"'";
+    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
+    cout<<FG_RED<<errorArchivo<<RESET_COLOR;fflush(stdout);
+    delay(2000);
+    clrscr();
   }else{
-    
+    nivelCargado=true;
     /*cout<< "Nombre del Nivel: "<< nivel.getNombreNivel() <<endl;
     cout << "Tabla del archivo" << nivel.getNombreArchivo() << endl;
     cout << "getAnchoNivel " << nivel.getAnchoNivel() << endl;
@@ -33,28 +40,31 @@ Nivel nivel(N);
     vector<string> matriz3 = nivel.getTableroNivel();
     Tabla tablaSolucion = Tabla(matriz3);
     
-    tablaSolucion.printTabla();
-
     //tablaSolucion.imprimirBloques();
 
-    tablaSolucion.printTabla();
     Klotski klotski = (tablaSolucion);
     unsigned int solucion = klotski.solucionador();
-
+    string mensajeSolucion;
+      clrscr();
       if(solucion==0){
-        clrscr();
         gotoxy(getmaxX()/2 - 15/2 ,getmaxY()/2 );
-        cout<<"no hay solucion";
+        mensajeSolucion="No Existe Solucion!";
+        gotoxy(getmaxX()/2 - mensajeSolucion.size()/2, getmaxY()/2 );
+        cout<<FG_RED<<mensajeSolucion<<RESET_COLOR;fflush(stdout);
         cout <<FG_RED;recuadro();
-        cin.get();
+        delay(2000);
+        clrscr();
       }else{
-        cout << "Solucion Encontrada\n";
-        klotski.printMovimientosSolucion(solucion);//pasos para la solucion
+        mensajeSolucion="Solucion Encontrada!";
+        gotoxy(getmaxX()/2 - mensajeSolucion.size()/2, getmaxY()/2 );
+        cout<<FG_GREEN<<mensajeSolucion<<RESET_COLOR;fflush(stdout);
+        cout <<FG_GREEN;recuadro();
+        delay(2000);
+        clrscr();
+        klotski.printMovimientosSolucion(solucion,nivel.getNombreNivel());//pasos para la solucion
       }
-
-    
-
     }//nivel cargado
+  }while(!nivelCargado);
 }
 
 int main(){
