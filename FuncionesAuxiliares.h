@@ -13,7 +13,6 @@ using std::stoul;
 #include <iostream>
 using std::cout; 
 using std::cin;
-using std::endl;
 
 string stringDireccion(Direccion dir){
   //convierte la direccion a string para imprimir en pantalla
@@ -37,6 +36,7 @@ unsigned int y=getmaxY(),i=0;
   while(i<=getmaxY()){
     gotoxy(x,y);cout<<"█";
     gotoxy(0,y--);cout<<"█";
+    fflush(stdout);
     i++;
   }
 //lineas horizontales
@@ -44,10 +44,11 @@ unsigned int y=getmaxY(),i=0;
   while(j<=getmaxX()){
     gotoxy(x,y);cout<<"█";
     gotoxy(x--,0);cout<<"█";
+    fflush(stdout);
     j++;
   }
-
-cout<<RESET_COLOR;fflush(stdout);
+fflush(stdout);
+cout<<RESET_COLOR;
 }
 
 unsigned int validarEntradaInt(){
@@ -68,33 +69,32 @@ string entrada; //entrada del usuario
       reset_shell_mode();//salirse de ncurses para usar getline
       cout<<CURSOR_ON;
       getline(cin,entrada);
-      cout<<CURSOR_OFF;//regresar a ncurses
+      cout<<CURSOR_OFF;
       //para desaparecer cursor cuando se da enter
-      gotoxy(getmaxX()/2 + mensaje.size()/2 + entrada.size(), getmaxY()/2 - 1);
-      reset_prog_mode();
+      gotoxy(2,2);
+      reset_prog_mode();//regresar a ncurses
       string error; 
       //solo se dio enter = error
       if(entrada.length()<1){
         esValido=false;
-        cout<<FG_RED;recuadro();
         error="Error: Ingrese algún número";
       }
       for (char c : entrada) {
         if (!isdigit(c)) {//si no es un numero
           esValido = false;
-          cout<<FG_RED;recuadro();
           error="Error: Ingrese unicamente números";
           break; // Si se encuentra un carácter no numérico, salir del bucle
         }
       }
       if (esValido && entrada.size()>linea.size()) {//si no es un numero
           esValido = false;
-          cout<<FG_RED;recuadro();
           error="Error: Ingrese maximo "+ to_string(linea.size()) +" digitos";
       }
       if(error.size()>0){
       gotoxy(getmaxX()/2 - error.size()/2, getmaxY()/2 + 1);
-      cout<<FG_RED<<error<<RESET_COLOR;fflush(stdout);
+      cout<<FG_RED<<error;
+      recuadro();
+      gotoxy(1,1);//para el cursor
       delay(2000);
       clrscr();
       }

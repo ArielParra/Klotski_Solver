@@ -90,7 +90,7 @@ void Tabla::imprimirBloques() {
         //se castea para poder imprimir el caracter del ID del bloque
         cout << "Bloque " << (char)this->bloques[i].getID() << "(" << this->bloques[i].getX() << " "
              << this->bloques[i].getY() << " " << this->bloques[i].getAncho() << " " << this->bloques[i].getAlto()
-             << ") " << this->bloques[i].puedeMoverse(PIEZA_PUERTA) << endl;
+             << ") " << this->bloques[i].puedeMoverse(PIEZA_PUERTA) << std::endl;
       }
     }
   }
@@ -149,7 +149,7 @@ void Tabla::imprimirBloques() {
         cout<<RESET_COLOR;
         fflush(stdout);
       }//x
-      //cout << endl;
+      //cout << std::endl;
     }//y
   }//printTabla
 

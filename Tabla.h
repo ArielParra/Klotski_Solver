@@ -19,7 +19,6 @@ using std::unordered_map;
 #include <iostream>
 using std::cout;
 using std::cin;
-using std::endl;
 
 
 class Klotski; //para friend

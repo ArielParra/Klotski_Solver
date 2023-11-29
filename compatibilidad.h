@@ -12,6 +12,9 @@ void pausa() {
 #include <stdlib.h> //scanf(),printf()
 #include <unistd.h> //usleep()
 
+#ifdef delay
+#undef delay
+#endif
 #define delay(ms) usleep(ms * 1000)
 
 /*Teclas compartidas de getch()*/
@@ -44,6 +47,8 @@ void pausa() {
 #define CURSOR_ON          "\033[?25h"
 #define CURSOR_OFF           "\033[?25l"
 #define CLEAR_SCREEN        "\e[1;1H\e[2J"
+
+void clrscr() { printf(CLEAR_SCREEN);fflush(stdout); }
 
 /*Colores ANSI */
 /*Foreground*/
@@ -116,7 +121,6 @@ void pausa() {
 
 
     /*Compatibilidad con conio.h*/
-    void clrscr() { system("cls"); };
     void gotoxy(int x, int y) {
     COORD coordinate;
     coordinate.X = x;
@@ -124,8 +128,16 @@ void pausa() {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
     }
     #include <stdlib.h>
-    void startCompat() { setANSI();setUTF8();std::cout<<CURSOR_OFF;  }
-    void endCompat() { std::cout<<CURSOR_ON; }
+    void startCompat() {
+        std::cout<<CURSOR_OFF;
+        clrscr();
+        setANSI();
+        setUTF8();
+   }
+    void endCompat() { 
+        clrscr();
+        std::cout<<CURSOR_ON;
+    }
 
     /*Compatibilidad con ncurses.h*/
     void reset_shell_mode(void){}
@@ -133,12 +145,12 @@ void pausa() {
     int getmaxX(){
             CONSOLE_SCREEN_BUFFER_INFO csbi;
             GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
-            return(csbi.srWindow.Right-csbi.srWindow.Left+1);
+            return(csbi.srWindow.Right-csbi.srWindow.Left);
         }
     int getmaxY(){
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
-        return(csbi.srWindow.Bottom-csbi.srWindow.Top+1);
+        return(csbi.srWindow.Bottom-csbi.srWindow.Top);
     }
     #define LINES getmaxY() 
     #define COLS getmaxX()
@@ -152,7 +164,6 @@ void pausa() {
     #warning "ncurses.h necesita -lncurses como argumento de compilación"
 
     //Compatibilidad con conio.h
-    void clrscr() { printf(CLEAR_SCREEN); }
 
     void gotoxy(int x, int y) {
     printf("%c[%d;%df", 0x1B, y, x);
@@ -194,6 +205,7 @@ void pausa() {
 
     void startCompat() {   
     std::cout<<CURSOR_OFF; 
+    clrscr();
     initscr();            // Iniciar el modo curses
     keypad(stdscr, TRUE); // Habilita el uso de teclas como las flechas, etc.
     noecho();             // sin echo() de  getch() como en conio.h
@@ -206,6 +218,7 @@ void pausa() {
     echo();
     fflush(stdout);
     endwin();
+    clrscr();
     std::cout<<CURSOR_ON;
     }
 

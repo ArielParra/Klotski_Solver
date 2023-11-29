@@ -5,7 +5,7 @@
 
 ifdef OS  #Detection de Windows 
 	CC := g++.exe
-	FLAGS := -lwinmm 
+	FLAGS := -lwinmm
 	RM := del /Q
 	FixPath = $(subst /,\,$1)
 	UNAME := Windows
@@ -19,11 +19,12 @@ else  	  #*NIX usando GNU make
 	EXT :=
 endif
 
-CFLAGS := -O2 -s -w
+CFLAGS := -O2 -s -w -std=c++17
+#CFLAGS := -O3 -s -w -std=c++17 #optimizacion
 
 Nombre := Klotski-$(UNAME)
 
-$(Nombre): mainSeparacion.cpp Klotski.cpp Tabla.cpp Bloque.cpp Nivel.cpp TiposDeDatos.h FuncionesAuxiliares.h
+$(Nombre): main.cpp Klotski.cpp Tabla.cpp Bloque.cpp Nivel.cpp TiposDeDatos.h FuncionesAuxiliares.h
 	$(CC) -o $(call FixPath,$(Nombre)) $< $(FLAGS) $(CFLAGS)
 
 clean:

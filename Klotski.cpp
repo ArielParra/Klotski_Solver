@@ -57,7 +57,11 @@
       
       //para gotoxy
       unsigned int y=2;
-      unsigned int milisegundos=5;
+      #if defined(_WIN32) || defined(_CYGWIN_) 
+        unsigned int milisegundos=0;
+      #else
+        unsigned int milisegundos=5;
+      #endif
       // se imprime el movimiento
 
       gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero() , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
@@ -66,9 +70,13 @@
       cout << "Hacia la direccion: " << stringDireccion((Direccion)movimientoArealizar->dir) ; //se castea a Direccion para imprimir la Direccion
       gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero() , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
       cout << "Paso numero: " << setw(4) << contadorDePasos++  << " / " <<  contadorDeProfundidad;
-   
+      
       if(contadorDePasos>=contadorDeProfundidad * 0.7){
-        milisegundos=50;
+        #if defined(_WIN32) || defined(_CYGWIN_) 
+          unsigned int milisegundos=0;
+        #else
+          unsigned int milisegundos=50;
+        #endif   
       }
       /*
       //para ver que funcione la regla de pausas
@@ -83,7 +91,9 @@
   }
 
 
-unsigned int Klotski::solucionador() { //funcion principal para encontrar la solucion
+unsigned int Klotski::solucionador() { 
+  //funcion principal para encontrar la solucion, esta inicializa variables 
+  //que son ncesarias para la funcion recursiva buscarSolucion
 
     // Se obtiene el hash inicial del estado del tablero de la solución
     unsigned int estadoInicial = std::hash<vector<vector<char>>>()(this->tablaSolucion.tableroDeJuego, this->tablaSolucion.bloques);
@@ -114,7 +124,7 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
         // Verifica si la pieza actual existe
         if (this->tablaSolucion.bloques[i].getID() == 0) continue;
 
-        // Selecciona una dirección inicial aleatoria
+        // Selecciona una dirección inicial seudo alotoria pero constante
         unsigned int direccionInicial = rand() % 4;
 
         // Recorre las direcciones posibles
