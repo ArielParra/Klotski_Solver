@@ -65,10 +65,9 @@ class Klotski{
     const Tabla tablaOriginal; // tabla original del juego (copia de seguridad)
 
   public:
-
+    Klotski();//constructor vacio
     Klotski(Tabla tablaSolucion);//constructor
     void printMovimientosSolucion(unsigned int estadoDelHash, string nombreNivel);
-    void setTablaSolucion(Tabla tablaSolucion);
     unsigned int solucionador() ;
     unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden);
 

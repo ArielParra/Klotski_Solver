@@ -41,6 +41,7 @@ class Tabla {
   friend class Klotski;
 
   public:
+
     Tabla();
     Tabla(vector<string>& matriz);
     void imprimirBloques();
@@ -48,8 +49,8 @@ class Tabla {
     unsigned int getAltoTablero() const;
     unsigned int getAnchoTablero() const;
     void printTabla() const;
-    bool bloquePuedeMorverse(Direccion dir, char IDdelBloque);
-    void moverBloque(Direccion dir, char IDdelBloque);
+    bool bloquePuedeMorverse(Direccion dir, unsigned char IDdelBloque);
+    void moverBloque(Direccion dir, unsigned char IDdelBloque);
     bool juegoGanado();
 
 };// Clase Tabla

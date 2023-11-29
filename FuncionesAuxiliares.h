@@ -9,6 +9,7 @@
 using std::string; 
 using std::getline;
 using std::stoul;
+using std::to_string;
 
 #include <iostream>
 using std::cout; 
@@ -88,7 +89,7 @@ string entrada; //entrada del usuario
       }
       if (esValido && entrada.size()>linea.size()) {//si no es un numero
           esValido = false;
-          error="Error: Ingrese maximo "+ to_string(linea.size()) +" digitos";
+          error="Error: Ingrese maximo "+ to_string(linea.size()) + " digitos";
       }
       if(error.size()>0){
       gotoxy(getmaxX()/2 - error.size()/2, getmaxY()/2 + 1);

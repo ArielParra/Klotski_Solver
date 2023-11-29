@@ -155,7 +155,7 @@ void Tabla::imprimirBloques() {
 
 
 
-bool Tabla::bloquePuedeMorverse(Direccion dir, char IDdelBloque) {
+bool Tabla::bloquePuedeMorverse(Direccion dir,unsigned char IDdelBloque) {
 // Función que verifica si un bloque puede moverse en una dirección específica
 // Retorna true si el bloque puede moverse en la dirección especificada, false en caso contrario
 
@@ -246,7 +246,7 @@ bool Tabla::bloquePuedeMorverse(Direccion dir, char IDdelBloque) {
   return false;
 }
 
-  void Tabla::moverBloque(Direccion dir, char IDdelBloque){
+  void Tabla::moverBloque(Direccion dir, unsigned char IDdelBloque){
     Bloque& bloqueObjetivo = bloques[IDdelBloque];
 
     switch(dir){

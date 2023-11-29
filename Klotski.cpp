@@ -1,7 +1,8 @@
 #include "Klotski.h"
 
 //public:
-
+  Klotski::Klotski(){};//constructor vacio
+  
   Klotski::Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOriginal(tablaSolucion) {}//constructor  
 
     
