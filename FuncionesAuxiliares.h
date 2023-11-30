@@ -58,12 +58,13 @@ bool esValido = true; //bandera para validar entrada en el do while
 string entrada; //entrada del usuario
   do {
     const string mensaje = "Ingrese el número N para el archivo nivel_N.txt: ";
-    const string linea = "----------";
+    const string lineaDeCaptura = "-----";
     gotoxy(getmaxX()/2 - mensaje.size()/2, getmaxY()/2 - 1);
     cout<<mensaje;
     gotoxy(getmaxX()/2 + mensaje.size()/2 , getmaxY()/2);
-    cout<<linea;
+    cout<<lineaDeCaptura;
     esValido = true;
+    fflush(stdin);
     entrada.clear(); //se limpia la entrada
       //para capturar incluso espacios
       gotoxy(getmaxX()/2 + mensaje.size()/2 , getmaxY()/2 - 1);
@@ -87,11 +88,11 @@ string entrada; //entrada del usuario
           break; // Si se encuentra un carácter no numérico, salir del bucle
         }
       }
-      if (esValido && entrada.size()>linea.size()) {//si no es un numero
+      if (esValido && entrada.size()>lineaDeCaptura.size()) {//si no es un numero
           esValido = false;
-          error="Error: Ingrese maximo "+ to_string(linea.size()) + " digitos";
+          error="Error: Ingrese maximo "+ to_string(lineaDeCaptura.size()) + " digitos";
       }
-      if(error.size()>0){
+      if(error.size()>0){ // debido al stoi
       gotoxy(getmaxX()/2 - error.size()/2, getmaxY()/2 + 1);
       cout<<FG_RED<<error;
       recuadro();

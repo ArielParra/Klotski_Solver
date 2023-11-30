@@ -21,7 +21,7 @@ using std::cin;
 int main(){
   //srand(time(NULL));//resultados inconsistentes
   //para que el numero seudo aleatorio sea constante y de resultados consistentes
-  srand(0);
+  //srand(0);// se cambio por  rotacion deterministica de 0 a 3
   //setANSI(); //para mostrar colores ANSI en windows  
   //setUTF8();//para mostrar caracteres UTF8 en Windows
   startCompat();//incluidos setANSI() y setUTF8()

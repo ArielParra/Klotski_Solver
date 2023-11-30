@@ -70,6 +70,7 @@ class Klotski{
     void printMovimientosSolucion(unsigned int estadoDelHash, string nombreNivel);
     unsigned int solucionador() ;
     unsigned int buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden);
+    unsigned int rotacionDeDireccion(unsigned int num);
 
 };//klotski
 
