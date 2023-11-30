@@ -74,9 +74,9 @@
       
       if(contadorDePasos>=contadorDeProfundidad * 0.7){
         #if defined(_WIN32) || defined(_CYGWIN_) 
-          unsigned int milisegundos=0;
+          milisegundos=0;
         #else
-          unsigned int milisegundos=50;
+          milisegundos=50;
         #endif   
       }
       /*
