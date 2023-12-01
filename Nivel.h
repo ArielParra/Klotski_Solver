@@ -46,7 +46,7 @@ class Nivel {
         bool revisarCaracteres();
         void cambiarVacioPorAmpersand();
 
-        bool buscarRepetidasNoContiguas(int i, int j, char objetivo, vector<vector<bool>>& visitado);
+        bool buscarRepetidasNoContiguas(unsigned int i,unsigned int j,unsigned char objetivo, vector<vector<bool>>& visitado);
         bool tieneRepetidasNoContiguas();
         bool tieneSalidaYsingular();
 

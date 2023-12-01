@@ -113,7 +113,7 @@ void Nivel::cambiarVacioPorAmpersand(){
         }
     }
 }
-bool Nivel::buscarRepetidasNoContiguas(int i, int j, char objetivo, vector<vector<bool>>& visitado) {
+bool Nivel::buscarRepetidasNoContiguas(unsigned int i, unsigned int j,unsigned char objetivo, vector<vector<bool>>& visitado) {
     // Verifica si las coordenadas están fuera de los límites del tablero o si ya se visitó la posición actual
     // Si la letra en la posición actual no coincide con el objetivo, se detiene la búsqueda.
     if (i < 0 || i >= getAltoNivel() || j < 0 || j >= getAnchoNivel() || visitado[i][j] || this->tableroNivel[i][j] != objetivo) {
@@ -154,8 +154,8 @@ bool Nivel::tieneRepetidasNoContiguas() {
     // Inicializa una matriz para rastrear las posiciones visitadas
     vector<vector<bool>> visitado(getAltoNivel(), vector<bool>(getAnchoNivel(), false));
     // Recorre todas las celdas del tablero con DFS
-    for (int i = 0; i < getAltoNivel(); i++) {
-        for (int j = 0; j < getAnchoNivel(); j++) {
+    for (unsigned int i = 0; i < getAltoNivel(); i++) {
+        for (unsigned int j = 0; j < getAnchoNivel(); j++) {
             // Ignora caracteres especiales
             if (this->tableroNivel[i][j] != '#' && this->tableroNivel[i][j] != '&' 
              && this->tableroNivel[i][j] != '*' && this->tableroNivel[i][j] != '-') {
