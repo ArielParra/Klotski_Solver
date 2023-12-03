@@ -2,6 +2,8 @@
 #ifndef Nivel_h
 #define Nivel_h
 
+#include "FuncionesAuxiliares.h"
+
 #include <iostream>
 using std::cin; 
 using std::cout; 

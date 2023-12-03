@@ -204,9 +204,9 @@ void clrscr() { printf(CLEAR_SCREEN);fflush(stdout); }
     #define _getche getche
 
     void startCompat() {   
-    std::cout<<CURSOR_OFF; 
     clrscr();
     initscr();            // Iniciar el modo curses
+    std::cout<<CURSOR_OFF; 
     keypad(stdscr, TRUE); // Habilita el uso de teclas como las flechas, etc.
     noecho();             // sin echo() de  getch() como en conio.h
     cbreak();             // Se para con ctrl +C como en Windows
@@ -217,9 +217,9 @@ void clrscr() { printf(CLEAR_SCREEN);fflush(stdout); }
     refresh();
     echo();
     fflush(stdout);
+    std::cout<<CURSOR_ON;
     endwin();
     clrscr();
-    std::cout<<CURSOR_ON;
     }
 
     //Compatibilidad con ncurses.h

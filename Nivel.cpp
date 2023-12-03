@@ -52,25 +52,38 @@
         ifstream archivo(nombreArchivo);
 
         if (!archivo.is_open()) {
-            //cout << "Error: No se pudo abrir el archivo " << nombreArchivo << endl; //debug
+            const string error1= "Error: No se pudo abrir el archivo: " + this->nombreArchivo;
+            cout<<FG_RED;
+            mensajeCentrado(error1);
             return false;
         }
 
         leerNombreNivel(archivo);
         
         if (!leerDimensionesTablero(archivo)){
-            //cout << "Error: Dimensiones del tablero incorrectas" << endl; //debug
+            const string error2= "Error: Dimensiones del tablero incorrectas en el archivo: " + this->nombreArchivo;
+            cout<<FG_RED;
+            mensajeCentrado(error2);
             return false;
         }
         leerTablero(archivo);
         cambiarVacioPorAmpersand();
         if(!revisarCaracteres()){
+            const string error3= "Error: Caracteres invalidos en el archivo: " + this->nombreArchivo;
+            cout<<FG_RED;
+            mensajeCentrado(error3);
             return false;
         }
         if(tieneRepetidasNoContiguas()){
+            const string error4= "Error: Existen letras repetidas no contiguas en el archivo: " + this->nombreArchivo;
+            cout<<FG_RED;
+            mensajeCentrado(error4);
             return false;
         }
         if(!tieneSalidaYsingular()){
+            const string error5= "Error: No existe Salida o la Pieza Singular en el archivo: " + this->nombreArchivo;
+            cout<<FG_RED;
+            mensajeCentrado(error5);
             return false;
         }
         archivo.close();

@@ -72,6 +72,8 @@ inline void flecha_izquierda() {
   fflush(stdout);
 }
 
+
+
 void primer_pantalla() {
   /*Primer Pantalla*/
   clrscr();
@@ -140,15 +142,8 @@ void tercer_pantalla(int seleccion) {
 void pantalla_Tabla(unsigned int numNivel){
   clrscr();
    Nivel nivel(numNivel);
-  if(!nivel.cargarNivel()){
-    const string errorArchivo="Error: No se pudo abrir '" + nivel.getNombreArchivo() +"'";
-    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
-    cout<<FG_RED<<errorArchivo;fflush(stdout);
-    recuadro();
-    delay(2000);
-    clrscr();
-  }else{
-vector<string> matriz = nivel.getTableroNivel();
+  if(nivel.cargarNivel()){
+    vector<string> matriz = nivel.getTableroNivel();
     Tabla tablaSolucion = Tabla(matriz);
     tablaSolucion.printTabla();
     gotoxy(getmaxX()/2 - nivel.getNombreNivel().size()/2, getmaxY()/2 - tablaSolucion.getAltoTablero()/2 - 2);
@@ -158,37 +153,20 @@ vector<string> matriz = nivel.getTableroNivel();
     cout<<"Alto : "<< nivel.getAltoNivel();
     gotoxy(getmaxX()/2 - tablaSolucion.getAnchoTablero()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 3);
     cout<<"Ancho: "<< nivel.getAnchoNivel();
-    const string errorArchivo="Presione Cualquier tecla para salir";
-    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 5 );
-    cout<<FG_BLUE<<errorArchivo<<RESET_COLOR;fflush(stdout);
-
- 
+    const string salir="Presione Cualquier tecla para salir";
+    gotoxy(getmaxX()/2 - salir.size()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 5 );
+    cout<<FG_BLUE<<salir<<RESET_COLOR;fflush(stdout);
     getch();  
     
     }//nivel cargado
 
 }
 
-void cargueNivelPrimero(){
-    clrscr();
-    const string errorArchivo="Error: Cargue un Nivel primero";
-    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
-    cout<<FG_RED<<errorArchivo;fflush(stdout);
-    recuadro();
-    delay(2000);
-}
 
 void pantalla_Solucion(unsigned int numNivel){
     clrscr();
    Nivel nivel(numNivel);
-  if(!nivel.cargarNivel()){
-    const string errorArchivo="Error: No se pudo abrir '" + nivel.getNombreArchivo() +"'";
-    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
-    cout<<FG_RED<<errorArchivo;fflush(stdout);
-    recuadro();
-    delay(2000);
-    clrscr();
-  }else{
+  if(nivel.cargarNivel()){
    vector<string> matriz = nivel.getTableroNivel();
     Tabla tablaSolucion = Tabla(matriz);
     
@@ -196,24 +174,16 @@ void pantalla_Solucion(unsigned int numNivel){
 
     Klotski klotski = (tablaSolucion);
     unsigned int solucion = klotski.solucionador();
-    string mensajeSolucion;
       clrscr();
       
       if(solucion==0){
-        gotoxy(getmaxX()/2 - 15/2 ,getmaxY()/2 );
-        mensajeSolucion="No Existe Solucion!";
-        gotoxy(getmaxX()/2 - mensajeSolucion.size()/2, getmaxY()/2 );
-        cout<<FG_RED<<mensajeSolucion;fflush(stdout);
-        recuadro();
-        delay(2000);
-        clrscr();
+        const string sinSolucionn="No Existe Solucion!";
+        cout<<FG_RED;
+        mensajeCentrado(sinSolucionn);
       }else{
-        mensajeSolucion="Solucion Encontrada!";
-        gotoxy(getmaxX()/2 - mensajeSolucion.size()/2, getmaxY()/2 );
-        cout<<FG_GREEN<<mensajeSolucion;fflush(stdout);
-        recuadro();
-        delay(2000);
-        clrscr();
+        const string mensajeSolucion="Solucion Encontrada!";
+        cout<<FG_GREEN;
+        mensajeCentrado(mensajeSolucion);
         klotski.printMovimientosSolucion(solucion,nivel.getNombreNivel());//pasos para la solucion
       }
   }
@@ -227,21 +197,21 @@ unsigned int N=validarEntradaInt();
   do{
   Nivel nivel(N);
   if(!nivel.cargarNivel()){
-    const string errorArchivo="Error: No se pudo abrir '" + nivel.getNombreArchivo() +"'";
-    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
-    cout<<FG_RED<<errorArchivo;fflush(stdout);
-    recuadro();
-    delay(2000);
-    clrscr();
     N=validarEntradaInt();
   }else{
+    const string cargado="Nivel '" + to_string(N) + "' cargado con exito!";
+    cout<<FG_GREEN;
+    mensajeCentrado(cargado);
     nivelCargado=true;
     }//nivel cargado
   }while(!nivelCargado);
   return N;
 }
 
+
+
 void menus(){
+ const string error="Error: Cargue un Nivel primero";
  int pantalla = 1, seleccion = 0;
  int numNivel=-1;
   bool salir = false;
@@ -291,14 +261,16 @@ void menus(){
             if(numNivel!=-1){
               pantalla_Tabla(numNivel);
             }else{
-              cargueNivelPrimero();
+              cout<<FG_RED;
+              mensajeCentrado(error);
             }
               break;
           case 2:
           if(numNivel!=-1){
               pantalla_Solucion(numNivel);
           }else{
-              cargueNivelPrimero();
+              cout<<FG_RED;
+              mensajeCentrado(error);
             }
           break;
           case 3: //salir

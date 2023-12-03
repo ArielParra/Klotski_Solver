@@ -52,6 +52,15 @@ fflush(stdout);
 cout<<RESET_COLOR;
 }
 
+void mensajeCentrado(const string mensaje){
+  clrscr();
+  gotoxy(getmaxX()/2 - mensaje.size()/2, getmaxY()/2 + 1);
+  cout<<mensaje;fflush(stdout);
+  recuadro();
+  delay(2000);
+  clrscr();
+}
+
 unsigned int validarEntradaInt(){
 //funcion auxiliar para validar entrada de numeros
 bool esValido = true; //bandera para validar entrada en el do while
@@ -89,22 +98,19 @@ string entrada; //entrada del usuario
         }
       }
       if (esValido && entrada.size()>lineaDeCaptura.size()) {//si no es un numero
-          esValido = false;
-          error="Error: Ingrese maximo "+ to_string(lineaDeCaptura.size()) + " digitos";
+        esValido = false;
+        error="Error: Ingrese maximo "+ to_string(lineaDeCaptura.size()) + " digitos";
       }
       if(error.size()>0){ // debido al stoi
-      gotoxy(getmaxX()/2 - error.size()/2, getmaxY()/2 + 1);
-      cout<<FG_RED<<error;
-      recuadro();
-      gotoxy(1,1);//para el cursor
-      delay(2000);
-      clrscr();
+      cout<<FG_RED;
+      mensajeCentrado(error);
       }
       
     }while (!esValido);//mientras no sea valido se pide por mas numeros
     
 return std::stoi(entrada);//se convierte a int
 }
+
 
 
 #endif //FuncionesAuxiliares_h
