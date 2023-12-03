@@ -133,7 +133,7 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
     this->profundidad++; // Aumenta la profundidad por cada llamada recursiva (inicia en 1)
 
     // Recorre todas las piezas en el tablero
-    for (unsigned char i = PIEZA_SINGULAR; i != PIEZA_PARED ; i = (i + 1) % LIMITE_DE_UNSIGNED_CHAR) {//se usa unsigned char para evitar overflow
+    for (char i = PIEZA_SINGULAR; i != PIEZA_PARED ; i = (i + 1) % LIMITE_DE_CHAR ) {//se usa char para evitar overflow
       
       // Verifica si la pieza actual existe
       if (this->tablaSolucion.bloques[i].getID() == 0) continue;

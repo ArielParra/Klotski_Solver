@@ -3,6 +3,8 @@
 #define Tipos_de_datos_h
 
 #define LIMITE_DE_UNSIGNED_CHAR 255 // 8 bits sin signo
+#define LIMITE_DE_CHAR 127 // 8 bits con signo
+
 
 enum TipoDeSolucion {
   //Tipo de dato para saber en que estado de la solucion esta 
@@ -19,7 +21,7 @@ class Posicion{
     }
 };
 
-enum TipoDePieza : unsigned char{
+enum TipoDePieza : char{
   //los tipos de pieza del tablero del tipo char sin contar letras ASCII aun
   PIEZA_VACIA    = '&',
   PIEZA_PARED    = '#',
@@ -42,8 +44,7 @@ class OrdenDeMovimiento{
   
   //usado para guardar una direccion e id de un bloque, usada principalmente para solucion() y printMovimientosSolucion()
   Direccion dir;
-  //originalmente id era char, pero se cambio a unsigned char para evitar segmentation fault
-  unsigned char id;
+  char id;
 
   bool operator==(const OrdenDeMovimiento& orden) const {//sobrecarga de operador de igualdad booleana
     return (dir == orden.dir) && (id == orden.id);

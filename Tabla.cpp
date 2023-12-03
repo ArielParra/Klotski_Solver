@@ -8,7 +8,7 @@ Tabla::Tabla(){}///constructor vacio
     baseDeltablero(matriz.size(), vector<char>(matriz[0].size(),' ')) {
 
     // vector booleano para rastrear elementos encontrados en la matriz
-    vector <bool> encontrados(LIMITE_DE_UNSIGNED_CHAR, false); 
+    vector <bool> encontrados(LIMITE_DE_CHAR , false); 
     //aparte que si no lo defino da este error: expression must be a pointer to a complete object type
     
     /*
@@ -85,7 +85,7 @@ Tabla::Tabla(){}///constructor vacio
 
 
 void Tabla::imprimirBloques() {
-    for (unsigned int i = 0; i < LIMITE_DE_UNSIGNED_CHAR; i++) {
+    for (unsigned int i = 0; i < LIMITE_DE_CHAR ; i++) {
       if (this->bloques[i].getID() != 0) {
         //se castea para poder imprimir el caracter del ID del bloque
         cout << "Bloque " << (char)this->bloques[i].getID() << "(" << this->bloques[i].getX() << " "
@@ -155,7 +155,7 @@ void Tabla::imprimirBloques() {
 
 
 
-bool Tabla::bloquePuedeMorverse(Direccion dir,unsigned char IDdelBloque) {
+bool Tabla::bloquePuedeMorverse(Direccion dir,char IDdelBloque) {
 // Función que verifica si un bloque puede moverse en una dirección específica
 // Retorna true si el bloque puede moverse en la dirección especificada, false en caso contrario
 
@@ -246,7 +246,7 @@ bool Tabla::bloquePuedeMorverse(Direccion dir,unsigned char IDdelBloque) {
   return false;
 }
 
-  void Tabla::moverBloque(Direccion dir, unsigned char IDdelBloque){
+  void Tabla::moverBloque(Direccion dir, char IDdelBloque){
     Bloque& bloqueObjetivo = bloques[IDdelBloque];
 
     switch(dir){

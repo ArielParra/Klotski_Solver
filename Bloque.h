@@ -15,7 +15,7 @@ private:
   bool esPiezaSingular;
   // id es la identificación única de cada bloque en el tablero del juego
   // por ejemplo letras ASCII y los otros caracteres
-  unsigned char id; 
+  char id; 
   // reduccion asigna un valor unico a cada combinación de ancho y alto de un bloque específico
   unsigned int reduccion;
   

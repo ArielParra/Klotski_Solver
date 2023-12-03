@@ -14,55 +14,7 @@
 #include "Tabla.cpp"
 */
 
-void elegirNivel(){
-clrscr();
-bool nivelCargado=false;//para el while
 
-  do{
-  unsigned int N=validarEntradaInt();
-  Nivel nivel(N);
-  if(!nivel.cargarNivel()){
-    const string errorArchivo="Error: No se pudo abrir '" + nivel.getNombreArchivo() +"'";
-    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
-    cout<<FG_RED<<errorArchivo;fflush(stdout);
-    recuadro();
-    delay(2000);
-    clrscr();
-  }else{
-    nivelCargado=true;
-    /*cout<< "Nombre del Nivel: "<< nivel.getNombreNivel() <<endl;
-    cout << "Tabla del archivo" << nivel.getNombreArchivo() << endl;
-    cout << "getAnchoNivel " << nivel.getAnchoNivel() << endl;
-    cout << "getAltoNivel " << nivel.getAltoNivel() << endl;*/
-    vector<string> matriz3 = nivel.getTableroNivel();
-    Tabla tablaSolucion = Tabla(matriz3);
-    
-    //tablaSolucion.imprimirBloques();
-
-    Klotski klotski = (tablaSolucion);
-    unsigned int solucion = klotski.solucionador();
-    string mensajeSolucion;
-      clrscr();
-      if(solucion==0){
-        gotoxy(getmaxX()/2 - 15/2 ,getmaxY()/2 );
-        mensajeSolucion="No Existe Solucion!";
-        gotoxy(getmaxX()/2 - mensajeSolucion.size()/2, getmaxY()/2 );
-        cout<<FG_RED<<mensajeSolucion;fflush(stdout);
-        recuadro();
-        delay(2000);
-        clrscr();
-      }else{
-        mensajeSolucion="Solucion Encontrada!";
-        gotoxy(getmaxX()/2 - mensajeSolucion.size()/2, getmaxY()/2 );
-        cout<<FG_GREEN<<mensajeSolucion;fflush(stdout);
-        recuadro();
-        delay(2000);
-        clrscr();
-        klotski.printMovimientosSolucion(solucion,nivel.getNombreNivel());//pasos para la solucion
-      }
-    }//nivel cargado
-  }while(!nivelCargado);
-}
 
 inline void logouaa(){
 const int altura_grafico=16,ancho_grafico=43;
@@ -137,19 +89,161 @@ void segunda_pantalla() {
   clrscr();
   flecha_izquierda();
   flecha_derecha();
-  cout<<"segunda pantalla";
+  const int ancho_grafico = 93,altura_grafico=12;
+
+  int x = (getmaxX() / 2) - (ancho_grafico / 2),y = (getmaxY() / 2) - (altura_grafico/2);
+  gotoxy(x, y++); cout<<"░██████╗░█████╗░██╗░░░░░██╗░░░██╗░█████╗░██╗░█████╗░███╗░░██╗░█████╗░██████╗░░█████╗░██████╗░";
+  gotoxy(x, y++); cout<<"██╔════╝██╔══██╗██║░░░░░██║░░░██║██╔══██╗██║██╔══██╗████╗░██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗";
+  gotoxy(x, y++); cout<<"╚█████╗░██║░░██║██║░░░░░██║░░░██║██║░░╚═╝██║██║░░██║██╔██╗██║███████║██║░░██║██║░░██║██████╔╝";
+  gotoxy(x, y++); cout<<"░╚═══██╗██║░░██║██║░░░░░██║░░░██║██║░░██╗██║██║░░██║██║╚████║██╔══██║██║░░██║██║░░██║██╔══██╗";
+  gotoxy(x, y++); cout<<"██████╔╝╚█████╔╝███████╗╚██████╔╝╚█████╔╝██║╚█████╔╝██║░╚███║██║░░██║██████╔╝╚█████╔╝██║░░██║";
+  gotoxy(x, y++); cout<<"╚═════╝░░╚════╝░╚══════╝░╚═════╝░░╚════╝░╚═╝░╚════╝░╚═╝░░╚══╝╚═╝░░╚═╝╚═════╝░░╚════╝░╚═╝░░╚═╝";
+  gotoxy(x, y++); cout<<"██████╗░███████╗  ██╗░░██╗██╗░░░░░░█████╗░████████╗░██████╗██╗░░██╗██╗";
+  gotoxy(x, y++); cout<<"██╔══██╗██╔════╝  ██║░██╔╝██║░░░░░██╔══██╗╚══██╔══╝██╔════╝██║░██╔╝██║";
+  gotoxy(x, y++); cout<<"██║░░██║█████╗░░  █████═╝░██║░░░░░██║░░██║░░░██║░░░╚█████╗░█████═╝░██║";
+  gotoxy(x, y++); cout<<"██║░░██║██╔══╝░░  ██╔═██╗░██║░░░░░██║░░██║░░░██║░░░░╚═══██╗██╔═██╗░██║";
+  gotoxy(x, y++); cout<<"██████╔╝███████╗  ██║░╚██╗███████╗╚█████╔╝░░░██║░░░██████╔╝██║░╚██╗██║";
+  gotoxy(x, y++); cout<<"╚═════╝░╚══════╝  ╚═╝░░╚═╝╚══════╝░╚════╝░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝╚═╝";
   fflush(stdout);
 }
-void tercer_pantalla() {
+
+void tercer_pantalla(int seleccion) {
   /*tercer Pantalla*/
   clrscr();
   flecha_izquierda();
-  cout<<"tercer pantalla, presiona enter para captura de nivel";
   fflush(stdout);
+  const char *colores[] = {FG_CYAN, FG_MAGENTA, FG_BLUE, FG_YELLOW};
+  const char *opciones1[] = {"█▀▀ ▄▀█ █▀█ █▀▀ ▄▀█ █▀█",  "▀█▀ ▄▀█ █▄▄ █   █▀▀ █▀█ █▀█","█▀ █▀█ █   █ █ █▀▀ █ █▀█ █▄ █","█▀ ▄▀█ █   █ █▀█"};
+  const char *opciones2[] = {"█▄▄ █▀█ █▀▄ █▄█ █▀█ █▀▄",  " █  █▀█ █▄█ █▄▄ ██▄ █▀▄ █▄█","▄█ █▄█ █▄▄ █▄█ █▄▄ █ █▄█ █ ▀█","▄█ █▀█ █▄▄ █ █▀▄"};
+
+  const int altura_grafico = 10, ancho_grafico = 58;
+  int x = (getmaxX() / 2) - (ancho_grafico / 2),y = (getmaxY() / 2) - (altura_grafico/2);
+ 
+  for (int i = 0; i < 4; i++) {
+    cout<<colores[i];
+    if (i == seleccion) {
+      gotoxy(x,y++);cout << "    ▀▄  " << opciones1[i];
+      gotoxy(x,y++);cout << "▀▀▀▀▀█▀ " << opciones2[i];
+      gotoxy(x,y++);cout << "    ▀   " <<RESET_COLOR;
+      gotoxy(x,y++);
+    } else {
+      gotoxy(x,y++);cout << "        " << opciones1[i]; 
+      gotoxy(x,y++);cout << "        " <<opciones2[i];
+      gotoxy(x,y++);cout << "        " <<RESET_COLOR;
+      gotoxy(x,y++);
+    }
+  }
+  fflush(stdout);
+
+}
+
+void pantalla_Tabla(unsigned int numNivel){
+  clrscr();
+   Nivel nivel(numNivel);
+  if(!nivel.cargarNivel()){
+    const string errorArchivo="Error: No se pudo abrir '" + nivel.getNombreArchivo() +"'";
+    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
+    cout<<FG_RED<<errorArchivo;fflush(stdout);
+    recuadro();
+    delay(2000);
+    clrscr();
+  }else{
+vector<string> matriz = nivel.getTableroNivel();
+    Tabla tablaSolucion = Tabla(matriz);
+    tablaSolucion.printTabla();
+    gotoxy(getmaxX()/2 - nivel.getNombreNivel().size()/2, getmaxY()/2 - tablaSolucion.getAltoTablero()/2 - 2);
+    cout<<nivel.getNombreNivel();
+ 
+    gotoxy(getmaxX()/2 - tablaSolucion.getAnchoTablero()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 2);
+    cout<<"Alto : "<< nivel.getAltoNivel();
+    gotoxy(getmaxX()/2 - tablaSolucion.getAnchoTablero()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 3);
+    cout<<"Ancho: "<< nivel.getAnchoNivel();
+    const string errorArchivo="Presione Cualquier tecla para salir";
+    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 5 );
+    cout<<FG_BLUE<<errorArchivo<<RESET_COLOR;fflush(stdout);
+
+ 
+    getch();  
+    
+    }//nivel cargado
+
+}
+
+void cargueNivelPrimero(){
+    clrscr();
+    const string errorArchivo="Error: Cargue un Nivel primero";
+    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
+    cout<<FG_RED<<errorArchivo;fflush(stdout);
+    recuadro();
+    delay(2000);
+}
+
+void pantalla_Solucion(unsigned int numNivel){
+    clrscr();
+   Nivel nivel(numNivel);
+  if(!nivel.cargarNivel()){
+    const string errorArchivo="Error: No se pudo abrir '" + nivel.getNombreArchivo() +"'";
+    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
+    cout<<FG_RED<<errorArchivo;fflush(stdout);
+    recuadro();
+    delay(2000);
+    clrscr();
+  }else{
+   vector<string> matriz = nivel.getTableroNivel();
+    Tabla tablaSolucion = Tabla(matriz);
+    
+    //tablaSolucion.imprimirBloques();
+
+    Klotski klotski = (tablaSolucion);
+    unsigned int solucion = klotski.solucionador();
+    string mensajeSolucion;
+      clrscr();
+      
+      if(solucion==0){
+        gotoxy(getmaxX()/2 - 15/2 ,getmaxY()/2 );
+        mensajeSolucion="No Existe Solucion!";
+        gotoxy(getmaxX()/2 - mensajeSolucion.size()/2, getmaxY()/2 );
+        cout<<FG_RED<<mensajeSolucion;fflush(stdout);
+        recuadro();
+        delay(2000);
+        clrscr();
+      }else{
+        mensajeSolucion="Solucion Encontrada!";
+        gotoxy(getmaxX()/2 - mensajeSolucion.size()/2, getmaxY()/2 );
+        cout<<FG_GREEN<<mensajeSolucion;fflush(stdout);
+        recuadro();
+        delay(2000);
+        clrscr();
+        klotski.printMovimientosSolucion(solucion,nivel.getNombreNivel());//pasos para la solucion
+      }
+  }
+}
+   
+
+unsigned int elegirNivel(){
+clrscr();
+bool nivelCargado=false;//para el while
+unsigned int N=validarEntradaInt();
+  do{
+  Nivel nivel(N);
+  if(!nivel.cargarNivel()){
+    const string errorArchivo="Error: No se pudo abrir '" + nivel.getNombreArchivo() +"'";
+    gotoxy(getmaxX()/2 - errorArchivo.size()/2, getmaxY()/2 + 1);
+    cout<<FG_RED<<errorArchivo;fflush(stdout);
+    recuadro();
+    delay(2000);
+    clrscr();
+    N=validarEntradaInt();
+  }else{
+    nivelCargado=true;
+    }//nivel cargado
+  }while(!nivelCargado);
+  return N;
 }
 
 void menus(){
  int pantalla = 1, seleccion = 0;
+ int numNivel=-1;
   bool salir = false;
   while (!salir) {
 
@@ -161,36 +255,62 @@ void menus(){
       segunda_pantalla();
       break;
     case 3:
-      tercer_pantalla();
+      tercer_pantalla(seleccion);
       break;
     }
 
     switch (getch()) {
-    case KEY_LEFT:
-      if (pantalla > 1) {
-        pantalla--;
-      }
+      case KEY_LEFT:
+        if (pantalla > 1) {
+          pantalla--;
+        }
+        break;
+      case KEY_RIGHT:
+        if (pantalla < 3) {
+          pantalla++;
+        }
+        break;
+      case KEY_UP:
+          if (pantalla == 3 && seleccion > 0) {
+            seleccion--;
+          }
+
+          break;
+      case KEY_DOWN:
+          if (pantalla == 3 && seleccion < 3) {
+            seleccion++;
+          }
+          break;
+      case KEY_ENTER:
+        if (pantalla == 3) {
+          switch (seleccion) {
+          case 0: //niveles
+            numNivel=elegirNivel();
+            break;
+          case 1:
+            if(numNivel!=-1){
+              pantalla_Tabla(numNivel);
+            }else{
+              cargueNivelPrimero();
+            }
+              break;
+          case 2:
+          if(numNivel!=-1){
+              pantalla_Solucion(numNivel);
+          }else{
+              cargueNivelPrimero();
+            }
+          break;
+          case 3: //salir
+            endCompat();
+            exit(0);
+            break;
+        }
       break;
-    case KEY_RIGHT:
-      if (pantalla < 3) {
-        pantalla++;
-      }
-      break;
-    case KEY_UP:
-      if (pantalla == 3 && seleccion > 0) {
-        seleccion--;
-      }
-      break;
-    case KEY_DOWN:
-      if (pantalla == 3 && seleccion < 4) {
-        seleccion++;
-      }
-      break;
-    case KEY_ENTER: // windows
-      if (pantalla == 3) {
-        salir=true;
-      }
-      break;
-      }//getch
-    }// while
+      }//if
+    }// getch
+  }//while
 }
+
+
+
