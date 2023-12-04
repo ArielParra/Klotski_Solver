@@ -26,7 +26,6 @@ int main(){
   //setUTF8();//para mostrar caracteres UTF8 en Windows
   startCompat();//incluidos setANSI() y setUTF8()
   menus();
-  elegirNivel();
   endCompat();
   return 0;
 }

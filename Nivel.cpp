@@ -74,7 +74,8 @@
             mensajeCentrado(error3);
             return false;
         }
-        if(tieneRepetidasNoContiguas()){
+        //if(tieneRepetidasNoContiguas()){
+        if(false){//temporal
             const string error4= "Error: Existen letras repetidas no contiguas en el archivo: " + this->nombreArchivo;
             cout<<FG_RED;
             mensajeCentrado(error4);
@@ -170,9 +171,7 @@ bool Nivel::tieneRepetidasNoContiguas() {
     for (unsigned int i = 0; i < getAltoNivel(); i++) {
         for (unsigned int j = 0; j < getAnchoNivel(); j++) {
             // Ignora caracteres especiales
-            if (this->tableroNivel[i][j] != '#' && this->tableroNivel[i][j] != '&' 
-             && this->tableroNivel[i][j] != '*' && this->tableroNivel[i][j] != '-'  
-             && this->tableroNivel[i][j] != '.' && isalpha(this->tableroNivel[i][j])) {
+            if (this->tableroNivel[i][j] == '*' || isalpha(this->tableroNivel[i][j])) {
                 // Llama a la función DFS para buscar letras repetidas no contiguas
                 char objetivo = this->tableroNivel[i][j];
                 if (buscarRepetidasNoContiguas(i, j, objetivo, visitado)) {
