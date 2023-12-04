@@ -1,0 +1,9 @@
+Nivel 16
+9 2
+**&..
+**&..
+
+
+
+
+/*solucion mas simple*/

@@ -13,7 +13,7 @@ using std::setw;
 #include <stack>//pilas std
 using std::stack;
 
-#define LIMITE_DE_PROFUNDIDAD 100000  // limite de profundidad para evitar segmentation fault
+#define LIMITE_DE_PROFUNDIDAD 1000000000  // limite de profundidad para evitar segmentation fault
 
 namespace std {//implentacion de la libreria boost Hash para la matriz
 
