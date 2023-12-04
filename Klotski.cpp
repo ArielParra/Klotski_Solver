@@ -7,7 +7,6 @@ Klotski::Klotski(Tabla tablaSolucion) : tablaSolucion(tablaSolucion), tablaOrigi
 
   
 void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombreNivel){
-  
   // se obtiene la profundidad de la solucion
   unsigned int profundidadDestino = this->memoria.at(estadoDelHash).profundidad;
 
@@ -61,7 +60,7 @@ void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombre
     #if defined(_WIN32) || defined(_CYGWIN_) 
       unsigned int milisegundos=0;
     #else
-      unsigned int milisegundos=5;
+      unsigned int milisegundos=100;
     #endif
     // se imprime el movimiento
 
@@ -72,13 +71,6 @@ void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombre
     gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero() , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
     cout << "Paso numero: " << setw(4) << contadorDePasos++  << " / " <<  contadorDeProfundidad;
     
-    if(contadorDePasos>=contadorDeProfundidad * 0.7){//cuando llega al 70% de la solucion imprime más lento
-      #if defined(_WIN32) || defined(_CYGWIN_) 
-        milisegundos=0;
-      #else
-        milisegundos=50;
-      #endif   
-    }
     /*
     //para ver que funcione la regla de pausas
     gotoxy(getmaxX()/2 - tablaSolucionFinal.getAnchoTablero() , getmaxY()/2 + tablaSolucionFinal.getAltoTablero()/2 + y++);
@@ -89,6 +81,10 @@ void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombre
 
     //}//bloque si se puede mover porque es la solucion, implicito
   }
+    const string salir="Presione Cualquier tecla para salir";
+    gotoxy(getmaxX()/2 - salir.size()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 5 );
+    cout<<FG_BLUE<<salir<<RESET_COLOR;fflush(stdout);
+    getch();  
 }
 
 

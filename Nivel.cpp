@@ -74,13 +74,14 @@
             mensajeCentrado(error3);
             return false;
         }
-        //if(tieneRepetidasNoContiguas()){
-        if(false){//temporal
+        /*
+        if(tieneRepetidasNoContiguas()){
             const string error4= "Error: Existen letras repetidas no contiguas en el archivo: " + this->nombreArchivo;
             cout<<FG_RED;
             mensajeCentrado(error4);
             return false;
         }
+        */
         if(!tieneSalidaYsingular()){
             const string error5= "Error: No existe Salida o la Pieza Singular en el archivo: " + this->nombreArchivo;
             cout<<FG_RED;
@@ -126,62 +127,6 @@ void Nivel::cambiarVacioPorAmpersand(){
             }
         }
     }
-}
-bool Nivel::buscarRepetidasNoContiguas(unsigned int i, unsigned int j,unsigned char objetivo, vector<vector<bool>>& visitado) {
-    // Verifica si las coordenadas están fuera de los límites del tablero o si ya se visitó la posición actual
-    // Si la letra en la posición actual no coincide con el objetivo, se detiene la búsqueda.
-    if (i < 0 || i >= getAltoNivel() || j < 0 || j >= getAnchoNivel() || visitado[i][j] || this->tableroNivel[i][j] != objetivo) {
-        return false;
-    }
-
-    // Marca la posición actual como visitada
-    visitado[i][j] = true;
-
-    // Define los movimientos posibles (arriba, abajo, izquierda, derecha)
-    int movimientos[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
-    // Explora los vecinos de la posición actual
-    for (unsigned int k = 0; k < 4; k++) {
-        int ni = i + movimientos[k][0];
-        int nj = j + movimientos[k][1];
-
-        // Verifica si el vecino está dentro de los límites del tablero y tiene la misma letra que el objetivo
-        if (ni >= 0 && ni < getAltoNivel() && nj >= 0 && nj < getAnchoNivel() && this->tableroNivel[ni][nj] == objetivo) {
-            // Si el vecino no ha sido visitado, realiza una llamada recursiva a la función DFS
-            if (!visitado[ni][nj]) {
-                if (buscarRepetidasNoContiguas(ni, nj, objetivo, visitado)) {
-                    return true;  // Si se encuentra una letra repetida no contigua, se detiene la búsqueda
-                }
-            } else {
-                // Si el vecino ya ha sido visitado, significa que la letra repetida no es contigua
-                return true;
-            }
-        }
-    }
-
-    // Si se han explorado todos los vecinos sin encontrar una letra repetida no contigua, retorna false
-    return false;
-}
-#include<iostream>
-// Función principal para verificar si hay letras repetidas no contiguas en el tablero
-bool Nivel::tieneRepetidasNoContiguas() {
-    // Inicializa una matriz para rastrear las posiciones visitadas
-    vector<vector<bool>> visitado(getAltoNivel(), vector<bool>(getAnchoNivel(), false));
-    // Recorre todas las celdas del tablero con DFS
-    for (unsigned int i = 0; i < getAltoNivel(); i++) {
-        for (unsigned int j = 0; j < getAnchoNivel(); j++) {
-            // Ignora caracteres especiales
-            if (this->tableroNivel[i][j] == '*' || isalpha(this->tableroNivel[i][j])) {
-                // Llama a la función DFS para buscar letras repetidas no contiguas
-                char objetivo = this->tableroNivel[i][j];
-                if (buscarRepetidasNoContiguas(i, j, objetivo, visitado)) {
-                    return false;  // Si se encuentra una letra repetida no contiguas
-                }
-            }
-        }
-    }
-    // Si no se encontraron letras repetidas no contiguas
-    return true;
 }
 
 bool Nivel::tieneSalidaYsingular(){

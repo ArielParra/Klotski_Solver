@@ -1,15 +1,14 @@
 Nivel 13
 10 11
 &&&&&&&&&&
-&&&&&&&&&&
+&&&&&&&&&ñ
 &&######&&
 &&#a**b#&&
 &&#a**b#&&
 &&#cdde#&&
-&&#CfgE#&&
-&&#a&&B#&&
+&&#cfge#&&
+&&#a&&b#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..
-/*Esto prueba letras repetidas*/
 /*ERROR: no se puede abrir el archivo*/

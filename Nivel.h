@@ -42,13 +42,11 @@ class Nivel {
     public:
         Nivel();
         Nivel(unsigned int numNivel); 
-
         bool cargarNivel();
         
         bool revisarCaracteres();
         void cambiarVacioPorAmpersand();
 
-        bool buscarRepetidasNoContiguas(unsigned int i,unsigned int j,unsigned char objetivo, vector<vector<bool>>& visitado);
         bool tieneRepetidasNoContiguas();
         bool tieneSalidaYsingular();
 
