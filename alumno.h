@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ID.h"
+#include "id.h"
 using namespace std;
 class Alumno : public ID {
 private:
