@@ -1,4 +1,7 @@
-
+#include "maestro.cpp"
+#include "alumno.cpp"
+#include "persona.cpp"
+#include "id.cpp"
 #include "Nivel.cpp"
 //#define DEBUG_LINUX //debug para imprimir en Klotski solucionador
 
@@ -76,14 +79,35 @@ inline void flecha_izquierda() {
 
 void primer_pantalla() {
   /*Primer Pantalla*/
+  Maestro blanca("Blanca Guadalupe Estrada Renteria", "Estructuras de Datos");
+  Maestro juan("Juan Pedro Cisneros Santoyo      ", "Programacion II");
+  Alumno miguel("Miguel Ángel Batres Luna   ", 350553, 3, 'A');
+    Alumno alan("Alan Gael Gallardo Jiménez ", 351914, 3, 'A');
+ Alumno ernesto("Luis Ernesto López Cárdenas", 350346, 3, 'A');
+   Alumno ariel("Ariel Emilio Parra Martínez", 280862, 3, 'A');
+
   clrscr();
   flecha_derecha();
   const unsigned int altura_grafico = 16, ancho_grafico = 43;
-  const unsigned int x = (getmaxX() / 3) + (ancho_grafico / 3);
+  unsigned int x = (getmaxX() / 3) + (ancho_grafico / 3);
   unsigned int y = (getmaxY() / 2) - (altura_grafico / 3);
   logouaa();
-  gotoxy(x, y++);
-
+  x = (getmaxX()/3) +20;
+  y = (getmaxY() / 2) - (altura_grafico / 3);
+  gotoxy(x,y++);
+  blanca.imprimirInformacion();
+  gotoxy(x,y++);
+  juan.imprimirInformacion();
+  gotoxy(x,y++);
+  gotoxy(x,y++);
+  miguel.imprimirInformacion();
+  gotoxy(x,y++);
+  alan.imprimirInformacion();
+  gotoxy(x,y++);
+  ernesto.imprimirInformacion();
+  gotoxy(x,y++);
+  ariel.imprimirInformacion();
+  gotoxy(x,y++);
   fflush(stdout);
 }
 void segunda_pantalla() {
