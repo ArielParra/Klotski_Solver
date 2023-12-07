@@ -1,7 +1,8 @@
-#pragma once
+#pragma once //para que no de problemas de compilacion por inclusion multiple
 
+#include "compatibilidad.h"
 #include "id.h"
-using namespace std;
+
 class Alumno : public ID {
 private:
     unsigned int semestre;

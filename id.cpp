@@ -1,6 +1,5 @@
 #include "id.h"
-#include <iostream>
-using namespace std;
+
 ID::ID() : Persona(""), id(0) {}
 
 ID::ID(const string& nombre, unsigned int id) : Persona(nombre), id(id) {}

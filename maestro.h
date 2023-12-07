@@ -1,7 +1,7 @@
-#pragma once
+#pragma once //para que no de problemas de compilacion por inclusion multiple
 
 #include "persona.h"
-using namespace std;
+#include "compatibilidad.h"
 
 class Maestro : public Persona {
 private:

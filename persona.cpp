@@ -1,12 +1,11 @@
 #include "persona.h"
-#include <iostream>
-using namespace std;
+
 Persona::Persona() : nombre("") {}
 
 Persona::Persona(const string& nombre) : nombre(nombre) {}
 
 void Persona::imprimirInformacion() const {
-    cout << getNombre() << endl;
+    cout << getNombre();
 }
 
 void Persona::setNombre(string nombre) {

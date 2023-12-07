@@ -1,7 +1,7 @@
-#pragma once
+#pragma once //para que no de problemas de compilacion por inclusion multiple
 
 #include "persona.h"
-using namespace std;
+
 class ID : public Persona {
 private:
     unsigned int id;

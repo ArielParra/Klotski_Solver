@@ -1,6 +1,5 @@
 #include "alumno.h"
-#include <iostream>
-using namespace std;
+
 Alumno::Alumno() : ID(), semestre(0), grupo(' ') {}
 
 Alumno::Alumno(const string& nombre, unsigned int id, unsigned int semestre, char grupo)

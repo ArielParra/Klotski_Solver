@@ -57,7 +57,7 @@ void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombre
     //para gotoxy
     unsigned int y=2;
     #if defined(_WIN32) || defined(_CYGWIN_) 
-      unsigned int milisegundos=0;
+      unsigned int milisegundos=50;
     #else
       unsigned int milisegundos=100;
     #endif
@@ -79,11 +79,7 @@ void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombre
     delay(milisegundos);//para poder imprimir
 
     //}//bloque si se puede mover porque es la solucion, implicito
-  }
-    const string salir="Presione Cualquier tecla para salir";
-    gotoxy(getmaxX()/2 - salir.size()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 5 );
-    cout<<FG_BLUE<<salir<<RESET_COLOR;fflush(stdout);
-    getch();  
+  } 
 }
 
 

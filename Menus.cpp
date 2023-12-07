@@ -259,6 +259,10 @@ void Menus::pantalla_Solucion(unsigned int numNivel){
         cout<<FG_GREEN;
         mensajeCentrado(mensajeSolucion);
         klotski.printMovimientosSolucion(solucion,nivel.getNombreNivel());//pasos para la solucion
+        const string regresar="Presione Cualquier tecla para regresar";
+        gotoxy(getmaxX()/2 - regresar.size()/2, getmaxY()/2 + tablaSolucion.getAltoTablero()/2 + 5 );
+        cout<<FG_BLUE<<regresar<<RESET_COLOR;fflush(stdout);
+        getch(); 
       }
   }
 }
