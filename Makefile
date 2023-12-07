@@ -19,8 +19,8 @@ else  	  #*NIX usando GNU make
 	EXT :=
 endif
 
-CFLAGS := -O2 -s -w -std=c++17
-#CFLAGS := -O3 -s -w -std=c++17 #optimizacion
+#CFLAGS := -O2 -s -w -std=c++17
+CFLAGS := -O3 -s -w -std=c++17 #optimizacion O3
 
 Nombre := Klotski-$(UNAME)
 

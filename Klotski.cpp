@@ -16,7 +16,7 @@ void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombre
   // se crea una pila (stack) para almacenar los movimientos de la solucion
   stack<OrdenDeMovimiento*> movimientosSolucion;//ocupa estructura LIFO 
 
-  unsigned int contadorDeProfundidad = 0;
+  unsigned int contadorDeProfundidad = 1;
 
   // se obtiene el ultimo hash de la solucion
   Solucion* solucionActual = &this->memoria.at(estadoDelHash);
@@ -36,7 +36,7 @@ void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombre
   // se agrega el ultimo movimiento a la pila (stack)
   movimientosSolucion.push(&solucionActual->movimiento);
 
-  unsigned int contadorDePasos = 0;// similar a contadorDeProfundidad pero para los pasos de la  pila (stack)
+  unsigned int contadorDePasos = 1;// similar a contadorDeProfundidad pero para los pasos de la  pila (stack)
 
   while(movimientosSolucion.size()){// imprime la pila (stack) de movimientos
     // se obtiene el movimiento a realizar
@@ -51,7 +51,6 @@ void Klotski::printMovimientosSolucion(unsigned int estadoDelHash, string nombre
     
     gotoxy(getmaxX()/2 - nombreNivel.size()/2, getmaxY()/2 - tablaSolucionFinal.getAltoTablero()/2 - 2);
     cout<<nombreNivel;
-    gotoxy(0,0);
 
     tablaSolucionFinal.printTabla();/*podria tener polimorfismo*/
     

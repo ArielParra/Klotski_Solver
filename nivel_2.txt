@@ -1,4 +1,4 @@
-nivel 2 abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+nivel 2 1234567890123456789012345678901234567890
 10 11
 &&&&&&&&&&
 &&&&&&&&&&

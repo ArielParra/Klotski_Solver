@@ -2,18 +2,13 @@
 #ifndef compatibilidad_h
 #define compatibilidad_h
 
-#include <iostream>
-void pausa() {
-  std::cout << std::endl << "Presione enter para continuar . . .";
-  std::cin.ignore();
-  std::cin.get();
-}
+#include <iostream> // cout, cin
 
-#include <stdlib.h> //scanf(),printf()
-#include <unistd.h> //usleep()
+#include <stdlib.h> // scanf(),printf()
+#include <unistd.h> // usleep()
 
 #ifdef delay
-#undef delay
+#undef delay //para evitar el error: redefinition of 'void delay(int)'
 #endif
 #define delay(ms) usleep(ms * 1000)
 
@@ -48,7 +43,7 @@ void pausa() {
 #define CURSOR_OFF           "\033[?25l"
 #define CLEAR_SCREEN        "\e[1;1H\e[2J"
 
-void clrscr() { printf(CLEAR_SCREEN);fflush(stdout); }
+inline void clrscr() { printf(CLEAR_SCREEN);fflush(stdout); }
 
 /*Colores ANSI */
 /*Foreground*/
@@ -111,42 +106,42 @@ void clrscr() { printf(CLEAR_SCREEN);fflush(stdout); }
     #ifndef CP_UTF8 
         #define CP_UTF8 65001 
     #endif
-    void setANSI(){//Inicia la consola virtual
+    inline void setANSI(){//Inicia la consola virtual
         DWORD console_mode;
         GetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), &console_mode);
         console_mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), console_mode);
     }
-    void setUTF8(){SetConsoleOutputCP(CP_UTF8);}//compatibilidad con Unicodes
+    inline void setUTF8(){SetConsoleOutputCP(CP_UTF8);}//compatibilidad con Unicodes
 
 
     /*Compatibilidad con conio.h*/
-    void gotoxy(int x, int y) {
-    COORD coordinate;
-    coordinate.X = x;
-    coordinate.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+    inline void gotoxy(int x, int y) {
+        COORD coordinate;
+        coordinate.X = x;
+        coordinate.Y = y;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
     }
     #include <stdlib.h>
-    void startCompat() {
+    inline void startCompat() {
         std::cout<<CURSOR_OFF;
         clrscr();
         setANSI();
         setUTF8();
-   }
-    void endCompat() { 
+    }
+    inline void endCompat() { 
         clrscr();
         std::cout<<CURSOR_ON;
     }
 
     /*Compatibilidad con ncurses.h*/
-    void reset_shell_mode(void){}
-    void reset_prog_mode(void){}
+    inline void reset_shell_mode(void){}
+    inline void reset_prog_mode(void){}
     int getmaxX(){
-            CONSOLE_SCREEN_BUFFER_INFO csbi;
-            GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
-            return(csbi.srWindow.Right-csbi.srWindow.Left);
-        }
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
+        return(csbi.srWindow.Right-csbi.srWindow.Left);
+    }
     int getmaxY(){
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
@@ -155,79 +150,63 @@ void clrscr() { printf(CLEAR_SCREEN);fflush(stdout); }
     #define LINES getmaxY() 
     #define COLS getmaxX()
 
-#else  //*NIX
-    /*Compatibilidad con Colores (Consola virtual de cmd)*/
+#else  //*NIX (MacOs, Linux, etc.)
+
     //En sistemas basados en Unix el sistema suele ya soportar esto asi que es implicito
-    void setUTF8(void){};
-    void setANSI(void){};
+    inline void setUTF8(void){};
+    inline void setANSI(void){};
     #include <ncurses.h> //getch()
     #warning "ncurses.h necesita -lncurses como argumento de compilación"
 
     //Compatibilidad con conio.h
 
-    void gotoxy(int x, int y) {
-    printf("%c[%d;%df", 0x1B, y, x);
-    fflush(stdout);
+    inline void gotoxy(int x, int y) {
+        printf("%c[%d;%df", 0x1B, y, x);
+        fflush(stdout);
     }
-
-    int kbhit() {
-    int ch = 0, r = 0;
-    nodelay(stdscr, TRUE);
-    ch = getch();
-    if (ch == ERR) { // no input
-        r = FALSE;
-    } else { // input
-        r = TRUE;
-        ungetch(ch);
-    }
-    nodelay(stdscr, FALSE);
-    return (r);
-    }
-    #define _kbhit() kbhit()
-
-    #include <string.h> //strcat()
-    int nocbreak_getch() {
-    raw(); // nocbreak para getch
-    int ch = getch();
-    cbreak();
-    return ch;
+    
+    inline int nocbreak_getch() {
+        raw(); // nocbreak para getch
+        int ch = getch();
+        cbreak();
+        return ch;
     }
     #undef getch
     #define getch() nocbreak_getch()
 
-    int getche() {
-    echo();
-    int ch = getch();
-    noecho();
-    return ch;
+    inline int getche() {
+        echo();
+        int ch = getch();
+        noecho();
+        return ch;
     }
     #define _getche getche
 
-    void startCompat() {   
-    clrscr();
-    initscr();            // Iniciar el modo curses
-    std::cout<<CURSOR_OFF; 
-    keypad(stdscr, TRUE); // Habilita el uso de teclas como las flechas, etc.
-    noecho();             // sin echo() de  getch() como en conio.h
-    cbreak();             // Se para con ctrl +C como en Windows
-    refresh();            // actualiza la pantalla
+    inline void startCompat() {   
+        clrscr();
+        initscr();            // Iniciar el modo curses
+        std::cout<<CURSOR_OFF; 
+        keypad(stdscr, TRUE); // Habilita el uso de teclas como las flechas, etc.
+        noecho();             // sin echo() de  getch() como en conio.h
+        cbreak();             // Se para con ctrl +C como en Windows
+        refresh();            // actualiza la pantalla
     }
 
-    void endCompat() {
-    refresh();
-    echo();
-    fflush(stdout);
-    std::cout<<CURSOR_ON;
-    endwin();
-    clrscr();
+    inline void endCompat() {
+        refresh();
+        echo();
+        fflush(stdout);
+        std::cout<<CURSOR_ON;
+        endwin();
+        clrscr();
     }
 
     //Compatibilidad con ncurses.h
     #undef  KEY_ENTER      // en ncurses es ctrl + m 
     #define KEY_ENTER '\n' // funciona como en Windows
-    int getmaxX() { return getmaxx(stdscr); }
-    int getmaxY() { return getmaxy(stdscr); } 
+    inline int getmaxX() { return getmaxx(stdscr); }
+    inline int getmaxY() { return getmaxy(stdscr); } 
 
-#endif 
+#endif // windows o *NIX
 
 #endif //compatibilidad_h
