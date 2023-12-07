@@ -123,8 +123,10 @@ unsigned int Klotski::rotacionDeDireccion(unsigned int num) {
 unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento& ultimoOrden) {//funcion recursiva usando DFS y Backtracking para encontrar la solucion
   recursion://directiva de recursion para evitar segmentation fault
    if(this->profundidad>=LIMITE_DE_PROFUNDIDAD){
-    // error: no se puede llegar al objetivo
-    return 0;// no hay solucion
+      const string error2="No se pudo llegar al objetivo en menos de "+to_string(LIMITE_DE_PROFUNDIDAD)+" pasos";
+      cout<<FG_RED;
+      mensajeCentrado(error2);
+      return 0;
    }
     this->profundidad++; // Aumenta la profundidad por cada llamada recursiva (inicia en 1)
 
@@ -215,7 +217,9 @@ unsigned int Klotski::buscarSolucion(unsigned int& ultimoHash, OrdenDeMovimiento
   }//verifica si existe el estado
 
 // si no se encuentra el estado no hay solucion
-// error: no se pueden mover las piezas
+const string error2="No Existe Solucion, no se pudo mover alguna pieza";
+cout<<FG_RED;
+mensajeCentrado(error2);
 return 0;
 }
 

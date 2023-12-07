@@ -115,21 +115,26 @@ void segunda_pantalla() {
   clrscr();
   flecha_izquierda();
   flecha_derecha();
-  const int ancho_grafico = 93,altura_grafico=12;
+  const int ancho_grafico1 = 93,altura_grafico=12;
 
-  int x = (getmaxX() / 2) - (ancho_grafico / 2),y = (getmaxY() / 2) - (altura_grafico/2);
+  int x = (getmaxX() / 2) - (ancho_grafico1 / 2),y = (getmaxY() / 2) - (altura_grafico/2);
+  cout<<FG_BLUE;
   gotoxy(x, y++); cout<<"░██████╗░█████╗░██╗░░░░░██╗░░░██╗░█████╗░██╗░█████╗░███╗░░██╗░█████╗░██████╗░░█████╗░██████╗░";
   gotoxy(x, y++); cout<<"██╔════╝██╔══██╗██║░░░░░██║░░░██║██╔══██╗██║██╔══██╗████╗░██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗";
   gotoxy(x, y++); cout<<"╚█████╗░██║░░██║██║░░░░░██║░░░██║██║░░╚═╝██║██║░░██║██╔██╗██║███████║██║░░██║██║░░██║██████╔╝";
   gotoxy(x, y++); cout<<"░╚═══██╗██║░░██║██║░░░░░██║░░░██║██║░░██╗██║██║░░██║██║╚████║██╔══██║██║░░██║██║░░██║██╔══██╗";
   gotoxy(x, y++); cout<<"██████╔╝╚█████╔╝███████╗╚██████╔╝╚█████╔╝██║╚█████╔╝██║░╚███║██║░░██║██████╔╝╚█████╔╝██║░░██║";
   gotoxy(x, y++); cout<<"╚═════╝░░╚════╝░╚══════╝░╚═════╝░░╚════╝░╚═╝░╚════╝░╚═╝░░╚══╝╚═╝░░╚═╝╚═════╝░░╚════╝░╚═╝░░╚═╝";
+  
+  const int ancho_grafico2 = 70;
+  x = (getmaxX() / 2) - (ancho_grafico2 / 2);
+  cout<<FG_MAGENTA;
   gotoxy(x, y++); cout<<"██████╗░███████╗  ██╗░░██╗██╗░░░░░░█████╗░████████╗░██████╗██╗░░██╗██╗";
   gotoxy(x, y++); cout<<"██╔══██╗██╔════╝  ██║░██╔╝██║░░░░░██╔══██╗╚══██╔══╝██╔════╝██║░██╔╝██║";
   gotoxy(x, y++); cout<<"██║░░██║█████╗░░  █████═╝░██║░░░░░██║░░██║░░░██║░░░╚█████╗░█████═╝░██║";
   gotoxy(x, y++); cout<<"██║░░██║██╔══╝░░  ██╔═██╗░██║░░░░░██║░░██║░░░██║░░░░╚═══██╗██╔═██╗░██║";
   gotoxy(x, y++); cout<<"██████╔╝███████╗  ██║░╚██╗███████╗╚█████╔╝░░░██║░░░██████╔╝██║░╚██╗██║";
-  gotoxy(x, y++); cout<<"╚═════╝░╚══════╝  ╚═╝░░╚═╝╚══════╝░╚════╝░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝╚═╝";
+  gotoxy(x, y++); cout<<"╚═════╝░╚══════╝  ╚═╝░░╚═╝╚══════╝░╚════╝░░░░╚═╝░░░╚═════╝░╚═╝░░╚═╝╚═╝"<<RESET_COLOR;
   fflush(stdout);
 }
 
@@ -142,7 +147,7 @@ void tercer_pantalla(int seleccion) {
   const char *opciones1[] = {"█▀▀ ▄▀█ █▀█ █▀▀ ▄▀█ █▀█",  "▀█▀ ▄▀█ █▄▄ █   █▀▀ █▀█ █▀█","█▀ █▀█ █   █ █ █▀▀ █ █▀█ █▄ █","█▀ ▄▀█ █   █ █▀█"};
   const char *opciones2[] = {"█▄▄ █▀█ █▀▄ █▄█ █▀█ █▀▄",  " █  █▀█ █▄█ █▄▄ ██▄ █▀▄ █▄█","▄█ █▄█ █▄▄ █▄█ █▄▄ █ █▄█ █ ▀█","▄█ █▀█ █▄▄ █ █▀▄"};
 
-  const int altura_grafico = 10, ancho_grafico = 58;
+  const int altura_grafico = 10, ancho_grafico = 43;
   int x = (getmaxX() / 2) - (ancho_grafico / 2),y = (getmaxY() / 2) - (altura_grafico/2);
  
   for (int i = 0; i < 4; i++) {
@@ -188,8 +193,8 @@ void pantalla_Tabla(unsigned int numNivel){
 
 
 void pantalla_Solucion(unsigned int numNivel){
-    clrscr();
-   Nivel nivel(numNivel);
+  clrscr();
+  Nivel nivel(numNivel);
   if(nivel.cargarNivel()){
    vector<string> matriz = nivel.getTableroNivel();
     Tabla tablaSolucion = Tabla(matriz);
@@ -200,11 +205,7 @@ void pantalla_Solucion(unsigned int numNivel){
     unsigned int solucion = klotski.solucionador();
       clrscr();
       
-      if(solucion==0){
-        const string sinSolucionn="No Existe Solucion!";
-        cout<<FG_RED;
-        mensajeCentrado(sinSolucionn);
-      }else{
+      if(solucion!=0){
         const string mensajeSolucion="Solucion Encontrada!";
         cout<<FG_GREEN;
         mensajeCentrado(mensajeSolucion);

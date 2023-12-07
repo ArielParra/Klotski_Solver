@@ -54,7 +54,7 @@ cout<<RESET_COLOR;
 
 void mensajeCentrado(const string mensaje){
   clrscr();
-  gotoxy(getmaxX()/2 - mensaje.size()/2, getmaxY()/2 + 1);
+  gotoxy(getmaxX()/2 - mensaje.size()/2, getmaxY()/2);
   cout<<mensaje;fflush(stdout);
   recuadro();
   delay(2000);
@@ -68,21 +68,19 @@ string entrada; //entrada del usuario
   do {
     const string mensaje = "Ingrese el número N para el archivo nivel_N.txt: ";
     const string lineaDeCaptura = "-----";
-    gotoxy(getmaxX()/2 - mensaje.size()/2, getmaxY()/2 - 1);
-    cout<<mensaje;
-    gotoxy(getmaxX()/2 + mensaje.size()/2 , getmaxY()/2);
+    gotoxy(getmaxX()/2 - mensaje.size()/2, getmaxY()/2);
+    cout<<FG_MAGENTA<<mensaje<<RESET_COLOR;
+    gotoxy(getmaxX()/2 + mensaje.size()/2 , getmaxY()/2 + 1);
     cout<<lineaDeCaptura;
     esValido = true;
     fflush(stdin);
     entrada.clear(); //se limpia la entrada
       //para capturar incluso espacios
-      gotoxy(getmaxX()/2 + mensaje.size()/2 , getmaxY()/2 - 1);
+      gotoxy(getmaxX()/2 + mensaje.size()/2 , getmaxY()/2);
       reset_shell_mode();//salirse de ncurses para usar getline
-      cout<<CURSOR_ON;
-      getline(cin,entrada);
-      cout<<CURSOR_OFF;
-      //para desaparecer cursor cuando se da enter
-      gotoxy(2,2);
+        cout<<CURSOR_ON;
+        getline(cin,entrada);
+        cout<<CURSOR_OFF;
       reset_prog_mode();//regresar a ncurses
       string error; 
       //solo se dio enter = error
@@ -101,14 +99,14 @@ string entrada; //entrada del usuario
         esValido = false;
         error="Error: Ingrese maximo "+ to_string(lineaDeCaptura.size()) + " digitos";
       }
-      if(error.size()>0){ // debido al stoi
+      if(error.size()>0){ // debido al stoul
       cout<<FG_RED;
       mensajeCentrado(error);
       }
       
     }while (!esValido);//mientras no sea valido se pide por mas numeros
     
-return std::stoi(entrada);//se convierte a int
+return stoul(entrada);//se convierte de string a numero
 }
 
 
