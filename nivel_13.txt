@@ -7,8 +7,9 @@ Nivel 13
 &&#a**b#&&
 &&#cdde#&&
 &&#cfge#&&
-&&#a&&b#&&
+&&#ñ&&h#&&
 &&##--##&&
 &&&&&&&&..
 &&&&&&&&..
+/*Esto prueba caracteres Invalidos*/
 /*ERROR: no se puede abrir el archivo*/

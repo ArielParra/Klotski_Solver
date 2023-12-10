@@ -1,8 +1,0 @@
-Nivel 16
-2 1
-*.
-
-
-
-
-/*solucion mas simple*/

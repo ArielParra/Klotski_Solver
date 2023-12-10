@@ -1,14 +1,14 @@
 Nivel 6
 10 11
-&&&&&&&&&&
-&&&&&&&&&&
-&&######&&
-&&#a**b#&&
-&&#a**b#&&
-&&#cdde#&&
-&&#cfge#&&
-&&#a&&b#&&
-&&##--##&&
-&&&&&&&&..
-&&&&&&&&..
-/*Esto prueba caracteres repetidos*/
+
+
+  ######
+  #a**b#
+  #a**b#
+  #cdde#
+  #cfge#
+  #&&&&#
+  ##--##
+        ..
+        ..
+/*Esto prueba caracteres espacios vacios*/
