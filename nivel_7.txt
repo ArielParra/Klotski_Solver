@@ -1,0 +1,4 @@
+Nivel 7
+2 1
+*.
+/*solucion mas simple*/

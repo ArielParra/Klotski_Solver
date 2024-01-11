@@ -1,0 +1,15 @@
+Nivel 10
+10 11
+&&&&&&&&&&
+&&&&&&&&&&
+&&######&&
+&&#a**b#&&
+&&#a**b#&&
+&&#cdde#&&
+&&#cfge#&&
+&&#h&&i#&&
+&&##--####
+&&&&&&&#..
+&&&&&&&#..
+/*no se puede llegar al objetivo
+, no tiene solucion*/

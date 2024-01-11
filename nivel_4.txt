@@ -1,0 +1,16 @@
+Nivel 4
+10 11 
+&&&&&&&&&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&&&&&&&&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&######&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&#a**b#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&#a**b#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&#cdde#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&#cfge#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&#h&&i#&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&##--##&&abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&&&&&&&..abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+&&&&&&&&..abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+/*Esto prueba que solo captura al anchura y altura predefinida*/

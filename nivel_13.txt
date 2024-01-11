@@ -1,0 +1,15 @@
+Nivel 13
+10 11
+&&&&&&&&&&
+&&&&&&&&&^
+&&######&&
+&&#a**b#&&
+&&#a**b#&&
+&&#cdde#&&
+&&#cfge#&&
+&&#ñ&&h#&&
+&&##--##&&
+&&&&&&&&..
+&&&&&&&&..
+/*Esto prueba caracteres Invalidos*/
+/*ERROR: no se puede abrir el archivo*/

@@ -1,0 +1,15 @@
+Nivel 11
+10 11
+&&&&&&&&&&
+&&&&&&&&&&
+&&######&&
+&&#a**b#&&
+&&#a**b#&&
+&&#cdde#&&
+&&#cfge#&&
+&&#hjki#&&
+&&##--##&&
+&&&&&&&&..
+&&&&&&&&..
+/*no se pueden mover las piezas
+, no tiene solucion*/

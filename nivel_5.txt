@@ -1,0 +1,14 @@
+Nivel 5
+11 11solo carga numeros;
+###########
+###########
+###########
+###a**b####
+###a**b####
+###cdde####
+###cfge####
+###h&&i####
+####--#####
+####&&&&..#
+####&&&&..#
+/*Esto prueba la altura y anchura del nivel*/
