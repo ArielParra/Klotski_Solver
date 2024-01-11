@@ -48,8 +48,6 @@ o clase debe tener comentarios acerca de lo que se realiza.
     - [x] redactar con sus propias palabras
     - [x] justificar sus comentarios
 - [x] Temas investigados para la realización del proyecto.
-- [x] Bitácora de trabajo por cada uno de los integrantes del equipo.
-    - [x]Hacer una tabla donde incluyan el nombre del integrante del equipo, actividades realizadas y tiempo (días)
 - [x] Conclusiones por cada uno de los integrantes del equipo.
     - [x] Conlcusion de Ariel
 - [x] Referencias consultadas.
