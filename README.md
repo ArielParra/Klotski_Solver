@@ -2,10 +2,12 @@
 
 Este es un programa el cual busca solucion a travez de DFS y Backtracking a tableros del juego Klotski obtenidos de los archivos nivel_#.txt siendo # un numero entero del 1 al 99999, el programa valida las entradas de usuario, valida los tableros y muestra los pasos para resolver el tablero de klotski dado. 
 
+![KlotsiSolver-Demo](./KlotskiSolver-Demo.png)
+
 # Compilacion
 
 En Windows es necesario el compilador gcc, el cual puede obtenerse a travez de MSYS2, para compilar junto con el icono diseñe un batch script llamado Compilar_Con_ICONO.bat el cual se puede ejecutar dando doble click derecho.
-Para compilar en sistemas basados en Unix como MacOS o Linux, se requiere de las librerias de ncurses y ncurses-dev, se puede compilar ejecutando el comando "make"
+Para compilar en sistemas basados en Unix como MacOS o Linux, se requiere de las librerias de ncurses y ncurses-dev, se puede compilar ejecutando el comando "make" (para Windows ejecutar el programa local .\make.exe)
 
 ---
 
