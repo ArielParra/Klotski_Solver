@@ -3,20 +3,18 @@
 
 ifdef OS  #Deteccion de Windows 
 	CC := g++.exe
-	FLAGS := -lwinmm icono.res
-	RM := del /Q
-	COPY := copy
+	FLAGS := -lwinmm Klotski-icono.res
 	FixPath = $(subst /,\,$1)
-	InstallPath := C:\Program Files\Klotski\
+	InstallPath := C:\/Users\/$(USERNAME)\/Desktop\/
 	UNAME := Windows
 	EXT := .exe
 else  	  #*NIX usando GNU make
 	CC := g++
 	FLAGS := -lncurses -s
-	RM := rm -f 
-	COPY := cp
 	FixPath = $1
 	InstallPath := /usr/local/bin/
+	IconoPath   := /usr/share/icons/
+	DesktopPath := /home/$(USER)/Desktop/
 	UNAME = $(shell uname)
 	EXT :=
 endif
@@ -31,17 +29,18 @@ $(Nombre): main.cpp Klotski.cpp Tabla.cpp Bloque.cpp Nivel.cpp TiposDeDatos.h Fu
 	$(CC) -o $(call FixPath,$(Nombre)) $< $(FLAGS) $(CFLAGS)
 
 install: $(Nombre)
-ifdef OS
-	mkdir "$(InstallPath)"
+	cp $(call FixPath,$(Nombre)$(EXT)) "$(call FixPath,$(InstallPath))"
+ifeq ($(UNAME), Linux)
+	cp $(LaunchScript) $(InstallPath)
+	cp Klotski-icono.ico $(IconoPath)
 endif
-	$(COPY) $(call FixPath,$(Nombre)$(EXT)) "$(InstallPath)"
 
 uninstall:
-	$(RM) "$(InstallPath)$(Nombre)$(EXT)"
-ifdef OS
-	rmdir /s /q "$(InstallPath)"
+	rm -f  "$(call FixPath,$(InstallPath))$(Nombre)$(EXT)"
+ifeq ($(UNAME), Linux)
+	rm -f $(InstallPath)$(LaunchScript)
+	rm -f $(IconoPath)Klotski-icono.ico
 endif
-
 
 $(LaunchScript): $(Nombre)
 ifeq ($(UNAME), Linux)
@@ -53,23 +52,25 @@ endif
 
 desktop: $(Nombre) $(LaunchScript)
 ifeq ($(UNAME), Linux)
-	@echo "[Desktop Entry]" > Klotski.desktop
-	@echo "Version=1.0" >> Klotski.desktop
-	@echo "Name=Klotski" >> Klotski.desktop
-	@echo "Comment=Solucionador de Klotski" >> Klotski.desktop
-	@echo "Exec=$(shell pwd)/$(LaunchScript)" >> Klotski.desktop
-	@echo "Icon=$(shell pwd)/icono.ico" >> Klotski.desktop
-	@echo "Terminal=true" >> Klotski.desktop
-	@echo "Type=Application" >> Klotski.desktop
-	@echo "Categories=Game;" >> Klotski.desktop
-	@chmod +x Klotski.desktop
+	@echo "[Desktop Entry]" > $(Nombre).desktop
+	@echo "Version=1.0" >> $(Nombre).desktop
+	@echo "Name=$(Nombre)" >> $(Nombre).desktop
+	@echo "Comment=Solucionador de Klotski" >> $(Nombre).desktop
+	@echo "Exec=$(InstallPath)$(LaunchScript)" >> $(Nombre).desktop
+	@echo "Icon=$(IconoPath)Klotski-icono.ico" >> $(Nombre).desktop
+	@echo "Terminal=true" >> $(Nombre).desktop
+	@echo "Type=Application" >> $(Nombre).desktop
+	@echo "Categories=Game;" >> $(Nombre).desktop
+	@chmod +x $(Nombre).desktop
+	@mv $(Nombre).desktop $(DesktopPath)
 endif
 
 clean:
-	$(RM) $(call FixPath,$(Nombre)$(EXT)) 
+	rm -f  $(call FixPath,$(Nombre)$(EXT)) 
 ifeq ($(UNAME), Linux)
-	$(RM) $(LaunchScript)
-	$(RM) Klotski.desktop
+	rm -f  $(InstallPath)$(LaunchScript)
+	rm -f  $(InstallPath)$(LaunchScript)
+	rm -f  $(DesktopPath)$(Nombre).desktop
 endif
 
 .PHONY: all clean install uninstall
