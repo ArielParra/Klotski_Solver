@@ -2,8 +2,8 @@
 if exist "Klotski-Windows.exe " (
     del "Klotski-Windows.exe "
 )
-echo g++.exe -o Klotski-Windows.exe main.cpp -lwinmm icono.res -O3 -w -std=c++17
-g++.exe -o Klotski-Windows.exe main.cpp -lwinmm icono.res -O3 -w -std=c++17
+echo g++.exe -o Klotski-Windows.exe src/main.cpp -lwinmm src/icono.res -O3 -w -std=c++17
+g++.exe -o Klotski-Windows.exe src/main.cpp -lwinmm src/icono.res -O3 -w -std=c++17
 ::make.exe
 if exist "%temp%\tmp.vbs" (
     del "%temp%\tmp.vbs"

@@ -1,69 +1,63 @@
-# Descripcion 
+# Klotski Solver
 
-Este es un programa el cual busca solucion a travez de DFS y Backtracking a tableros del juego Klotski obtenidos de los archivos nivel_#.txt siendo # un numero entero del 1 al 99999, el programa valida las entradas de usuario, valida los tableros y muestra los pasos para resolver el tablero de klotski dado. 
+This project is a **Klotski** puzzle solver that uses **DFS (Depth-First Search)** and **Backtracking** algorithms to find solutions to puzzle boards defined in `nivel_#.txt` files, where `#` is an integer from 1 to 99999. The program validates user input, checks the validity of the boards, and displays step-by-step how to solve the given Klotski board.
 
-![KlotsiSolver-Demo](./KlotskiSolver-Demo.png)
+> [!IMPORTANT]  
+> This project is made completely in spanish, the Code, Menus and on-screen instructions, all will be displayed only in **Spanish**.
 
-# Compilacion
+![KlotskiSolver-Demo](KlotskiSolver-Demo.gif)
 
-En Windows es necesario el compilador gcc, el cual puede obtenerse a travez de MSYS2, para compilar junto con el icono diseñe un batch script llamado Compilar_Con_ICONO.bat el cual se puede ejecutar dando doble click derecho.
-Para compilar en sistemas basados en Unix como MacOS o Linux, se requiere de las librerias de ncurses y ncurses-dev, se puede compilar ejecutando el comando "make" (para Windows ejecutar el programa local .\make.exe)
+## Features
 
----
+- **Search algorithms:** Implements DFS and Backtracking to find optimal solutions.
+- **Board validation:** Ensures loaded boards are valid before attempting to solve them.
+- **Console-based graphical interface:** Visual representation of the board and the moves made.
+- **Cross-platform support:** Compatible with Windows and Unix-based systems (Linux, macOS) using the `ncurses` library.
+- **Dynamic level loading:** Boards are loaded from external files without the need to recompile the program.
+- **Solution indicators:** Displays the number of moves made and the path taken to solve the puzzle.
 
-# Requisitos del proyecto
+## Compilation
 
+### On Windows
 
-## Codigo
+- Requires the `gcc` compiler, which can be obtained through **MSYS2**.
+- To compile with the icon included, you can double-click the `Compilar_Con_ICONO.bat` script.
 
-- [x] Debe aplicar todos temas vistos en el curso
-- [x] menús claros y validados.
-- [x] Validar las capturas (que no existan errores de ejecución, es decir, que no “truene” el programa).
-- [x] Cada sección de código del programa debe estar perfectamente bien comentada, es decir, cada función
-o clase debe tener comentarios acerca de lo que se realiza.
-- [x]  Los nombres de las funciones o clases deben ser de acuerdo a la funcionalidad que implementa.
-- [x] Graficos hasta 2 pts extra
-- [x] La solución debe cargar nuevos tableros y resolverlo sin necesidad de recompilar el ejercicio.
-    - [x] Al cargar el tablero el programa deberá dibujarlo en forma gráfica y generar la(s) solución(es) posible(s).
-- [x] La pantalla del juego contendrá al menos:
-    - [x] El tablero vacío.
-    - [x] Método de carga del archivo (reto).
-    - [x] Dibujar el tablero completo.
-    - [x] Botón para general solución e Iniciar recorrido.
- - [x] Las piezas y los muros se representarán de modo que aparezcan conexos, inclusive si ocupan varios cuadrados del tablero.
- - [x] Cada pieza diferente que se mueve se considera un movimiento. Al mover una pieza que acaba de ser movida se considera que es una continuación del movimiento anterior, y no cuenta como movimiento.
- - [x] Al final deberá indicar cuantos movimientos realizo para solucionar el reto, así como el camino recorrido para la solución
+### On Linux/MacOS
 
-## Documento
+- Requires the installation of the `ncurses` and `ncurses-dev` (or `ncurses-devel` on some distributions) libraries.
+- To compile, simply run:
 
-- [x] Portada
-    - [x] Imagen con título de la UAA
-    - [x] Título del proyecto
-    - [x] Nombre de la materia
-    - [x] Nombres de los integrantes
-    - [x] Carrera, semestre y grupo
-    - [x] Nombre del profesor
-    - [x] Fecha de entrega
-- [x] Resumen descriptivo 
-    - [x] Fortalezas
-    - [x] Debilidades
-    - [x] redactar con sus propias palabras
-    - [x] justificar sus comentarios
-- [x] Temas investigados para la realización del proyecto.
-- [x] Conclusiones por cada uno de los integrantes del equipo.
-    - [x] Conlcusion de Ariel
-- [x] Referencias consultadas.
-- [x] Manual de usuario
-    - [x] capturas de pantalla
-    - [x] como se realiza cada tarea de su aplicación
+  ```bash
+  make
+  ```
 
-## Programacion Orientada a Objetos
+### Using the Makefile
 
-- [x] Uso de los 4 pilares de la POO
-    - [x] Abstraccion
-    - [x] Encapsulamiento
-    - [x] Herencia
-    - [x] Polimorfismo 
-- [x] Separacion de la interfaz y la implementación
-- [x] Uso de métodos amigos
-- [x] Uso de métodos const
+The project includes a `Makefile` that simplifies compilation and installation. Here are the most common commands:
+
+- **Compile:**  
+  ```bash
+  make
+  ```
+
+- **Install:**
+
+    On **Windows**, the executable will be installed to `C:\Users\$(USERNAME)\Desktop\`.  
+    On **Linux**, the executable will be located in `/usr/local/bin/`, the icon in `/usr/share/icons/`, and desktop shortcuts in `/home/$(USER)/Desktop/`.
+
+    ```bash
+    make install
+    ```
+
+- **Uninstall:**  
+  Removes the installed files.  
+  ```bash
+  make uninstall
+  ```
+
+- **Clean:**  
+  Deletes the files generated during compilation.  
+  ```bash
+  make clean
+  ```

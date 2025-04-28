@@ -25,14 +25,14 @@ Nombre := Klotski-$(UNAME)
 
 all: $(Nombre) desktop
 
-$(Nombre): main.cpp Klotski.cpp Tabla.cpp Bloque.cpp Nivel.cpp TiposDeDatos.h FuncionesAuxiliares.h
+$(Nombre): src/main.cpp src/Klotski.cpp src/Tabla.cpp src/Bloque.cpp src/Nivel.cpp src/TiposDeDatos.h src/FuncionesAuxiliares.h
 	$(CC) -o $(call FixPath,$(Nombre)) $< $(FLAGS) $(CFLAGS)
 
 install: $(Nombre)
 	cp $(call FixPath,$(Nombre)$(EXT)) "$(call FixPath,$(InstallPath))"
 ifeq ($(UNAME), Linux)
 	cp $(LaunchScript) $(InstallPath)
-	cp Klotski-icono.ico $(IconoPath)
+	cp src/Klotski-icono.ico $(IconoPath)
 endif
 
 uninstall:

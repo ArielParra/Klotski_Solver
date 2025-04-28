@@ -1,5 +1,6 @@
 a.out
 a.exe
 .vscode/*
-#Klotski-Windows.exe
-#Klotski-Linux
+launch_klotski.sh
+Klotski-Windows.exe
+Klotski-Linux
